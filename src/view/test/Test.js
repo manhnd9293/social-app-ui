@@ -1,8 +1,7 @@
 import React, {useRef, useState} from 'react';
-import logo from './default-img.jpeg'
-import axios from "axios";
-const defaultFileName = 'No file is selected'
-function Home() {
+import logo from "../rootLayout/default-img.jpeg";
+
+function Test() {
   const [imgSrc, setImgSrc] = useState(logo);
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -67,7 +66,7 @@ function Home() {
         Upload
       </button>
     </div>
-);
+  );
 }
 
-export default Home;
+export default Test;

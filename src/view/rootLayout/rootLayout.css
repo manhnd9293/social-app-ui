@@ -1,0 +1,11 @@
+.App {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    /*background-color: goldenrod;*/
+}
+
+.app-body {
+    flex-grow: 1;
+}
+
