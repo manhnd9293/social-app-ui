@@ -1,5 +1,8 @@
 import React, {useRef, useState} from 'react';
 import logo from "../rootLayout/default-img.jpeg";
+import axios from "axios";
+
+const defaultFileName = 'no file is selected';
 
 function Test() {
   const [imgSrc, setImgSrc] = useState(logo);
