@@ -122,7 +122,7 @@ function Register() {
           <div className="field">
             <div className="control">
               <button className="button is-primary">
-                Submit
+                Sign Up
               </button>
             </div>
           </div>
