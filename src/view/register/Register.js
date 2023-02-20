@@ -1,6 +1,7 @@
 import React, { useState} from 'react';
 import {useForm} from "react-hook-form";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import {beClient} from "../../config/BeClient";
 let defaultValues = {
   username: '',
   password: '',
@@ -10,16 +11,41 @@ let defaultValues = {
 
 function Register() {
 
-  const {register, formState: {errors}, handleSubmit, reset}= useForm({mode: "all",
+  const {register, formState: {errors}, handleSubmit, reset, getValues}= useForm({mode: "all",
     defaultValues})
+  const navigate = useNavigate();
+
   const onSubmit=(data) => {
-    console.log(data)
+    console.log(data);
+    beClient.post('/user/sign-up', {
+      ...data
+    }).then((res) => {
+      alert('Sign up successfully');
+      const {username, password} = data;
+      navigate('/login', {state: {username, password}});
+    })
   }
 
   const validateFullName = (value)=> {;
     return  value.length > 0 || 'Full name is required'
   }
 
+  const validateConfirmPassword = (value) => {
+    if(value !== getValues().password) {
+      return 'Confirm password not match'
+    }
+  }
+
+  const validateUsername = async (value) => {
+    if(value.indexOf(' ') !== -1) {
+      return 'username must not have white space';
+    }
+    const {data: {exist}} = await beClient.get(`/user/check-username-exist?username=${value}`);
+    if (exist) {
+      return 'username existed';
+    }
+
+  }
 
   return (
     <div>
@@ -53,7 +79,8 @@ function Register() {
                      placeholder="User Name"
                      {...register('username', {
 
-                         required: 'Username is required'
+                          required: 'Username is required',
+                          validate: validateUsername
                        },
                      )}
               />
@@ -79,11 +106,13 @@ function Register() {
             <label className="label">Confirm password</label>
             <div className="control">
               <input className={`input ${errors.confirmPassword ? 'is-danger' : ''}`}
-                     type="text"
+                     type="password"
                      placeholder="Confirm password"
                      {...register('confirmPassword', {
-
-                         required: 'Confirm Password is required'
+                         required: 'Confirm Password is required',
+                       validate: {
+                           validateConfirmPassword
+                       }
                        },
                      )}
               />

@@ -1,7 +1,7 @@
 import {useForm} from "react-hook-form";
 import {beClient} from "../../config/BeClient";
 import {useDispatch} from "react-redux";
-import {Link, useNavigate} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import {logInUser} from "../../store/user/UserAction";
 
 let defaultValues = {
@@ -12,8 +12,17 @@ let defaultValues = {
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const {state} = useLocation();
+
+  let defaultValues = {
+    username: state?.username || '',
+    password: state?.password || '',
+  };
   const {register, formState: {errors}, handleSubmit, reset}= useForm({mode: "all",
     defaultValues})
+
+
+
   const onSubmit=(data) => {
     console.log(data);
     beClient.post('/user/sign-in', {
