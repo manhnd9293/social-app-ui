@@ -1,7 +1,20 @@
 import React from 'react';
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {logOutUser} from "../../store/user/UserAction";
 
 function Header() {
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  if(!user._id) return null;
+
+  const logOut = () => {
+    dispatch(logOutUser());
+    navigate('/login');
+  }
+
   return (
     <nav className="navbar is-primary" role="navigation" aria-label="main navigation">
       <div className="navbar-brand">
@@ -26,9 +39,9 @@ function Header() {
                   Employee
                 </strong>
               </Link>
-              <a className="button is-light">
+              <button className="button is-light is-small" onClick={logOut}>
                 Log out
-              </a>
+              </button>
             </div>
           </div>
         </div>
