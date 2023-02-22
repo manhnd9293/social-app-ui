@@ -17,9 +17,9 @@ function Header() {
 
   return (
     <nav className="navbar is-link" role="navigation" aria-label="main navigation">
-      <div className="navbar-brand">
+      <div className="navbar-brand ml-6">
         <Link className="navbar-item" to="/">
-         <span>HuNi</span>
+         <span className='has-text-weight-bold'>H U N I</span>
         </Link>
 
         <a role="button" className="navbar-burger" aria-label="menu" aria-expanded="false"

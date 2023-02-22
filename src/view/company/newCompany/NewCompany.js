@@ -1,6 +1,8 @@
-import React from 'react';
+import React, {useRef, useState} from 'react';
 import {Link} from "react-router-dom";
 import {useForm} from "react-hook-form";
+import logo from "../../rootLayout/default-img.jpeg";
+import axios from "axios";
 
 let defaultValues = {
   name: '',
@@ -11,10 +13,19 @@ let defaultValues = {
   agree: false
 }
 
+const defaultFileName = 'no file is selected';
+
 function NewCompany(props) {
   const {register, formState: {errors}, handleSubmit, reset, getValues} = useForm(
     {mode: 'all', defaultValues}
   );
+
+  const defaultLogo = process.env.REACT_APP_DEFAULT_COMPANY_LOGO;
+  const [imgSrc, setImgSrc] = useState(defaultLogo);
+  const [file, setFile] = useState(null);
+  const inputRef = useRef();
+  const [loading, setLoading] = useState(false);
+
 
   const onSubmit = (data) => {
     console.log(data);
@@ -26,12 +37,41 @@ function NewCompany(props) {
     reset(
       {...defaultValues},
       {
-        keepErrors:false,
+        keepErrors: false,
         keepDirty: false,
-        keepTouched:false,
+        keepTouched: false,
         keepIsSubmitted: false
       }
-    )
+    );
+    setImgSrc(defaultLogo);
+  }
+
+  function onSelectFile(e) {
+    if (e.target.files && e.target.files.length > 0) {
+      const reader = new FileReader();
+      reader.addEventListener('load', () => setImgSrc(reader.result));
+      const file = e.target.files[0];
+      reader.readAsDataURL(file);
+
+      setFile(file);
+    }
+  }
+
+  async function uploadFile() {
+    if (!file) {
+      return;
+    }
+    setLoading(true);
+    const data = new FormData();
+    data.append('file', file);
+    const response = await axios.patch(`http://localhost:5000/employee/upload`, data, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    }).finally(() => {
+      setLoading(false);
+    })
+    setImgSrc(response.data.url);
   }
 
   return (
@@ -72,7 +112,7 @@ function NewCompany(props) {
                     required: 'Industry is required'
                   })
                   }>
-                  <option value='Select' disabled > Select Industry</option>
+                  <option value='Select' disabled> Select Industry</option>
                   <option value='Information Technology'>Information Technology</option>
                   <option value='F&B'>F&B</option>
                   <option value='Beauty & Spa'>Beauty & Spa</option>
@@ -93,7 +133,7 @@ function NewCompany(props) {
                     required: 'Province is required'
                   })
                   }>
-                  <option value='Select' disabled > Select province</option>
+                  <option value='Select' disabled> Select province</option>
                   <option value='Hanoi'>Ha noi</option>
                   <option value='Ho Chi Minh'>Ho Chi Minh</option>
                 </select>
@@ -119,7 +159,37 @@ function NewCompany(props) {
             {errors.address && <p className='help is-danger'>{errors.address.message}</p>}
           </div>
 
-          <div className="field">
+          <div className='field'>
+            <label className="label">Logo</label>
+          </div>
+
+          <figure className='image is-64x64 mt-3'>
+            <img src={imgSrc}/>
+          </figure>
+
+          <div className="file has-name is-info mt-3">
+            <label className="file-label">
+              <input className="file-input"
+                     type="file"
+                     name="file"
+                     ref={inputRef}
+                     onChange={onSelectFile}
+              />
+              <span className="file-cta">
+            <span className="file-icon">
+              <i className="fas fa-upload"></i>
+            </span>
+            <span className="file-label">
+              Choose a file…
+            </span>
+          </span>
+              <span className='file-name'>
+            {file?.name || defaultFileName}
+          </span>
+            </label>
+          </div>
+
+          <div className="field mt-4">
             <label className="label">Introduction</label>
             <div className="control">
               <textarea className="textarea"
@@ -145,7 +215,7 @@ function NewCompany(props) {
           </div>
 
           <div className='buttons mt-4'>
-            <button className="button is-primary" >
+            <button className="button is-primary">
               Create
             </button>
 
@@ -154,7 +224,6 @@ function NewCompany(props) {
             </button>
           </div>
         </form>
-
 
 
       </div>
