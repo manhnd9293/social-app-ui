@@ -1,0 +1,188 @@
+import React from 'react';
+import {Link} from "react-router-dom";
+import {useForm} from "react-hook-form";
+
+let defaultValues = {
+  name: '',
+  address: '',
+  province: 'Select',
+  industry: 'Select',
+  introduction: '',
+  agree: false
+}
+
+function NewCompany(props) {
+  const {register, formState: {errors}, handleSubmit, reset, getValues} = useForm(
+    {mode: 'all', defaultValues}
+  );
+
+  const onSubmit = (data) => {
+    console.log(data);
+    alert(data)
+  }
+
+  const resetForm = (e) => {
+    e.preventDefault();
+    reset(
+      {...defaultValues},
+      {
+        keepErrors:false,
+        keepDirty: false,
+        keepTouched:false,
+        keepIsSubmitted: false
+      }
+    )
+  }
+
+  return (
+    <div>
+      <div className='subtitle'>New company</div>
+      <Link to='/company'>
+        <button className='button is-info mb-3'>
+          <span>List company</span>
+        </button>
+      </Link>
+      <div className='box mt-3' style={{maxWidth: '50rem'}}>
+
+        <div className='subtitle mt-4 has-text-weight-bold'>Add a new company</div>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="field" style={{maxWidth: '50%'}}>
+            <label className="label">Company Name</label>
+            <div className="control">
+              <input className={`input ${errors.name ? 'is-danger' : ''}`}
+                     type="text"
+                     placeholder="Company Name"
+                     {...register('name', {
+                         validate: validateCompanyName,
+                         required: 'Name is required'
+                       },
+                     )}
+              />
+            </div>
+            {errors.name && <p className='help is-danger'>{errors.name.message}</p>}
+          </div>
+
+          <div className="field">
+            <label className="label">Industry</label>
+            <div className="control">
+              <div className={`select ${errors.industry ? 'is-danger' : ''}`}>
+                <select
+                  {...register('industry', {
+                    validate: validateIndustry,
+                    required: 'Industry is required'
+                  })
+                  }>
+                  <option value='Select' disabled > Select Industry</option>
+                  <option value='Information Technology'>Information Technology</option>
+                  <option value='F&B'>F&B</option>
+                  <option value='Beauty & Spa'>Beauty & Spa</option>
+                </select>
+
+              </div>
+            </div>
+            {errors.industry && <p className='help is-danger'>{errors.industry.message}</p>}
+          </div>
+
+          <div className="field">
+            <label className="label">Province</label>
+            <div className="control">
+              <div className={`select ${errors.province ? 'is-danger' : ''}`}>
+                <select
+                  {...register('province', {
+                    validate: validateProvince,
+                    required: 'Province is required'
+                  })
+                  }>
+                  <option value='Select' disabled > Select province</option>
+                  <option value='Hanoi'>Ha noi</option>
+                  <option value='Ho Chi Minh'>Ho Chi Minh</option>
+                </select>
+
+              </div>
+            </div>
+            {errors.province && <p className='help is-danger'>{errors.province.message}</p>}
+          </div>
+
+          <div className="field" style={{maxWidth: '60%'}}>
+            <label className="label">Address</label>
+            <div className="control">
+              <input className={`input ${errors.address ? 'is-danger' : ''}`}
+                     type="text"
+                     placeholder="Address"
+                     {...register('address', {
+                         validate: validateCompanyName,
+                         required: 'Address is required'
+                       },
+                     )}
+              />
+            </div>
+            {errors.address && <p className='help is-danger'>{errors.address.message}</p>}
+          </div>
+
+          <div className="field">
+            <label className="label">Introduction</label>
+            <div className="control">
+              <textarea className="textarea"
+                        placeholder="Introduction"
+                        {
+                          ...register('introduction')
+                        }
+              ></textarea>
+            </div>
+          </div>
+
+          <div className="field mt-4">
+            <div className="control">
+              <label className="checkbox">
+                <input type="checkbox"
+                       {...register('agree', {
+                         validate: validateAggree
+                       })}
+                /> I agree to the <a href="#">terms and conditions</a>
+              </label>
+            </div>
+            {errors.agree && <p className='help is-danger'>{errors.agree.message}</p>}
+          </div>
+
+          <div className='buttons mt-4'>
+            <button className="button is-primary" >
+              Create
+            </button>
+
+            <button className="button" onClick={resetForm}>
+              Reset
+            </button>
+          </div>
+        </form>
+
+
+
+      </div>
+    </div>
+  );
+}
+
+function validateCompanyName(value) {
+
+}
+
+function validateProvince(value) {
+  if (value === 'Select') {
+    return 'Province is require'
+  }
+}
+
+function validateIndustry(value) {
+  if (value === 'Select') {
+    return 'Industry is require'
+  }
+}
+
+function validateAggree(value) {
+  if (!value) {
+    return 'You must agree with term and condition to create company page'
+  }
+}
+
+
+export default NewCompany;

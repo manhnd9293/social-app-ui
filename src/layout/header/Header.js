@@ -16,7 +16,7 @@ function Header() {
   }
 
   return (
-    <nav className="navbar is-primary" role="navigation" aria-label="main navigation">
+    <nav className="navbar is-link" role="navigation" aria-label="main navigation">
       <div className="navbar-brand">
         <Link className="navbar-item" to="/">
          <span>HuNi</span>
@@ -34,12 +34,17 @@ function Header() {
         <div className="navbar-end">
           <div className="navbar-item">
             <div className="buttons">
+                <Link to={'/company'}>
+                  <strong className={'button mr-3 is-link'}>
+                    Company
+                  </strong>
+                </Link>
               <Link to={'/employee'}>
-                <strong className={'button is-primary mr-3'}>
+                <strong className={'button is-link mr-3'}>
                   Employee
                 </strong>
               </Link>
-              <button className="button is-light is-small" onClick={logOut}>
+              <button className="button is-link" onClick={logOut}>
                 Log out
               </button>
             </div>

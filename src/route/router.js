@@ -5,6 +5,9 @@ import Register from "../view/register/Register";
 import Test from "../view/test/Test";
 import Login from "../view/login/Login";
 import Home from "../view/home/Home";
+import NewEmployee from "../view/employee/newEmployee/NewEmployee";
+import NewCompany from "../view/company/newCompany/NewCompany";
+import ListCompany from "../view/company/companyList/ListCompany";
 
 const router = createBrowserRouter([
   {
@@ -18,6 +21,18 @@ const router = createBrowserRouter([
       {
         path: '/employee',
         element: <EmployeeList/>
+      },
+      {
+        path: '/employee/new',
+        element: <NewEmployee/>
+      },
+      {
+        path: '/company',
+        element: <ListCompany/>
+      },
+      {
+        path: '/company/new',
+        element: <NewCompany/>
       },
       {
         path: '/sign-up',
