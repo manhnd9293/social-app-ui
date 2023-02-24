@@ -24,7 +24,6 @@ function Login() {
 
 
   const onSubmit=(data) => {
-    console.log(data);
     beClient.post('/user/sign-in', {
       username: data.username,
       password: data.password
@@ -32,8 +31,6 @@ function Login() {
       console.log(res);
       dispatch(logInUser(res.data));
       navigate('/');
-    }).catch(e => {
-      console.log('Incorrect username or password');
     })
   }
 

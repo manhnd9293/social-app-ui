@@ -1,4 +1,6 @@
 import axios from "axios";
+import store from "../store";
+import {NotiActionType} from "../store/notification/NotificationReducer";
 
 function createBeClientInstance(beUrl) {
   let axiosInstance = axios.create({
@@ -18,19 +20,15 @@ function createBeClientInstance(beUrl) {
   )
   axiosInstance.interceptors.response.use(
     function (response) {
+      console.log({response});
+
       return response.data;
     },
 
     function (error) {
-      /*  if (!response) {
-            console.log(error);
-            return;
-        }
-
-        if (response.status === '403') {
-            console.log('fail to load data');
-        }
-*/
+      console.log('Error happen');
+      console.log(error.response);
+      store.dispatch({type: NotiActionType.Add, payload: error.response?.data})
       return Promise.reject(error);
     }
   )

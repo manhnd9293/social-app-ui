@@ -4,13 +4,15 @@ import {Outlet, useNavigate} from "react-router-dom";
 import Footer from "../../layout/footer/Footer";
 import './rootLayout.css';
 import {useDispatch, useSelector} from "react-redux";
-import {fetchUserData, logInUser} from "../../store/user/UserAction";
+import {fetchUserData} from "../../store/user/UserAction";
 import {beClient} from "../../config/BeClient";
+import Notification from "../notification/Notification";
 
 
 function RootLayout() {
 
   const user = useSelector((state) => state.user);
+  const notification = useSelector((state) => state.notification)
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -37,6 +39,7 @@ function RootLayout() {
       <div className='block'>
         <Header/>
       </div>
+      {notification && <Notification/>}
       <div className='app-body' style={{margin: '0rem 6rem'}}>
         <Outlet/>
       </div>
