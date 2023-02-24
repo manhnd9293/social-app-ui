@@ -1,7 +1,8 @@
-import React, { useState} from 'react';
+import React from 'react';
 import {useForm} from "react-hook-form";
 import {Link, useNavigate} from "react-router-dom";
 import {beClient} from "../../config/BeClient";
+
 let defaultValues = {
   username: '',
   password: '',
@@ -16,7 +17,6 @@ function Register() {
   const navigate = useNavigate();
 
   const onSubmit=(data) => {
-    console.log(data);
     beClient.post('/user/sign-up', {
       ...data
     }).then((res) => {

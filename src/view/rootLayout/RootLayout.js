@@ -4,9 +4,9 @@ import {Outlet, useNavigate} from "react-router-dom";
 import Footer from "../../layout/footer/Footer";
 import './rootLayout.css';
 import {useDispatch, useSelector} from "react-redux";
-import {fetchUserData} from "../../store/user/UserAction";
 import {beClient} from "../../config/BeClient";
 import Notification from "../notification/Notification";
+import {userActions} from "../../store/UserSlice";
 
 
 function RootLayout() {
@@ -24,10 +24,9 @@ function RootLayout() {
       beClient.get("/user/me")
         .then((res) => {
           const userInfo = res.data;
-          dispatch(fetchUserData(userInfo));
+          dispatch(userActions.fetchData(userInfo));
         })
         .catch((e) => {
-          console.log(e);
           navigate("/login");
         });
     }

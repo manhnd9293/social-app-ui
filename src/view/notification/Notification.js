@@ -1,13 +1,15 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {NotiActionType} from "../../store/notification/NotificationReducer";
+import {notificationActions} from "../../store/NotificationSlice";
 
 function Notification(props) {
   const notification = useSelector(state => state.notification);
   const dispatch = useDispatch();
+
   function closeModal() {
-    dispatch({type: NotiActionType.Remove});
+    dispatch(notificationActions.remove());
   }
+
   return (
     <div className={`modal is-active`}>
       <div className="modal-background" onClick={closeModal}></div>

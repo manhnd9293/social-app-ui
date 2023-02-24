@@ -1,7 +1,6 @@
 import React, {useRef, useState} from 'react';
 import {Link} from "react-router-dom";
 import {useForm} from "react-hook-form";
-import logo from "../../rootLayout/default-img.jpeg";
 import axios from "axios";
 
 let defaultValues = {

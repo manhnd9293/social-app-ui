@@ -1,6 +1,6 @@
 import axios from "axios";
 import store from "../store";
-import {NotiActionType} from "../store/notification/NotificationReducer";
+import {notificationActions} from "../store/NotificationSlice";
 
 function createBeClientInstance(beUrl) {
   let axiosInstance = axios.create({
@@ -20,15 +20,11 @@ function createBeClientInstance(beUrl) {
   )
   axiosInstance.interceptors.response.use(
     function (response) {
-      console.log({response});
-
       return response.data;
     },
 
     function (error) {
-      console.log('Error happen');
-      console.log(error.response);
-      store.dispatch({type: NotiActionType.Add, payload: error.response?.data})
+      store.dispatch(notificationActions.add(error.response?.data));
       return Promise.reject(error);
     }
   )

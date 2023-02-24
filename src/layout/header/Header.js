@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {logOutUser} from "../../store/user/UserAction";
+import {userActions} from "../../store/UserSlice";
 
 function Header() {
   const user = useSelector((state) => state.user);
@@ -11,7 +11,7 @@ function Header() {
   if(!user._id) return null;
 
   const logOut = () => {
-    dispatch(logOutUser());
+    dispatch(userActions.logout());
     navigate('/login');
   }
 

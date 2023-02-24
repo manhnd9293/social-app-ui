@@ -2,12 +2,7 @@ import {useForm} from "react-hook-form";
 import {beClient} from "../../config/BeClient";
 import {useDispatch} from "react-redux";
 import {Link, useLocation, useNavigate} from "react-router-dom";
-import {logInUser} from "../../store/user/UserAction";
-
-let defaultValues = {
-  username: '',
-  password: ''
-};
+import {userActions} from "../../store/UserSlice";
 
 function Login() {
   const dispatch = useDispatch();
@@ -28,8 +23,7 @@ function Login() {
       username: data.username,
       password: data.password
     }).then(res => {
-      console.log(res);
-      dispatch(logInUser(res.data));
+      dispatch(userActions.login(res.data));
       navigate('/');
     })
   }
