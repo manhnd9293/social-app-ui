@@ -24,7 +24,12 @@ function createBeClientInstance(beUrl) {
     },
 
     function (error) {
-      store.dispatch(notificationActions.add(error.response?.data));
+      console.log({error});
+      if (error.code === 'ERR_NETWORK') {
+        store.dispatch(notificationActions.add({message: error.message}));
+      } else {
+        store.dispatch(notificationActions.add(error.response?.data));
+      }
       return Promise.reject(error);
     }
   )

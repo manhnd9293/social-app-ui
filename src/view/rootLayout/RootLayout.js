@@ -34,12 +34,12 @@ function RootLayout() {
   }, []);
 
   return (
-    <div className="App">
+    <div className="App has-background-white-ter">
       <div className='block'>
         <Header/>
       </div>
       {notification && <Notification/>}
-      <div className='app-body' style={{margin: '0rem 6rem'}}>
+      <div className='app-body has-background-white mx-auto px-6' style={{maxWidth: '1320px', minWidth: '1300px'}}>
         <Outlet/>
       </div>
       <div className='block mt-6'>
