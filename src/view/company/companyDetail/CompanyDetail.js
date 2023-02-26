@@ -1,5 +1,19 @@
 import React, {useState} from 'react';
 import utils from "../../../utils/utils";
+import AboutTab from "./tabs/AboutTab";
+import JobTab from "./tabs/JobTab";
+import PeopleTab from "./tabs/PeopleTab";
+
+function TabView({name, company}) {
+  switch (name) {
+    case 'about':
+      return <AboutTab company={company}/>
+    case 'jobs':
+      return <JobTab/>
+    case 'people':
+      return <PeopleTab/>
+  }
+}
 
 
 function CompanyDetail(props) {
@@ -37,46 +51,22 @@ function CompanyDetail(props) {
         </figure>
 
         <div className='title'>{company.name}</div>
-
-        <div className='tabs is-boxed'>
-          <ul>
-            {tabs.map((tab, index) => (
-              <li key={index}
-                  className={`${tab === currentTab ? `is-active` : ''}`}
-                  onClick={changeTab(tab)}
-              >
-                <a>
-                  <span>{tab[0].toUpperCase()+tab.slice(1)}</span>
-                </a>
-              </li>
-            ))}
-
-          </ul>
-        </div>
-        <div>
-          <div>Size: {company.size}</div>
-          <div>Industry: {company.industry}</div>
-          <div>Province: {company.province}</div>
-          <div>Address: {company.address}</div>
-          <div className='mt-4'>
-            {company.introduction}
-          </div>
-        </div>
-        {company?.photos?.length > 0 && ( <div>Image</div>)}
-        <div className='columns is-multiline is-variable is-3'>
-          {
-            company.photos.map((photo, index) =>
-            <div key={index}
-                 className='column is-one-fifth-desktop is-clickable'
+      <div className='tabs is-boxed'>
+        <ul>
+          {tabs.map((tab, index) => (
+            <li key={index}
+                className={`${tab === currentTab ? `is-active` : ''}`}
+                onClick={changeTab(tab)}
             >
-              <figure>
-                <img src={photo}/>
-              </figure>
-            </div>
-            )
-          }
-        </div>
+              <a>
+                <span>{tab[0].toUpperCase()+tab.slice(1)}</span>
+              </a>
+            </li>
+          ))}
 
+        </ul>
+      </div>
+        <TabView name={currentTab} company={company}/>
 
     </div>
   );
