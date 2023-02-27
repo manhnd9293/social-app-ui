@@ -1,7 +1,8 @@
 import React, {useRef, useState} from 'react';
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useForm} from "react-hook-form";
 import axios from "axios";
+import {beClient} from "../../../config/BeClient";
 
 let defaultValues = {
   name: '',
@@ -24,11 +25,22 @@ function NewCompany(props) {
   const [file, setFile] = useState(null);
   const inputRef = useRef();
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
 
-  const onSubmit = (data) => {
-    console.log(data);
-    alert(data)
+  const onSubmit = async (data) => {
+    const response = await beClient.post('/company', {...data});
+    const {_id} = response.data;
+
+    if(file) {
+      const imageForm = new FormData();
+      imageForm.append('file', file);
+      await beClient.patch(`/company/${_id}/logo`, imageForm, {
+        'Content-type': 'multipart/form-data',
+      })
+    }
+
+    navigate(`/company/${_id.toString()}/detail`);
   }
 
   const resetForm = (e) => {
@@ -223,8 +235,6 @@ function NewCompany(props) {
             </button>
           </div>
         </form>
-
-
       </div>
     </div>
   );

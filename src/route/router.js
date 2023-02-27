@@ -8,7 +8,7 @@ import Home from "../view/home/Home";
 import NewEmployee from "../view/employee/newEmployee/NewEmployee";
 import NewCompany from "../view/company/newCompany/NewCompany";
 import ListCompany from "../view/company/companyList/ListCompany";
-import CompanyDetail from "../view/company/companyDetail/CompanyDetail";
+import CompanyDetail, {loadCompanyDetail} from "../view/company/companyDetail/CompanyDetail";
 
 const router = createBrowserRouter([
   {
@@ -36,8 +36,9 @@ const router = createBrowserRouter([
         element: <NewCompany/>
       },
       {
-        path: '/company/detail',
-        element: <CompanyDetail/>
+        path: '/company/:id/detail',
+        element: <CompanyDetail/>,
+        loader: loadCompanyDetail,
       },
       {
         path: '/sign-up',
