@@ -11,6 +11,10 @@ const utils = {
     params.set(name, value);
     window.history.replaceState({}, '', `${url.toString()}`)
   },
+
+  upperCaseFirst(str) {
+    return str[0].toUpperCase() + str.slice(1);
+  },
 }
 
 export default utils;

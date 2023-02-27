@@ -89,7 +89,7 @@ function NewCompany(props) {
     <div>
       <div className='subtitle'>New company</div>
       <Link to='/company'>
-        <button className='button is-info mb-3'>
+        <button className='button is-link mb-3'>
           <span>List company</span>
         </button>
       </Link>
