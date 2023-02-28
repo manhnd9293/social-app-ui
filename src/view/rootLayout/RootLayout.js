@@ -4,13 +4,15 @@ import {Outlet, useNavigate} from "react-router-dom";
 import Footer from "../../layout/footer/Footer";
 import './rootLayout.css';
 import {useDispatch, useSelector} from "react-redux";
-import {fetchUserData, logInUser} from "../../store/user/UserAction";
 import {beClient} from "../../config/BeClient";
+import Notification from "../notification/Notification";
+import {userActions} from "../../store/UserSlice";
 
 
 function RootLayout() {
 
   const user = useSelector((state) => state.user);
+  const notification = useSelector((state) => state.notification)
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -22,10 +24,9 @@ function RootLayout() {
       beClient.get("/user/me")
         .then((res) => {
           const userInfo = res.data;
-          dispatch(fetchUserData(userInfo));
+          dispatch(userActions.fetchData(userInfo));
         })
         .catch((e) => {
-          console.log(e);
           navigate("/login");
         });
     }
@@ -33,11 +34,12 @@ function RootLayout() {
   }, []);
 
   return (
-    <div className="App">
+    <div className="App has-background-white-ter">
       <div className='block'>
         <Header/>
       </div>
-      <div className='app-body' style={{margin: '0rem 6rem'}}>
+      {notification && <Notification/>}
+      <div className='app-body has-background-white mx-auto px-6' style={{maxWidth: '1320px', minWidth: '1300px'}}>
         <Outlet/>
       </div>
       <div className='block mt-6'>

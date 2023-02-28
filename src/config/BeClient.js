@@ -1,4 +1,6 @@
 import axios from "axios";
+import store from "../store";
+import {notificationActions} from "../store/NotificationSlice";
 
 function createBeClientInstance(beUrl) {
   let axiosInstance = axios.create({
@@ -22,15 +24,12 @@ function createBeClientInstance(beUrl) {
     },
 
     function (error) {
-      /*  if (!response) {
-            console.log(error);
-            return;
-        }
-
-        if (response.status === '403') {
-            console.log('fail to load data');
-        }
-*/
+      console.log({error});
+      if (error.code === 'ERR_NETWORK') {
+        store.dispatch(notificationActions.add({message: error.message}));
+      } else {
+        store.dispatch(notificationActions.add(error.response?.data));
+      }
       return Promise.reject(error);
     }
   )

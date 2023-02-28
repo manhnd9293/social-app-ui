@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {logOutUser} from "../../store/user/UserAction";
+import {userActions} from "../../store/UserSlice";
 
 function Header() {
   const user = useSelector((state) => state.user);
@@ -11,15 +11,15 @@ function Header() {
   if(!user._id) return null;
 
   const logOut = () => {
-    dispatch(logOutUser());
+    dispatch(userActions.logout());
     navigate('/login');
   }
 
   return (
-    <nav className="navbar is-primary" role="navigation" aria-label="main navigation">
-      <div className="navbar-brand">
+    <nav className="navbar is-link" role="navigation" aria-label="main navigation">
+      <div className="navbar-brand ml-6">
         <Link className="navbar-item" to="/">
-         <span>HuNi</span>
+         <span className='has-text-weight-bold'>H U N I</span>
         </Link>
 
         <a role="button" className="navbar-burger" aria-label="menu" aria-expanded="false"
@@ -34,12 +34,17 @@ function Header() {
         <div className="navbar-end">
           <div className="navbar-item">
             <div className="buttons">
+                <Link to={'/company'}>
+                  <strong className={'button mr-3 is-link'}>
+                    Company
+                  </strong>
+                </Link>
               <Link to={'/employee'}>
-                <strong className={'button is-primary mr-3'}>
+                <strong className={'button is-link mr-3'}>
                   Employee
                 </strong>
               </Link>
-              <button className="button is-light is-small" onClick={logOut}>
+              <button className="button is-link" onClick={logOut}>
                 Log out
               </button>
             </div>
