@@ -4,17 +4,16 @@ import {Link, useNavigate} from "react-router-dom";
 const industries = ['it', 'car', 'beauty', 'agriculture', 'service', 'tourist']
 const provinces = ['Hanoi', "HoChiMinh city", "Danang", 'Other'];
 
-function FilterBar() {
+function FilterBar({onSubmit}) {
   const {
     province: initProvince,
     search: initSearch,
     industry: initIndustry
   } = utils.getUrlQueryParams(['page', 'search', 'industry', 'province'])
-  console.log({initProvince, initSearch, initIndustry});
 
-  const [search, setSearch] = useState(initSearch);
-  const [industry, setIndustry] = useState(initIndustry);
-  const [province, setProvince] = useState(initProvince);
+  const [search, setSearch] = useState(initSearch || '');
+  const [industry, setIndustry] = useState(initIndustry || '');
+  const [province, setProvince] = useState(initProvince || '');
   const navigate = useNavigate();
   function filter() {
     const queryObject = {
@@ -23,7 +22,8 @@ function FilterBar() {
       province,
       page: 1
     }
-    navigate(`/company${utils.createQueryString(queryObject)}`)
+    // onSubmit(queryObject)
+    navigate(`/company${utils.createQueryString(queryObject)}`);
   }
 
   return (

@@ -9,6 +9,17 @@ const utils = {
     return ans;
   },
 
+  getUrlQueryParamsFromRequest(request ,queryList) {
+    const url = new URL(request.url);
+    const params = url.searchParams;
+    const ans = {}
+    for (let item of queryList) {
+      ans[item] = params?.get(item);
+    }
+    return ans;
+  },
+
+
   setUrlParams(name, value) {
     const url = new URL(window.location.href);
     let params = url.searchParams;

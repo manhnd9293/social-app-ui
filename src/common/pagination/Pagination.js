@@ -1,5 +1,6 @@
 import React from 'react';
-function getPaginationArray({currentPage, totalItem, itemPerPage = 10}) {
+function getPaginationArray({currentPage , totalItem, itemPerPage = 10}) {
+  currentPage = currentPage || 1;
   const lastPage = Math.ceil(totalItem / itemPerPage);
   if(lastPage === 0) return [];
 
