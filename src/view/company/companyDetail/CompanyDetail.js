@@ -21,7 +21,8 @@ function TabView({name, company}) {
 function CompanyDetail() {
 
   const tabs = ['about', 'jobs', 'people'];
-  const [currentTab, setCurrentTab] = useState(utils.getUrlParams('tab') || 'about')
+  const {tab: initialTab} = utils.getUrlQueryParams('tab');
+  const [currentTab, setCurrentTab] = useState(initialTab || 'about')
   const company = useLoaderData();
   const changeTab = (tabName) => () => {
     utils.setUrlParams('tab', tabName);

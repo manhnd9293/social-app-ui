@@ -1,18 +1,46 @@
-import React from 'react';
+import React, {useState} from 'react';
 import utils from "../../../utils/utils";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+const industries = ['it', 'car', 'beauty', 'agriculture', 'service', 'tourist']
+const provinces = ['Hanoi', "HoChiMinh city", "Danang", 'Other'];
 
-function FilterBar({industries, provinces}) {
+function FilterBar() {
+  const {
+    province: initProvince,
+    search: initSearch,
+    industry: initIndustry
+  } = utils.getUrlQueryParams(['page', 'search', 'industry', 'province'])
+  console.log({initProvince, initSearch, initIndustry});
+
+  const [search, setSearch] = useState(initSearch);
+  const [industry, setIndustry] = useState(initIndustry);
+  const [province, setProvince] = useState(initProvince);
+  const navigate = useNavigate();
+  function filter() {
+    const queryObject = {
+      search,
+      industry,
+      province,
+      page: 1
+    }
+    navigate(`/company${utils.createQueryString(queryObject)}`)
+  }
+
   return (
     <div>
       <div className='columns'>
         <div className='column is-3 '>
-          <input className="input " type="text" placeholder="Search"/>
+          <input className="input "
+                 type="text"
+                 placeholder="Search"
+                 value={search}
+                 onChange={event => setSearch(event.target.value)}
+          />
         </div>
 
         <div className='column is-2 '>
           <div className='select is-fullwidth'>
-            <select>
+            <select value={industry} onChange={(e) => setIndustry(e.target.value)}>
               <option>Select industry</option>
               {
                 industries.map((industry, index) => (
@@ -25,7 +53,7 @@ function FilterBar({industries, provinces}) {
 
         <div className='column is-2'>
           <div className='select is-fullwidth'>
-            <select>
+            <select value={province} onChange={event => setProvince(event.target.value)}>
               <option>Select city</option>
               {
                 provinces.map((province, index) => (
@@ -37,7 +65,9 @@ function FilterBar({industries, provinces}) {
         </div>
 
         <div className='column is-1'>
-          <div className='button is-info'>
+          <div className='button is-info'
+               onClick={filter}
+          >
             Filter
           </div>
         </div>
@@ -52,5 +82,7 @@ function FilterBar({industries, provinces}) {
     </div>
   );
 }
+
+
 
 export default FilterBar;

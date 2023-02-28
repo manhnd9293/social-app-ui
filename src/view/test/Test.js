@@ -1,11 +1,20 @@
-import React from 'react';
-import Notification from "../notification/Notification";
+import React, {useState} from 'react';
+import Pagination from "../../common/pagination/Pagination";
+import {useNavigate} from "react-router-dom";
 
 function Test() {
+  const [currentPage, setCurrentPage] = useState(1);
+  const navigate = useNavigate();
+  function onChangePage(page) {
 
+    setCurrentPage(page)
+  }
   return (
     <div>
-      <Notification/>
+      <Pagination currentPage={currentPage}
+                  totalItem={100}
+                  onChangePage={onChangePage}
+      />
     </div>
   );
 }

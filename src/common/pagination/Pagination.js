@@ -1,6 +1,8 @@
 import React from 'react';
 function getPaginationArray({currentPage, totalItem, itemPerPage = 10}) {
   const lastPage = Math.ceil(totalItem / itemPerPage);
+  if(lastPage === 0) return [];
+
   if(currentPage > lastPage) throw 'Invalid current page';
   let mid = [Math.max(currentPage - 1 , 1), currentPage, Math.min(currentPage + 1, lastPage)];
 
@@ -25,15 +27,15 @@ function Pagination({currentPage, totalItem, itemPerPage = 10, onChangePage}) {
   }
   return (
     <nav className="pagination is-centered" role="navigation" aria-label="pagination">
-      <a className={`pagination-previous ${currentPage === 1 && `is-disabled`}`}
-         onClick={changePage(currentPage -1)}
-        >Previous
-      </a>
-      <a className={`pagination-next ${currentPage === listPage[listPage.length - 1] && `is-disabled`} `}
-         onClick={changePage(currentPage+1)}
+      {listPage.length > 1 && <a className={`pagination-previous ${currentPage === 1 && `is-disabled`}`}
+          onClick={changePage(currentPage - 1)}
+      >Previous
+      </a>}
+      {listPage.length > 1 && <a className={`pagination-next ${currentPage === listPage[listPage.length - 1] && `is-disabled`} `}
+          onClick={changePage(currentPage + 1)}
       >
         Next page
-      </a>
+      </a>}
       <ul className="pagination-list">
         {
           listPage.map((page, index) => (

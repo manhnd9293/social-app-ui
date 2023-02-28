@@ -1,62 +1,76 @@
-import React from 'react';
 import FilterBar from "./FilterBar";
+import Pagination from "../../../common/pagination/Pagination";
+import {useLoaderData, useNavigate} from "react-router-dom";
+import utils from "../../../utils/utils";
+import {beClient} from "../../../config/BeClient";
 
 
 function ListCompany(props) {
+  const {page, search, industry, province} = utils.getUrlQueryParams(['page', 'search', 'industry', 'province'])
+  const navigate = useNavigate();
+  const {companies, total} = useLoaderData();
+
+  function changePage(page) {
+    navigate(`/company${utils.createQueryString({page, search, industry, province})}`)
+  }
+
+
+  const listCompanyCard =  <div className='mt-4 columns is-multiline'>
+    {
+      companies.map(company => (
+        <div key={company._id} className='column is-4 is-clickable' onClick={() => navigate(`/company/${company._id}/detail`)}>
+          <div className='card'>
+            <div className='card-content'>
+              <div className="media">
+                <div className="media-left">
+                  <figure className="image is-48x48">
+                    <img src={company.logo}/>
+                  </figure>
+                </div>
+              </div>
+
+              <div className='content'>
+                <div className='has-text-weight-bold'>{company.name}</div>
+                <div>Province: {company.province}</div>
+                <div>Industry: {company.industry}</div>
+                <div>size: {company.size}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+
   return (
     <div>
       <div className='subtitle mt-4 has-text-weight-bold'>List Company</div>
 
       <div className='mt-4'>
-        <FilterBar industries={industries}
-                   provinces={provinces}
-        />
+        <FilterBar />
       </div>
-      <div className='mt-4 columns is-multiline'>
-        {
-          companies.map(company => (
-            <div key={company._id} className='column is-4 is-clickable' >
-              <div className='card'>
-                <div className='card-content'>
-                  <div className="media">
-                    <div className="media-left">
-                      <figure className="image is-48x48">
-                        <img src={company.image}/>
-                      </figure>
-                    </div>
-                  </div>
+      {
+        companies.length > 0 ? listCompanyCard : <div>No result found</div>
+      }
 
-                  <div className='content'>
-                    <div className='has-text-weight-bold'>{company.name}</div>
-                    <div>Province: {company.province}</div>
-                    <div>Industry: {company.industry}</div>
-                    <div>size: {company.size}</div>
-                  </div>
-                </div>
-            </div>
-          </div>
-          ))
-        }
-      </div>
 
-      <nav className="pagination is-centered mb-4" role="navigation" aria-label="pagination">
-        <a className="pagination-previous">Previous</a>
-        <a className="pagination-next">Next page</a>
-        <ul className="pagination-list">
-          <li><a className="pagination-link" aria-label="Goto page 1">1</a></li>
-          <li><span className="pagination-ellipsis">&hellip;</span></li>
-          <li><a className="pagination-link" aria-label="Goto page 45">45</a></li>
-          <li><a className="pagination-link is-current" aria-label="Page 46" aria-current="page">46</a></li>
-          <li><a className="pagination-link" aria-label="Goto page 47">47</a></li>
-          <li><span className="pagination-ellipsis">&hellip;</span></li>
-          <li><a className="pagination-link" aria-label="Goto page 86">86</a></li>
-        </ul>
-      </nav>
+      <Pagination currentPage={Number(page)} totalItem={total} onChangePage={changePage}/>
     </div>
   );
 }
-const industries = ['it', 'car', 'beauty', 'agriculture', 'service', 'tourist']
-const provinces = ['Hanoi', "HoChiMinh city", "Danang", 'Other'];
+
+function loadCompanies() {
+  const {search, page, industry, province} =
+    utils.getUrlQueryParams(['search', 'page', 'industry', 'province']);
+  const queryString = utils.createQueryString({search, page, industry, province});
+
+
+
+  return beClient.get(`/company${queryString}`)
+}
+
+export {loadCompanies};
+
 
 const companies = [
   {
