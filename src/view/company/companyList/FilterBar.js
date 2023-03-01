@@ -22,8 +22,13 @@ function FilterBar({onSubmit}) {
       province,
       page: 1
     }
-    // onSubmit(queryObject)
     navigate(`/company${utils.createQueryString(queryObject)}`);
+  }
+
+  function handePressEnter(e) {
+    if (e.key === 'Enter') {
+      filter();
+    }
   }
 
   return (
@@ -35,13 +40,14 @@ function FilterBar({onSubmit}) {
                  placeholder="Search"
                  value={search}
                  onChange={event => setSearch(event.target.value)}
+                 onKeyUp={handePressEnter}
           />
         </div>
 
         <div className='column is-2 '>
           <div className='select is-fullwidth'>
             <select value={industry} onChange={(e) => setIndustry(e.target.value)}>
-              <option>Select industry</option>
+              <option value={''}>All industry</option>
               {
                 industries.map((industry, index) => (
                   <option key={index} value={industry}>{industry[0].toUpperCase() + industry.slice(1)}</option>
@@ -54,7 +60,7 @@ function FilterBar({onSubmit}) {
         <div className='column is-2'>
           <div className='select is-fullwidth'>
             <select value={province} onChange={event => setProvince(event.target.value)}>
-              <option>Select city</option>
+              <option value=''>All city</option>
               {
                 provinces.map((province, index) => (
                   <option key={index} value={province}>{utils.upperCaseFirst(province)}</option>

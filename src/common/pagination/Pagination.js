@@ -21,6 +21,7 @@ function getPaginationArray({currentPage , totalItem, itemPerPage = 10}) {
 }
 
 function Pagination({currentPage, totalItem, itemPerPage = 10, onChangePage}) {
+  currentPage = currentPage || 1;
   const listPage = getPaginationArray({currentPage, totalItem, itemPerPage});
   const changePage = (page) => () => {
     if(page === currentPage || page < 1 || page > listPage[listPage.length -1]) return;
