@@ -22,8 +22,13 @@ function FilterBar({onSubmit}) {
       province,
       page: 1
     }
-    // onSubmit(queryObject)
     navigate(`/company${utils.createQueryString(queryObject)}`);
+  }
+
+  function handePressEnter(e) {
+    if (e.key === 'Enter') {
+      filter();
+    }
   }
 
   return (
@@ -35,6 +40,7 @@ function FilterBar({onSubmit}) {
                  placeholder="Search"
                  value={search}
                  onChange={event => setSearch(event.target.value)}
+                 onKeyUp={handePressEnter}
           />
         </div>
 
