@@ -93,7 +93,7 @@ function NewCompany(props) {
           <span>List company</span>
         </button>
       </Link>
-      <div className='box mt-3' style={{maxWidth: '50rem'}}>
+      <div className='box mt-3' style={{maxWidth: '60rem'}}>
 
         <div className='subtitle mt-4 has-text-weight-bold'>Add a new company</div>
         <form onSubmit={handleSubmit(onSubmit)}>

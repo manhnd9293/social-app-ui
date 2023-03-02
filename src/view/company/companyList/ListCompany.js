@@ -14,9 +14,6 @@ function ListCompany(props) {
     navigate(`/company${utils.createQueryString({page, search, industry, province})}`)
   }
 
-  function onFilter(queryObject) {
-    loadCompanies();
-  }
 
 
   const listCompanyCard =  <div className='mt-4 columns is-multiline'>

@@ -46,6 +46,14 @@ const utils = {
   converUrlString(str) {
     return str.split('')
   },
+
+  getErrorMessage(error) {
+    if (error.code === 'ERR_NETWORK') {
+      return error.message;
+    } else {
+      return error.response?.data?.message || 'Something went wrong';
+    }
+  }
 }
 
 export default utils;

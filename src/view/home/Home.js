@@ -2,7 +2,10 @@ import React from 'react';
 
 function Home() {
   return (
-    <div>Home</div>
+    <div className='columns is-4'>
+      <div className='column is-4 has-text-weight-bold'>Home page</div>
+
+    </div>
   );
 }
 

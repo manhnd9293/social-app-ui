@@ -39,11 +39,6 @@ function Header() {
                     Company
                   </strong>
                 </Link>
-              <Link to={'/employee'}>
-                <strong className={'button is-link mr-3'}>
-                  Employee
-                </strong>
-              </Link>
               <button className="button is-link" onClick={logOut}>
                 Log out
               </button>
