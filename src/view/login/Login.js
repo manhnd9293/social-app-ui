@@ -6,6 +6,8 @@ import {userActions} from "../../store/UserSlice";
 import {useState} from "react";
 import utils from "../../utils/utils";
 
+const loginBackgroundUrl = 'https://marmotamaps.com/de/fx/wallpaper/download/faszinationen/Marmotamaps_Wallpaper_Inntal_Desktop_1920x1080.jpg'
+
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -38,8 +40,12 @@ function Login() {
   }
 
   return (
-    <div>
-      <div className='box' style={{maxWidth: '30rem'}}>
+    <div className='' style={utils.getBackgroundImageStyle(loginBackgroundUrl)}>
+      <div className='is-invisible'>hack</div>
+      <div className='box mx-auto mt-6 mx-6' style={{maxWidth: '30rem'}}>
+        <div className='container has-text-centered mb-4'>
+          <span className='title is-size-4'>Login</span>
+        </div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="field">
             <label className="label">Username</label>
@@ -71,33 +77,33 @@ function Login() {
           </div>
           {loginError && <p className='help is-danger is-size-6'>{utils.getErrorMessage(loginError)}</p>}
           <div className="field mt-3">
-            <div className="control">
+            <div className="control container has-text-centered">
               <button className="button is-info">
                 Sign In
               </button>
             </div>
           </div>
         </form>
-        <div className="mt-3">
-          <button className="button is-primary" onClick={() => {
-            // clearErrors()
-            reset({
-              ...defaultValues
-            }, {
-              keepErrors: false,
-              keepDirty: false,
-              keepTouched: false,
-              keepIsSubmitted: false,
-            });
-            setLoginError(null);
-          }}>
-            Reset
-          </button>
-        </div>
-        <div>
-          <span>Don't have an account ? <Link to={'/sign-up'}>Sign up</Link></span>
-        </div>
+        <div className='container has-text-centered'>
 
+          <div className="mt-3">
+            <button className="button is-primary is-small" onClick={() => {
+              // clearErrors()
+              reset({
+                ...defaultValues
+              }, {
+                keepErrors: false,
+                keepDirty: false,
+                keepTouched: false,
+                keepIsSubmitted: false,
+              });
+              setLoginError(null);
+            }}>
+              Reset
+            </button>
+          </div>
+          <div className='mt-4'>Don't have an account ? <Link to={'/sign-up'}>Sign up</Link></div>
+        </div>
       </div>
     </div>
   );

@@ -10,6 +10,9 @@ let defaultValues = {
   confirmPassword: '',
   fullName: ''
 };
+const backgroundUrl = 'https://marmotamaps.com/de/fx/wallpaper/download/faszinationen/Marmotamaps_Wallpaper_Berchtesgaden_Desktop_1920x1080.jpg'
+
+
 
 function Register() {
 
@@ -52,15 +55,13 @@ function Register() {
 
   }
 
+
+
   return (
-    <div>
-      <div className='box' style={{maxWidth: '30rem'}}>
-        <Link to='/login'>
-          <button className='button is-info mb-3'>
-            <i className='fas fa-arrow-left'/>
-            <span className='ml-3'>Back to login</span>
-          </button>
-        </Link>
+    <div style={utils.getBackgroundImageStyle(backgroundUrl)} className='has-background-info'>
+      <div className='is-invisible'>Sometext</div>
+      <div className='box mx-auto mt-6' style={{maxWidth: '30rem'}}>
+        <div className='container has-text-centered title is-size-4'>Sign Up</div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="field">
             <label className="label">Full Name</label>
@@ -77,11 +78,11 @@ function Register() {
             {errors.fullName && <p className='help is-danger' >{errors.fullName.message}</p>}
           </div>
           <div className="field">
-            <label className="label">User Name</label>
+            <label className="label">Username</label>
             <div className="control">
               <input className={`input ${errors.username ? 'is-danger' : ''}`}
                      type="text"
-                     placeholder="User Name"
+                     placeholder="Username"
                      {...register('username', {
 
                           required: 'Username is required',
@@ -126,16 +127,17 @@ function Register() {
           </div>
           {signUpError && <p className='help is-danger' >{utils.getErrorMessage(signUpError)}</p>}
 
-          <div className="field">
-            <div className="control">
-              <button className="button is-primary">
+          <div className="field mt-4">
+            <div className="control container has-text-centered">
+              <button className="button is-info">
                 Sign Up
               </button>
             </div>
           </div>
         </form>
-        <div className="mt-3">
-          <button className="button" onClick={() => {
+
+        <div className="mt-3 container has-text-centered">
+          <button className="button is-small is-primary" onClick={() => {
             // clearErrors()
             reset({
               ...defaultValues
@@ -149,6 +151,9 @@ function Register() {
           }}>
             Reset
           </button>
+        </div>
+        <div className='container has-text-centered mt-4'>
+          <span>Already have an account ? <Link to={'/login'}>Sign In</Link></span>
         </div>
       </div>
     </div>
