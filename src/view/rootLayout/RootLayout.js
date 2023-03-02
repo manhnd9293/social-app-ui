@@ -34,17 +34,15 @@ function RootLayout() {
   }, []);
 
   return (
-    <div className="App has-background-white-ter">
-      <div className='block'>
-        <Header/>
-      </div>
+    <div className="App has-background-white-ter ">
+      <Header/>
       {notification && <Notification/>}
-      <div className='app-body has-background-white mx-auto px-6' style={{maxWidth: '1320px', minWidth: '1300px'}}>
-        <Outlet/>
+      <div className='app-body has-background-white mx-auto px-5-tablet px-2-mobile py-2' style={{width: '86%',maxWidth: '1320px'}}>
+        <div className='container'>
+          <Outlet/>
+        </div>
       </div>
-      <div className='block mt-6'>
-        <Footer/>
-      </div>
+      <Footer/>
     </div>
 );
 }
