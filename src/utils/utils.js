@@ -53,6 +53,16 @@ const utils = {
     } else {
       return error.response?.data?.message || 'Something went wrong';
     }
+  },
+
+ getBackgroundImageStyle(url) {
+    return {
+      backgroundImage: `url(${url})`,
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      minHeight: '100vh'
+    }
   }
 }
 
