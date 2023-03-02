@@ -42,18 +42,18 @@ const router = createBrowserRouter([
         loader: loadCompanyDetail,
       },
       {
-        path: '/sign-up',
-        element: <Register/>
-      },
-      {
-        path: '/login',
-        element: <Login/>
-      },
-      {
         path: '/test',
         element: <Test/>
       },
     ]
+  },
+  {
+    path: '/sign-up',
+    element: <Register/>
+  },
+  {
+    path: '/login',
+    element: <Login/>
   },
 
 ])

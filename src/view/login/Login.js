@@ -3,11 +3,14 @@ import {beClient} from "../../config/BeClient";
 import {useDispatch} from "react-redux";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import {userActions} from "../../store/UserSlice";
+import {useState} from "react";
+import utils from "../../utils/utils";
 
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {state} = useLocation();
+  const [loginError, setLoginError] = useState(null);
 
   let defaultValues = {
     username: state?.username || '',
@@ -25,6 +28,8 @@ function Login() {
     }).then(res => {
       dispatch(userActions.login(res.data));
       navigate('/');
+    }).catch(e => {
+      setLoginError(e);
     })
   }
 
@@ -64,7 +69,8 @@ function Login() {
             </div>
             {errors.password && <p className='help is-danger' >{errors.password.message}</p>}
           </div>
-          <div className="field">
+          {loginError && <p className='help is-danger is-size-6'>{utils.getErrorMessage(loginError)}</p>}
+          <div className="field mt-3">
             <div className="control">
               <button className="button is-info">
                 Sign In
@@ -83,6 +89,7 @@ function Login() {
               keepTouched: false,
               keepIsSubmitted: false,
             });
+            setLoginError(null);
           }}>
             Reset
           </button>
@@ -95,5 +102,7 @@ function Login() {
     </div>
   );
 }
+
+
 
 export default Login;

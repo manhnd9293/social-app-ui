@@ -24,7 +24,9 @@ function createBeClientInstance(beUrl) {
     },
 
     function (error) {
-      console.log({error});
+      if(['/login', 'sign-up'].includes(window.location.pathname)) {
+        return Promise.reject(error);
+      }
       if (error.code === 'ERR_NETWORK') {
         store.dispatch(notificationActions.add({message: error.message}));
       } else {

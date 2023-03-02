@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useForm} from "react-hook-form";
 import {Link, useNavigate} from "react-router-dom";
 import {beClient} from "../../config/BeClient";
+import utils from "../../utils/utils";
 
 let defaultValues = {
   username: '',
@@ -14,6 +15,8 @@ function Register() {
 
   const {register, formState: {errors}, handleSubmit, reset, getValues}= useForm({mode: "all",
     defaultValues})
+  const [signUpError, setSignUpError] = useState(null);
+
   const navigate = useNavigate();
 
   const onSubmit=(data) => {
@@ -23,6 +26,8 @@ function Register() {
       alert('Sign up successfully');
       const {username, password} = data;
       navigate('/login', {state: {username, password}});
+    }).catch(e => {
+      setSignUpError(e);
     })
   }
 
@@ -40,7 +45,7 @@ function Register() {
     if(value.indexOf(' ') !== -1) {
       return 'username must not have white space';
     }
-    const {data: {exist}} = await beClient.get(`/user/check-username-exist?username=${value}`);
+    const {data: {exist}} = await beClient.get(`/user/check-username-exist?username=${value}`).catch(e => setSignUpError(e));
     if (exist) {
       return 'username existed';
     }
@@ -119,6 +124,8 @@ function Register() {
             </div>
             {errors.confirmPassword && <p className='help is-danger' >{errors.confirmPassword.message}</p>}
           </div>
+          {signUpError && <p className='help is-danger' >{utils.getErrorMessage(signUpError)}</p>}
+
           <div className="field">
             <div className="control">
               <button className="button is-primary">
@@ -138,6 +145,7 @@ function Register() {
               keepTouched: false,
               keepIsSubmitted: false,
             });
+            setSignUpError(null);
           }}>
             Reset
           </button>

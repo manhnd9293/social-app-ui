@@ -49,4 +49,8 @@ function RootLayout() {
 );
 }
 
+function loadUserData() {
+
+}
+
 export default RootLayout;
