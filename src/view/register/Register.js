@@ -58,7 +58,7 @@ function Register() {
 
 
   return (
-    <div style={utils.getBackgroundImageStyle(backgroundUrl)} className='has-background-info'>
+    <div style={utils.getBackgroundImageStyle(backgroundUrl)}>
       <div className='is-invisible'>Sometext</div>
       <div className='box mx-auto mt-6' style={{maxWidth: '30rem'}}>
         <div className='container has-text-centered title is-size-4'>Sign Up</div>
