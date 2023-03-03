@@ -1,6 +1,7 @@
 import {configureStore} from "@reduxjs/toolkit";
 import notificationSlice from "./NotificationSlice";
 import userSlice from "./UserSlice";
+import topLevelClickEventHandlers from "./TopLevelClickEventSlice";
 
 
 // const allReducer = combineReducers(
@@ -17,6 +18,7 @@ const store = configureStore({
   reducer: {
     notification: notificationSlice.reducer,
     user: userSlice.reducer,
+    topLevelClickEventHandlers: topLevelClickEventHandlers.reducer,
   }
 })
 
