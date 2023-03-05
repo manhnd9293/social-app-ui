@@ -1,12 +1,11 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React from 'react';
 import {Link, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {userActions} from "../../store/UserSlice";
-import {topLevelClickAction} from "../../store/TopLevelClickEventSlice";
 import defaultAvatar from '../../common/img/defaultAvatar.jpg';
+
 function Header() {
   const user = useSelector((state) => state.user);
-  const [showDropdown, setShowDropdown] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -16,23 +15,7 @@ function Header() {
     navigate('/login');
   }
 
-  function toggleDropdown(e) {
-    e.stopPropagation();
-    setShowDropdown(!showDropdown);
-  }
 
-  const hideDropdown = useCallback(() => {
-    setShowDropdown(false);
-  }, []);
-
-
-  useEffect(() => {
-    dispatch(topLevelClickAction.addHandler(hideDropdown))
-
-    return () => {
-      dispatch(topLevelClickAction.removeHandler(hideDropdown));
-    }
-  }, [])
 
 
   return (
@@ -64,12 +47,12 @@ function Header() {
             <span className='has-text-weight-bold'>Jobs</span>
           </Link>
 
-          <div className={`navbar-item has-dropdown ${showDropdown && 'is-active'}`} >
-            <figure  className='navbar-link is-arrowless image is-48x48' onClick={toggleDropdown}>
+          <div className={`navbar-item has-dropdown is-hoverable`} >
+            <figure  className='navbar-link is-arrowless image is-48x48'>
               <img className="is-rounded" src={user?.avatar || defaultAvatar}/>
             </figure>
             <div className='navbar-dropdown is-right'>
-              <Link to='/profile' className='navbar-item'>Profile</Link>
+              <Link to={`/profile/${user._id}`} className='navbar-item'>Profile</Link>
               <Link to='/setting' className='navbar-item'>Setting</Link>
               <div className='navbar-divider'></div>
               <a className='navbar-item' onClick={logOut}>

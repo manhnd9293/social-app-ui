@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import utils from "../../../utils/utils";
 import {Link, useNavigate} from "react-router-dom";
+
 const industries = ['it', 'car', 'beauty', 'agriculture', 'service', 'tourist']
 const provinces = ['Hanoi', "HoChiMinh city", "Danang", 'Other'];
 

@@ -9,6 +9,8 @@ import NewEmployee from "../view/employee/newEmployee/NewEmployee";
 import NewCompany from "../view/company/newCompany/NewCompany";
 import ListCompany, {loadCompanies} from "../view/company/companyList/ListCompany";
 import CompanyDetail, {loadCompanyDetail} from "../view/company/companyDetail/CompanyDetail";
+import Profile, {loadProfileData} from "../view/profile/Profile";
+import ProfileError from "../view/profile/ProfileError";
 
 const router = createBrowserRouter([
   {
@@ -40,6 +42,12 @@ const router = createBrowserRouter([
         path: '/company/:id/detail',
         element: <CompanyDetail/>,
         loader: loadCompanyDetail,
+      },
+      {
+        path: '/profile/:id',
+        element: <Profile/>,
+        loader: loadProfileData,
+        errorElement: <ProfileError/>
       },
       {
         path: '/test',
