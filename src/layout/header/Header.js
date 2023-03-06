@@ -50,14 +50,13 @@ function Header() {
 
             <MenuIconLink icon="fa-solid fa-building" name='company' hasNumber={false} to='/company'/>
 
-            <MenuIcon icon="fa-solid fa-user-group" list={unreadFriendRequest} name='connection'/>
+            <MenuIconLink icon="fa-solid fa-user-group" list={unreadFriendRequest} name='connection' to='/friends' />
 
             <MenuIcon list={unreadMessage} icon="fa-solid fa-message" name='message'/>
 
             <MenuIcon list={unreadNotification} icon="fa-solid fa-bell" name='notification'/>
 
             <ProfileDropdown/>
-
           </div>
         </div>
       </nav>

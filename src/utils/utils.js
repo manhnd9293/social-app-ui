@@ -63,7 +63,10 @@ const utils = {
       backgroundPosition: 'center',
       minHeight: '100vh'
     }
-  }
+  },
+
+ navLinkActive:  ({ isActive }) =>
+   isActive ? 'is-active' : undefined
 }
 
 export default utils;

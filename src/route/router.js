@@ -11,6 +11,10 @@ import ListCompany, {loadCompanies} from "../view/company/companyList/ListCompan
 import CompanyDetail, {loadCompanyDetail} from "../view/company/companyDetail/CompanyDetail";
 import Profile, {loadProfileData} from "../view/profile/Profile";
 import ProfileError from "../view/profile/ProfileError";
+import FriendView from "../view/friend/FriendView";
+import FriendInvitations, {loadInvitationList} from "../view/friend/FriendInvitaion";
+import FriendRequest from "../view/friend/FriendRequest";
+import FriendList from "../view/friend/FriendList";
 
 const router = createBrowserRouter([
   {
@@ -48,6 +52,26 @@ const router = createBrowserRouter([
         element: <Profile/>,
         loader: loadProfileData,
         errorElement: <ProfileError/>
+      },
+      {
+        path: '/friends',
+        element: <FriendView/>,
+        children: [
+          {
+            path: '',
+            element: <FriendList/>,
+          },
+          {
+            path: 'invite',
+            element: <FriendInvitations/>,
+            loader: loadInvitationList,
+          },
+          {
+            path: 'requests',
+            element: <FriendRequest/>,
+            // loader: loadInvitationList,
+          }
+        ]
       },
       {
         path: '/test',

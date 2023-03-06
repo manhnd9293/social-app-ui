@@ -54,7 +54,6 @@ function ListCompany(props) {
         companies.length > 0 ? listCompanyCard : <div>No result found</div>
       }
 
-
       <Pagination currentPage={Number(page)} totalItem={total} onChangePage={changePage}/>
     </div>
   );
