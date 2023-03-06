@@ -8,9 +8,9 @@ function FriendInvitations(props) {
   return (
     <div>
       <div className='subtitle'>Invitation list</div>
-      <div className='is-flex-direction-column mt-3'>
+      <div className=' mt-3'>
         {invitations.map(invite =>
-          <div key={invite._id} className='card'>
+          <div key={invite._id} className='card mt-5'>
             <div className="card-content">
               <div className="media">
                 <div className="media-left">
@@ -29,8 +29,8 @@ function FriendInvitations(props) {
               </div>
             </div>
             <div className='card-footer buttons p-3'>
-              <div className='button'>Ignore</div>
-              <div className='button is-info'>Accept</div>
+              <div className='button is-rounded'>Ignore</div>
+              <div className='button is-info is-rounded'>Accept</div>
             </div>
           </div>)}
       </div>
