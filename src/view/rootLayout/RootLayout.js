@@ -54,14 +54,4 @@ function RootLayout() {
 );
 }
 
-async function rootLoader() {
-  return new Promise((res) => {
-    setTimeout(() => {
-      console.log('done root loader')
-    }, 3000);
-  })
-}
-
-export {rootLoader}
-
 export default RootLayout;
