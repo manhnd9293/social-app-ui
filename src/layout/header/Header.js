@@ -39,8 +39,8 @@ function Header() {
 
 
   return (
-    <div className='has-background-info' >
-      <nav className="navbar is-large is-info mx-auto" role="navigation" aria-label="main navigation" style={{width: '80%',maxWidth: '1215px'}}>
+    <div className='has-background-info navbar is-fixed-top'>
+      <nav className="navbar is-large mx-auto is-info" role="navigation" aria-label="main navigation" style={{width: '80%',maxWidth: '1215px'}}>
         <div className="navbar-brand">
           <Link className="navbar-item" to="/">
             <span className='has-text-weight-bold'>H U N I</span>
