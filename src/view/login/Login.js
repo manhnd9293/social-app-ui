@@ -3,7 +3,7 @@ import {beClient} from "../../config/BeClient";
 import {useDispatch} from "react-redux";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import {userActions} from "../../store/UserSlice";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import utils from "../../utils/utils";
 import {createSocketConnection} from "../../config/Socket";
 
@@ -22,6 +22,12 @@ function Login() {
   const {register, formState: {errors}, handleSubmit, reset}= useForm({mode: "all",
     defaultValues})
 
+  useEffect(() => {
+    document.getElementById('app-body').classList.remove('has-navbar-fixed-top')
+    return () => {
+      document.getElementById('app-body').classList.add('has-navbar-fixed-top')
+    }
+  },[])
 
 
   const onSubmit=(data) => {
