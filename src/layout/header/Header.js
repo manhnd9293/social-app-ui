@@ -1,26 +1,16 @@
 import React, {useEffect, useState} from 'react';
-import {Link, useNavigate} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
-import {userActions} from "../../store/UserSlice";
-import defaultAvatar from '../../common/img/defaultAvatar.jpg';
+import {Link} from "react-router-dom";
 import socket from '../../config/Socket';
 import {SocketEvent} from "../../utils/Constant";
 import MenuIcon from "./MenuIcon";
 import MenuIconLink from "./MenuIconLink";
+import ProfileDropdown from "./ProfileDropdown";
 
 function Header() {
-  const user = useSelector((state) => state.user);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+
   const [unreadNotification, setUnreadNotification] = useState([]);
   const [unreadFriendRequest, setUnreadFriendRequest] = useState([]);
   const [unreadMessage, setUnReadMessage] = useState([]);
-
-
-  const logOut = () => {
-    dispatch(userActions.logout());
-    navigate('/login');
-  }
 
   useEffect(() => {
 
@@ -28,7 +18,6 @@ function Header() {
       setUnreadFriendRequest((old) => [...old, request]);
 
     })
-
 
    return () => {
       socket.off(SocketEvent.FriendRequest)
@@ -67,21 +56,7 @@ function Header() {
 
             <MenuIcon list={unreadNotification} icon="fa-solid fa-bell" name='notification'/>
 
-
-
-            <div className={`navbar-item has-dropdown is-hoverable`} >
-              <figure  className='navbar-link is-arrowless image is-48x48'>
-                <img className="is-rounded" src={user?.avatar || defaultAvatar}/>
-              </figure>
-              <div className='navbar-dropdown is-right'>
-                <Link to={`/profile/${user._id}`} className='navbar-item'>Profile</Link>
-                <Link to='/setting' className='navbar-item'>Setting</Link>
-                <div className='navbar-divider'></div>
-                <a className='navbar-item' onClick={logOut}>
-                  Sign out
-                </a>
-              </div>
-            </div>
+            <ProfileDropdown/>
 
           </div>
         </div>
