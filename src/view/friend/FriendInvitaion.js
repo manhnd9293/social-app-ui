@@ -1,9 +1,32 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {beClient} from "../../config/BeClient";
-import {Link, useLoaderData} from "react-router-dom";
+import {Link, useLoaderData, useNavigate} from "react-router-dom";
+import {FriendRequestState} from "../../utils/Constant";
 
 function FriendInvitations(props) {
-  const invitations = useLoaderData();
+  const [invitations, setInvitations] = useState(useLoaderData());
+  const navigate = useNavigate();
+
+  function acceptRequest(requestId) {
+    return async function () {
+      await beClient.patch('/user/friend-request', {
+        state: FriendRequestState.Accepted,
+        requestId,
+      });
+
+    }
+  }
+
+  function declineRequest(requestId) {
+    return async function () {
+      await beClient.patch('/user/friend-request', {
+        state: FriendRequestState.Decline,
+        requestId,
+      });
+
+      setInvitations(invitations.filter(invite => invite._id !== requestId))
+    }
+  }
 
   return (
     <div>
@@ -29,8 +52,8 @@ function FriendInvitations(props) {
               </div>
             </div>
             <div className='card-footer buttons p-3'>
-              <div className='button is-rounded is-small'>Ignore</div>
-              <div className='button is-info is-rounded is-small'>Accept</div>
+              <div className='button is-rounded is-small' onClick={declineRequest(invite._id)}>Ignore</div>
+              <div className='button is-info is-rounded is-small' onClick={acceptRequest(invite._id)}>Accept</div>
             </div>
           </div>)}
       </div>

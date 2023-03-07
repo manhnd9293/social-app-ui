@@ -4,4 +4,11 @@ const SocketEvent = {
   Auth: 'authentication',
 }
 
-export {SocketEvent};
+const FriendRequestState = {
+  Pending: 'pending',
+  Accepted: 'accepted',
+  Decline: 'declined'
+}
+
+
+export {SocketEvent, FriendRequestState};

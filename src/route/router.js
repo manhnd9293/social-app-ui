@@ -14,7 +14,7 @@ import ProfileError from "../view/profile/ProfileError";
 import FriendView from "../view/friend/FriendView";
 import FriendInvitations, {loadInvitationList} from "../view/friend/FriendInvitaion";
 import FriendRequest, {loadSentRequests} from "../view/friend/FriendRequest";
-import FriendList from "../view/friend/FriendList";
+import FriendList, {loadFriendsList} from "../view/friend/FriendList";
 
 const router = createBrowserRouter([
   {
@@ -58,8 +58,9 @@ const router = createBrowserRouter([
         element: <FriendView/>,
         children: [
           {
-            path: '',
+            index: true,
             element: <FriendList/>,
+            loader: loadFriendsList
           },
           {
             path: 'invite',

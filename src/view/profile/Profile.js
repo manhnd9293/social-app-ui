@@ -11,7 +11,6 @@ function Profile(props) {
   const currentUser = useSelector(state => state.user);
 
   const user = useLoaderData();
-  user.connections = connections;
 
 
   function addConnection() {
@@ -39,32 +38,6 @@ function Profile(props) {
         </div>}
       </div>
 
-      <div className='mt-3'>
-        <div className='subtitle'>Connections</div>
-        <div className='columns is-multiline'>
-          {[...user.connections].map( con => (
-            <div className='column is-3 is-clickable'>
-              <div className='card'
-                   key={con._id}>
-                <div className='card-content'>
-                  <div className="media">
-                    <div className="media-left">
-                      <figure className="image is-48x48">
-                        <img className='is-rounded' src={con.avatar || defaultAvatar} alt="Placeholder image" />
-                      </figure>
-                    </div>
-                    <div className="media-content">
-                      <p className="title is-6">{con.fullName}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-
     </div>
   );
 }
@@ -76,31 +49,5 @@ function loadProfileData({params}) {
   })
 }
 
-const connections = [
-  {
-    _id: 1,
-    fullName: 'First',
-  },
-  {
-    _id: 2,
-    fullName: 'Second',
-  },
-  {
-    _id: 3,
-    fullName: 'Third',
-  },
-  {
-    _id: 4,
-    fullName: 'Second',
-  },
-  {
-    _id: 5,
-    fullName: 'First',
-  },
-  {
-    _id: 6,
-    fullName: 'Second',
-  },
-]
 export {loadProfileData}
 export default Profile;

@@ -4,7 +4,6 @@ import {Link, useLoaderData} from "react-router-dom";
 
 function FriendRequest(props) {
   const sentRequests = useLoaderData();
-
   return (
     <div>
       <div className='subtitle'>Sent requests list</div>
