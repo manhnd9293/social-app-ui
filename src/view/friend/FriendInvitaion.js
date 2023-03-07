@@ -29,8 +29,8 @@ function FriendInvitations(props) {
               </div>
             </div>
             <div className='card-footer buttons p-3'>
-              <div className='button is-rounded'>Ignore</div>
-              <div className='button is-info is-rounded'>Accept</div>
+              <div className='button is-rounded is-small'>Ignore</div>
+              <div className='button is-info is-rounded is-small'>Accept</div>
             </div>
           </div>)}
       </div>

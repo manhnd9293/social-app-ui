@@ -4,7 +4,6 @@ import userSlice from "./UserSlice";
 import navDropSlice from "./NavDropSlice";
 
 
-
 const store = configureStore({
   reducer: {
     notification: notificationSlice.reducer,

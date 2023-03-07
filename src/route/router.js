@@ -1,5 +1,5 @@
 import {createBrowserRouter} from "react-router-dom";
-import RootLayout, {rootLoader} from "../view/rootLayout/RootLayout";
+import RootLayout from "../view/rootLayout/RootLayout";
 import EmployeeList from "../view/employee/EmployeeList";
 import Register from "../view/register/Register";
 import Test from "../view/test/Test";
@@ -13,7 +13,7 @@ import Profile, {loadProfileData} from "../view/profile/Profile";
 import ProfileError from "../view/profile/ProfileError";
 import FriendView from "../view/friend/FriendView";
 import FriendInvitations, {loadInvitationList} from "../view/friend/FriendInvitaion";
-import FriendRequest from "../view/friend/FriendRequest";
+import FriendRequest, {loadSentRequests} from "../view/friend/FriendRequest";
 import FriendList from "../view/friend/FriendList";
 
 const router = createBrowserRouter([
@@ -69,7 +69,7 @@ const router = createBrowserRouter([
           {
             path: 'requests',
             element: <FriendRequest/>,
-            // loader: loadInvitationList,
+            loader: loadSentRequests,
           }
         ]
       },

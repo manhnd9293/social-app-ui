@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link, NavLink, Outlet} from "react-router-dom";
+import {NavLink, Outlet} from "react-router-dom";
 import utils from "../../utils/utils";
 
 function FriendView(props) {

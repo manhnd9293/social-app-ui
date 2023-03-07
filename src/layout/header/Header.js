@@ -19,17 +19,17 @@ function Header() {
 
     })
 
-   return () => {
+    return () => {
       socket.off(SocketEvent.FriendRequest)
-   }
+    }
 
   }, []);
 
 
-
   return (
     <div className='has-background-info navbar is-fixed-top'>
-      <nav className="navbar is-large mx-auto is-info" role="navigation" aria-label="main navigation" style={{width: '80%',maxWidth: '1215px'}}>
+      <nav className="navbar is-large mx-auto is-info" role="navigation" aria-label="main navigation"
+           style={{width: '80%', maxWidth: '1215px'}}>
         <div className="navbar-brand">
           <Link className="navbar-item" to="/">
             <span className='has-text-weight-bold'>H U N I</span>
@@ -50,7 +50,7 @@ function Header() {
 
             <MenuIconLink icon="fa-solid fa-building" name='company' hasNumber={false} to='/company'/>
 
-            <MenuIconLink icon="fa-solid fa-user-group" list={unreadFriendRequest} name='connection' to='/friends' />
+            <MenuIconLink icon="fa-solid fa-user-group" list={unreadFriendRequest} name='connection' to='/friends'/>
 
             <MenuIcon list={unreadMessage} icon="fa-solid fa-message" name='message'/>
 
@@ -60,8 +60,8 @@ function Header() {
           </div>
         </div>
       </nav>
-
     </div>
+
   );
 }
 

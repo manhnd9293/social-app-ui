@@ -7,7 +7,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {beClient} from "../../config/BeClient";
 import Notification from "../notification/Notification";
 import {userActions} from "../../store/UserSlice";
-import socket, {createSocketConnection} from "../../config/Socket";
+import {createSocketConnection} from "../../config/Socket";
 
 
 function RootLayout() {
