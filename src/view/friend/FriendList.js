@@ -21,7 +21,9 @@ function FriendList(props) {
               <div className="media">
                 <div className="media-left">
                   <figure className="image is-48x48">
-                    <img src={friend.friendId.avatar} className='is-rounded' alt="Placeholder image"/>
+                    <img src={friend.friendId.avatar}
+                         className='is-rounded'
+                         style={{width: 48, height: 48}}/>
                   </figure>
                 </div>
                 <div className="media-content">

@@ -26,7 +26,7 @@ function Profile(props) {
     <div>
       <div>
         <figure className="image  is-96x96">
-          <img className={'is-rounded'} src={user.avatar || defaultAvatar}/>
+          <img className={'is-rounded'} src={user.avatar || defaultAvatar} style={{width: 96, height: 96}}/>
         </figure>
         <div className='title is-size-4 mt-3'>{utils.upperCaseFirst(user.fullName)}</div>
       </div>
