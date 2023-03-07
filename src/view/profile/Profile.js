@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {beClient} from "../../config/BeClient";
 import {useLoaderData} from "react-router-dom";
 import defaultAvatar from '../../common/img/defaultAvatar.jpg';
@@ -6,10 +6,10 @@ import utils from "../../utils/utils";
 import {useSelector} from "react-redux";
 import {SocketEvent} from "../../utils/Constant";
 import socket from "../../config/Socket";
+import FriendOptions from "../friend/FriendOptions";
 
 function Profile(props) {
   const currentUser = useSelector(state => state.user);
-
   const user = useLoaderData();
 
 
@@ -32,11 +32,18 @@ function Profile(props) {
       </div>
 
       <div className='mt-3 buttons'>
-        {currentUser._id !== user._id && <div className='button is-small is-rounded is-outlined is-info' onClick={addConnection}>
+        {currentUser._id !== user._id && !user.isFriend && <div className='button is-small is-rounded is-outlined is-info' onClick={addConnection}>
           <i className="fa-solid fa-user-plus mr-1"></i>
           <span className='has-text-weight-bold'>Add Connection</span>
         </div>}
       </div>
+
+      {
+        user.isFriend && (
+          <FriendOptions/>
+        )
+      }
+
 
     </div>
   );
