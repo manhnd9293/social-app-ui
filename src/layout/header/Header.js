@@ -1,29 +1,29 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Link} from "react-router-dom";
-import socket from '../../config/Socket';
 import {SocketEvent} from "../../utils/Constant";
 import MenuIcon from "./MenuIcon";
 import MenuIconLink from "./MenuIconLink";
 import ProfileDropdown from "./ProfileDropdown";
+import {SocketContext} from "../../view/rootLayout/RootLayout";
 
 function Header() {
 
   const [unreadNotification, setUnreadNotification] = useState([]);
   const [unreadFriendRequest, setUnreadFriendRequest] = useState([]);
   const [unreadMessage, setUnReadMessage] = useState([]);
+  const socket = useContext(SocketContext)
 
   useEffect(() => {
-
+    if(!socket) return;
     socket.on(SocketEvent.FriendRequest, (request) => {
       setUnreadFriendRequest((old) => [...old, request]);
-
     })
 
     return () => {
       socket.off(SocketEvent.FriendRequest)
     }
 
-  }, []);
+  }, [socket]);
 
 
   return (

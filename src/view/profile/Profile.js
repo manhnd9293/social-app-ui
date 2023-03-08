@@ -1,17 +1,17 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {beClient} from "../../config/BeClient";
 import {useLoaderData} from "react-router-dom";
 import defaultAvatar from '../../common/img/defaultAvatar.jpg';
 import utils from "../../utils/utils";
 import {useSelector} from "react-redux";
 import {SocketEvent} from "../../utils/Constant";
-import socket from "../../config/Socket";
 import FriendOptions from "../friend/FriendOptions";
+import {SocketContext} from "../rootLayout/RootLayout";
 
 function Profile(props) {
   const currentUser = useSelector(state => state.user);
   const user = useLoaderData();
-
+  const socket = useContext(SocketContext);
 
   function addConnection() {
     socket.emit(SocketEvent.FriendRequest,

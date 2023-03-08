@@ -1,25 +1,37 @@
 import {io} from 'socket.io-client';
 import {SocketEvent} from "../utils/Constant";
 
-const socket = io(process.env.REACT_APP_SOCKET_SERVER);
 
-socket.on('connect', () => {
-  console.log('Connect to server successfully');
-})
+function createSocket(user) {
+  let socket = io(process.env.REACT_APP_SOCKET_SERVER);
 
-socket.on('error', (err) => {
-  console.log(err);
-});
+  const accessToken = localStorage.getItem("accessToken");
+  console.log({accessToken});
+  socket.emit('auth', accessToken);
 
-function createSocketConnection(user) {
-  socket.emit(SocketEvent.JoinRoom, user);
+  socket.on('auth-success', () => {
+    console.log('auth-success');
+    socket.emit(SocketEvent.JoinRoom, user);
+  })
+
+  socket.on('connect', () => {
+    console.log('Connect to server successfully');
+  })
+
+  socket.on('error', (err) => {
+    console.log(err);
+  });
+
+  socket.on('disconnect', (data)=> {
+    console.log(data)
+    console.log('socket disconnected');
+  })
+
+  return socket
 }
 
-function disconnectSocket() {
-  socket.off('disconnect');
-}
 
 
-export {createSocketConnection, disconnectSocket}
 
-export default socket;
+export {createSocket}
+

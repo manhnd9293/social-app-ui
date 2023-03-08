@@ -5,7 +5,7 @@ import {Link, useLocation, useNavigate} from "react-router-dom";
 import {userActions} from "../../store/UserSlice";
 import {useEffect, useState} from "react";
 import utils from "../../utils/utils";
-import {createSocketConnection} from "../../config/Socket";
+import {createSocket} from "../../config/Socket";
 
 const loginBackgroundUrl = 'https://marmotamaps.com/de/fx/wallpaper/download/faszinationen/Marmotamaps_Wallpaper_Inntal_Desktop_1920x1080.jpg'
 
@@ -37,7 +37,7 @@ function Login() {
     }).then(res => {
       const user = res.data;
       dispatch(userActions.login(user));
-      createSocketConnection(user);
+      createSocket(user);
       navigate('/');
     }).catch(e => {
       setLoginError(e);
