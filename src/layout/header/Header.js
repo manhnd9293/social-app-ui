@@ -52,7 +52,7 @@ function Header() {
 
             <MenuIconLink icon="fa-solid fa-user-group" list={unreadFriendRequest} name='connection' to='/friends'/>
 
-            <MenuIcon list={unreadMessage} icon="fa-solid fa-message" name='message'/>
+            <MenuIconLink list={unreadMessage} icon="fa-solid fa-message" name='message' to='/conversations'/>
 
             <MenuIcon list={unreadNotification} icon="fa-solid fa-bell" name='notification'/>
 

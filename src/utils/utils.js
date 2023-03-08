@@ -1,3 +1,4 @@
+import defaultAvatar from '../../src/common/img/defaultAvatar.jpg'
 const utils = {
   getUrlQueryParams(queryList) {
     const url = new URL(window.location.href);
@@ -66,7 +67,9 @@ const utils = {
   },
 
  navLinkActive:  ({ isActive }) =>
-   isActive ? 'is-active' : undefined
+   isActive ? 'is-active' : undefined,
+
+ defaultAvatar: defaultAvatar
 }
 
 export default utils;

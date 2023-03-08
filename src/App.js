@@ -1,5 +1,6 @@
 import './App.css';
 import 'bulma/css/bulma.css'
+import 'bulma-list/css/bulma-list.css'
 import {RouterProvider} from "react-router-dom";
 import router from "./route/router";
 import React from "react";

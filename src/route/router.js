@@ -15,6 +15,7 @@ import FriendView from "../view/friend/FriendView";
 import FriendInvitations, {loadInvitationList} from "../view/friend/FriendInvitaion";
 import FriendRequest, {loadSentRequests} from "../view/friend/FriendRequest";
 import FriendList, {loadFriendsList} from "../view/friend/FriendList";
+import ConversationList, {conversationsLoader} from "../view/conversation/ConversationList";
 
 const router = createBrowserRouter([
   {
@@ -73,6 +74,11 @@ const router = createBrowserRouter([
             loader: loadSentRequests,
           }
         ]
+      },
+      {
+        path: 'conversations',
+        element: <ConversationList/>,
+        loader: conversationsLoader
       },
       {
         path: '/test',
