@@ -16,6 +16,7 @@ import FriendInvitations, {loadInvitationList} from "../view/friend/FriendInvita
 import FriendRequest, {loadSentRequests} from "../view/friend/FriendRequest";
 import FriendList, {loadFriendsList} from "../view/friend/FriendList";
 import ConversationList, {conversationsLoader} from "../view/conversation/ConversationList";
+import ChatFrame, {messageLoader} from "../view/conversation/ChatFrame";
 
 const router = createBrowserRouter([
   {
@@ -78,7 +79,14 @@ const router = createBrowserRouter([
       {
         path: 'conversations',
         element: <ConversationList/>,
-        loader: conversationsLoader
+        loader: conversationsLoader,
+        children: [
+          {
+            path: ':id',
+            element: <ChatFrame/>,
+            loader: messageLoader
+          }
+        ]
       },
       {
         path: '/test',

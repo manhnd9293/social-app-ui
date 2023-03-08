@@ -30,6 +30,7 @@ function RootLayout() {
           createSocketConnection(userInfo);
         })
         .catch((e) => {
+          //todo: this code may never be called
           navigate("/login");
         });
     }

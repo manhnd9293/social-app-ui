@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {beClient} from "../../config/BeClient";
 import {useLoaderData} from "react-router-dom";
 import defaultAvatar from '../../common/img/defaultAvatar.jpg';
