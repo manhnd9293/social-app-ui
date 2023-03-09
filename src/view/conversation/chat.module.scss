@@ -1,0 +1,35 @@
+.message {
+  border-radius: 20px;
+  padding: 8px;
+}
+
+.chatContainer {
+  flex-direction: column;
+  height: 420px;
+  padding: 10px;
+  background-color: #f5f4f4;
+
+  overflow-y: scroll;
+}
+
+.ownMessage {
+  display: flex;
+  justify-content: flex-end;
+
+  > div {
+    max-width: 50%;
+    background-color: #4444ef;
+    color: white;
+  }
+}
+
+.otherMessage {
+  display: flex;
+  justify-content: flex-start;
+
+  > div {
+    max-width: 50%;
+    background-color: #e0e0e0;
+    color: #565555;
+  }
+}

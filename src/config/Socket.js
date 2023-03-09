@@ -5,17 +5,18 @@ import {SocketEvent} from "../utils/Constant";
 function createSocket(user) {
   let socket = io(process.env.REACT_APP_SOCKET_SERVER);
 
-  const accessToken = localStorage.getItem("accessToken");
-  console.log({accessToken});
-  socket.emit('auth', accessToken);
-
-  socket.on('auth-success', () => {
-    console.log('auth-success');
-    socket.emit(SocketEvent.JoinRoom, user);
-  })
-
   socket.on('connect', () => {
     console.log('Connect to server successfully');
+    const accessToken = localStorage.getItem("accessToken");
+    setTimeout(() => {
+      socket.emit('auth', accessToken);
+    },1000)
+
+    socket.on('auth-success', () => {
+      console.log('auth-success');
+      socket.emit(SocketEvent.JoinRoom, user);
+    })
+
   })
 
   socket.on('error', (err) => {

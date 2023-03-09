@@ -70,7 +70,16 @@ const utils = {
  navLinkActive:  ({ isActive }) =>
    isActive ? 'is-active' : undefined,
 
- defaultAvatar: defaultAvatar
+ defaultAvatar: defaultAvatar,
+
+  objectId: function()  {
+    return this.hex(Date.now() / 1000) +
+      ' '.repeat(16).replace(/./g, () => this.hex(Math.random() * 16))
+  },
+
+ hex: function (value) {
+  return Math.floor(value).toString(16)
+  }
 }
 
 export default utils;

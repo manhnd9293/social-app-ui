@@ -1,13 +1,54 @@
-import React from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import utils from "../../utils/utils";
 import {Link, Outlet, useLoaderData} from "react-router-dom";
 import {beClient} from "../../config/BeClient";
 import {useSelector} from "react-redux";
+import  classes from './chat.module.scss';
+import {SocketContext} from "../rootLayout/RootLayout";
+import {SocketEvent} from "../../utils/Constant";
 
 function ChatFrame() {
-  const [conversation, messages] = useLoaderData();
+  const [conversation, initialMessage] = useLoaderData();
   const user = useSelector(state => state.user);
+  const [currentMessage, setCurrentMessage] = useState('');
+  const [messages, setMessages] = useState(initialMessage);
+
+  const socket = useContext(SocketContext);
+
   conversation.friend = conversation.participants.find(p => p._id !== user._id);
+
+  useEffect(() => {
+    setMessages(initialMessage);
+  }, [initialMessage]);
+
+
+  useEffect(() => {
+    if(!socket) return;
+
+    socket.on(SocketEvent.MessageReceived, (newMessage) => {
+      setMessages((messages) => [...messages, newMessage])
+    })
+
+    return () => {
+      socket.off(SocketEvent.MessageReceived);
+    };
+  }, [socket]);
+
+  const handleSubmitFromInput = (e) => {
+    if(e.key !== 'Enter' || !currentMessage) return;
+
+    const messageData = {
+      conversationId: conversation._id,
+      date: Date.now(),
+      from: user._id,
+      textContent: currentMessage
+    }
+    setMessages([...messages, {...messageData, _id: utils.objectId()}]);
+
+    socket.emit(SocketEvent.MessageSent, messageData);
+    setCurrentMessage('');
+  }
+
   return (
     <div className={`column`}>
       {
@@ -22,7 +63,7 @@ function ChatFrame() {
                 />
               </p>
             </figure>
-            <div className={`media-content`}>
+            <div className={`media-content`} >
               <Link to={`/profile/${conversation.friend._id}`}>
                 <strong
                   className='title is-size-5'>{utils.upperCaseFirst(conversation.friend.fullName)}</strong>
@@ -30,10 +71,33 @@ function ChatFrame() {
             </div>
           </article>
 
-          <div>
+          <div className={`mt-3 ${classes.chatContainer}`}>
             {messages.map(m =>(
-              <div key={m._id}> {m.textContent} </div>
+              <div key={m._id}
+                    className={
+                `${(m.from._id === user._id || m.from === user._id) ? classes.ownMessage : classes.otherMessage}
+                mb-1
+                `
+              }
+              >
+                <div className={`${classes.message} `}>{m.textContent}</div>
+              </div>
             ))}
+          </div>
+
+          <div className={`field has-addons`}>
+            <div className={`control is-expanded`}>
+              <input className={`input`}
+                      type={'text'}
+                      placeholder={'Type your message'}
+                      onKeyDown={handleSubmitFromInput}
+                      onChange={e => setCurrentMessage(e.target.value)}
+                      value={currentMessage}
+              />
+            </div>
+            <div className={'control'}>
+              <button className={'button is-info'}>Send</button>
+            </div>
           </div>
         </div>
       }
