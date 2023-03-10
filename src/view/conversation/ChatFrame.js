@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import utils from "../../utils/utils";
 import {Link, Outlet, useLoaderData} from "react-router-dom";
 import {beClient} from "../../config/BeClient";
@@ -12,10 +12,35 @@ function ChatFrame() {
   const user = useSelector(state => state.user);
   const [currentMessage, setCurrentMessage] = useState('');
   const [messages, setMessages] = useState(initialMessage);
+  const [reachEndChat, setReachEndChat] = useState(true);
+  const endChatDiv = useRef();
+  const chatContainer = useRef(null);
+
 
   const socket = useContext(SocketContext);
 
   conversation.friend = conversation.participants.find(p => p._id !== user._id);
+
+  useEffect(() => {
+    chatContainer.current.scrollTop = chatContainer.current.scrollHeight;
+    const observer = new IntersectionObserver(entries => {
+      const enChat = entries[0];
+      if (enChat.isIntersecting) {
+        setReachEndChat(true);
+      } else {
+        setReachEndChat(false);
+      }
+    });
+
+    observer.observe(endChatDiv.current);
+
+    return () => {
+      if (endChatDiv.current) {
+        observer.unobserve(endChatDiv.current);
+      }
+    };
+  }, [messages]);
+
 
   useEffect(() => {
     setMessages(initialMessage);
@@ -71,7 +96,9 @@ function ChatFrame() {
             </div>
           </article>
 
-          <div className={`mt-3 ${classes.chatContainer}`}>
+          <div className={`mt-3 ${classes.chatContainer}`}
+               ref={chatContainer}
+          >
             {messages.map(m =>(
               <div key={m._id}
                     className={
@@ -84,15 +111,14 @@ function ChatFrame() {
               </div>
             ))}
           </div>
-
           <div className={`field has-addons`}>
             <div className={`control is-expanded`}>
               <input className={`input`}
-                      type={'text'}
-                      placeholder={'Type your message'}
-                      onKeyDown={handleSubmitFromInput}
-                      onChange={e => setCurrentMessage(e.target.value)}
-                      value={currentMessage}
+                     type={'text'}
+                     placeholder={'Type your message'}
+                     onKeyDown={handleSubmitFromInput}
+                     onChange={e => setCurrentMessage(e.target.value)}
+                     value={currentMessage}
               />
             </div>
             <div className={'control'}>
@@ -101,6 +127,7 @@ function ChatFrame() {
           </div>
         </div>
       }
+
     </div>
   );
 }
