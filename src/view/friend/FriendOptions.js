@@ -19,7 +19,7 @@ function FriendOptions() {
     return () => {
       document.removeEventListener('mousedown', handleClickOutSide);
     };
-  }, [dropdown]);
+  }, []);
 
   return (
     <div className={`dropdown ${showFriendDropdown && 'is-active'}`} ref={dropdown}>
