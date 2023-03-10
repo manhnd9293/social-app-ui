@@ -1,6 +1,6 @@
 import React, {createContext, useEffect, useState} from 'react';
 import Header from "../../layout/header/Header";
-import {Outlet, useLoaderData, useNavigate} from "react-router-dom";
+import {Outlet, useLoaderData, useNavigate, useNavigation} from "react-router-dom";
 import Footer from "../../layout/footer/Footer";
 import './rootLayout.css';
 import {useDispatch, useSelector} from "react-redux";
@@ -8,6 +8,7 @@ import {beClient} from "../../config/BeClient";
 import Notification from "../notification/Notification";
 import {userActions} from "../../store/UserSlice";
 import {createSocket} from "../../config/Socket";
+import Loader from "../../common/loader/Loader";
 
 const SocketContext = createContext(null);
 
@@ -18,6 +19,8 @@ function RootLayout() {
   const notification = useSelector((state) => state.notification)
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const navigation = useNavigation();
+
 
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
@@ -50,8 +53,9 @@ function RootLayout() {
       <div className="App has-background-white-ter ">
         <Header/>
         {notification && <Notification/>}
+        {process.env.REACT_APP_NODE_ENV === 'development' && <Loader active={navigation.state === 'loading'}/>}
         <div className='app-body has-background-white mx-auto px-3 px-2-mobile py-2'
-             style={{width: '80%', maxWidth: '1215px'}}>
+             style={{width: '80%', maxWidth: '1215px', height: '100%'}}>
           <div className='container'>
             <Outlet/>
           </div>

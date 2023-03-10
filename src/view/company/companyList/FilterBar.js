@@ -83,7 +83,9 @@ function FilterBar({onSubmit}) {
         </div>
         <div>
           <Link to='new'>
-            <div className='button is-link'>Add new</div>
+            <div className='button is-link'>
+              <strong>Add New</strong>
+            </div>
           </Link>
         </div>
 
