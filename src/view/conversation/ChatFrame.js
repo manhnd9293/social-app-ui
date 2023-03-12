@@ -110,6 +110,7 @@ function ChatFrame() {
                 <div className={`${classes.message} `}>{m.textContent}</div>
               </div>
             ))}
+            <div ref={endChatDiv}></div>
           </div>
           <div className={`field has-addons`}>
             <div className={`control is-expanded`}>
