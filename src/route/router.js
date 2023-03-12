@@ -18,6 +18,7 @@ import FriendList, {loadFriendsList} from "../view/friend/FriendList";
 import ConversationList, {conversationsLoader} from "../view/conversation/ConversationList";
 import ChatFrame, {messageLoader} from "../view/conversation/ChatFrame";
 import RootError from "../view/rootLayout/RootError";
+import SearchResult, {loadSearchResult} from "../view/searchResult/SearchResult";
 
 const router = createBrowserRouter([
   {
@@ -56,6 +57,11 @@ const router = createBrowserRouter([
         element: <Profile/>,
         loader: loadProfileData,
         errorElement: <ProfileError/>
+      },
+      {
+        path: '/search',
+        element: <SearchResult/>,
+        loader: loadSearchResult,
       },
       {
         path: '/friends',

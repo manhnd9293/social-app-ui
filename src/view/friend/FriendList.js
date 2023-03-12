@@ -31,7 +31,7 @@ function FriendList(props) {
               <div key={friend._id} className={`list-item`}>
                 <div className={`list-item-image`}>
                   <figure className={`image is-64x64`}>
-                    <img src={friend.friendId.avatar || utils.defaultAvatar}
+                    <img className={`is-rounded`} src={friend.friendId.avatar || utils.defaultAvatar}
                          style={{width: 64, height: 64}}
                     />
                   </figure>

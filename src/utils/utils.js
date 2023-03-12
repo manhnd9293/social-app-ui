@@ -11,6 +11,12 @@ const utils = {
     return ans;
   },
 
+  getUrlQueryParam(name) {
+    const url = new URL(window.location.href);
+    const params = url.searchParams;
+    return params.get(name) || '';
+  },
+
   getUrlQueryParamsFromRequest(request ,queryList) {
     const url = new URL(request.url);
     const params = url.searchParams;

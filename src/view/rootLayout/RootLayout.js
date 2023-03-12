@@ -53,7 +53,7 @@ function RootLayout() {
       <div className="App has-background-white-ter ">
         <Header/>
         {notification && <Notification/>}
-        {process.env.REACT_APP_NODE_ENV === 'development' && <Loader active={navigation.state === 'loading'}/>}
+        {process.env.REACT_APP_NODE_ENV !== 'development' && <Loader active={navigation.state === 'loading'}/>}
         <div className='app-body has-background-white mx-auto px-3 px-2-mobile py-2'
              style={{width: '80%', maxWidth: '1215px', height: '100%'}}>
           <div className='container'>

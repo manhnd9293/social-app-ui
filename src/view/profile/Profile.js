@@ -14,6 +14,8 @@ function Profile(props) {
   const socket = useContext(SocketContext);
 
   function addConnection() {
+
+    //todo: convert to api call and emit socket
     socket.emit(SocketEvent.FriendRequest,
       {
         message: 'Hi ban, cho minh lam wen voi',
@@ -25,7 +27,7 @@ function Profile(props) {
   return (
     <div>
       <div>
-        <figure className="image  is-96x96">
+        <figure className="image is-96x96">
           <img className={'is-rounded'} src={user.avatar || defaultAvatar} style={{width: 96, height: 96}}/>
         </figure>
         <div className='title is-size-4 mt-3'>{utils.upperCaseFirst(user.fullName)}</div>
