@@ -37,7 +37,7 @@ function Login() {
     }).then(res => {
       const user = res.data;
       dispatch(userActions.login(user));
-      createSocket(user);
+      // createSocket(user);
       navigate('/');
     }).catch(e => {
       setLoginError(e);

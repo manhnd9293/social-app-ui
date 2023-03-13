@@ -23,11 +23,12 @@ function RootLayout() {
 
 
   useEffect(() => {
+
     const accessToken = localStorage.getItem("accessToken");
 
     if (!user._id && !accessToken && window.location.pathname !== '/sign-up') {
       navigate("/login");
-    } else if (accessToken && !user._id) {
+    } else if (accessToken) { //update always fetch user data and create socket connection when render root layout
       beClient.get("/user/me")
         .then((res) => {
           const userInfo = res.data;

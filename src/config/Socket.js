@@ -8,9 +8,7 @@ function createSocket(user) {
   socket.on('connect', () => {
     console.log('Connect to server successfully');
     const accessToken = localStorage.getItem("accessToken");
-    setTimeout(() => {
-      socket.emit('auth', accessToken);
-    },1000)
+    socket.emit('auth', accessToken);
 
     socket.on('auth-success', () => {
       console.log('auth-success');
