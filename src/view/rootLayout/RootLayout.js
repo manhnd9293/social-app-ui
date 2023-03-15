@@ -47,7 +47,7 @@ function RootLayout() {
       socket && socket.close();
       console.log('close socket');
     };
-  }, [setSocket]);
+  }, []);
 
   return (
     <SocketContext.Provider value={socket}>

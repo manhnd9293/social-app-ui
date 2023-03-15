@@ -51,13 +51,17 @@ function ChatFrame() {
     if(!socket) return;
 
     socket.on(SocketEvent.MessageReceived, (newMessage) => {
+      console.log({mesConv: newMessage.conversationId, conv: conversation._id});
+
+      if(newMessage.conversationId !== conversation._id) return;
+
       setMessages((messages) => [...messages, newMessage])
     })
 
     return () => {
       socket.off(SocketEvent.MessageReceived);
     };
-  }, [socket]);
+  }, [socket, conversation]);
 
   const handleSubmitFromInput = (e) => {
     if(e.key !== 'Enter' || !currentMessage) return;
