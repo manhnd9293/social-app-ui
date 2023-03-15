@@ -24,15 +24,17 @@ function SearchResult() {
     }
 
     //todo: convert to api call then emit socket
-    await socket.emit(SocketEvent.FriendRequest, requestBody);
+    const newRequest = await beClient.post('/request', requestBody).then(res => res.data);
+    await socket.emit(SocketEvent.FriendRequest, newRequest);
+
     const update = structuredClone(people);
     const updatePerson = update.find(p => p._id === friendId);
     updatePerson.sentRequest = true;
     setPeople(update);
   }
 
-  const updateRequest = (rId, state) => () => {
-    beClient.path('/user/friend-request', {
+  const updateRequest = (rId, state) => async () => {
+    await beClient.path('/request/state', {
       requestId: rId,
       state
     });

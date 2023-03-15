@@ -13,15 +13,17 @@ function Profile(props) {
   const user = useLoaderData();
   const socket = useContext(SocketContext);
 
-  function addConnection() {
+  async function addConnection() {
 
     //todo: convert to api call and emit socket
+    const requestBody = {
+      message: 'Hi ban, cho minh lam wen voi',
+      to: user._id,
+      from: currentUser._id,
+    };
+    const newRequest = await beClient.post('/request', requestBody).then(res => res.data);
     socket.emit(SocketEvent.FriendRequest,
-      {
-        message: 'Hi ban, cho minh lam wen voi',
-        to: user._id,
-        from: currentUser._id,
-      });
+      newRequest);
   }
 
   return (

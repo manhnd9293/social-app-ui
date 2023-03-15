@@ -15,6 +15,10 @@ function createSocket(user) {
       socket.emit(SocketEvent.JoinRoom, user);
     })
 
+    socket.on(SocketEvent.NewConversation, (conversation) => {
+      socket.emit(SocketEvent.NewConversation, conversation);
+    })
+
   })
 
   socket.on('error', (err) => {

@@ -9,7 +9,7 @@ function FriendInvitations(props) {
 
   function acceptRequest(requestId) {
     return async function () {
-      await beClient.patch('/user/friend-request', {
+      await beClient.patch('/request/state', {
         state: FriendRequestState.Accepted,
         requestId,
       });
@@ -19,7 +19,7 @@ function FriendInvitations(props) {
 
   function declineRequest(requestId) {
     return async function () {
-      await beClient.patch('/user/friend-request', {
+      await beClient.patch('/request/state', {
         state: FriendRequestState.Decline,
         requestId,
       });

@@ -4,7 +4,8 @@ const SocketEvent = {
   Auth: 'authentication',
   MessageSent: 'message-sent',
   MessageReceived: 'message-receive',
-  SentMessageFail: 'error-sent-message'
+  SentMessageFail: 'error-sent-message',
+  NewConversation: 'new-conversation',
 }
 
 const FriendRequestState = {
