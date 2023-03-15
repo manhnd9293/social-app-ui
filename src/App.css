@@ -13,5 +13,19 @@
     background-size: cover;
 }
 
+/* width */
+::-webkit-scrollbar {
+    width: 8px;
+}
 
+/* Track */
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px #eaeaea;
+    border-radius: 10px;
+}
 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #bebebe;
+    border-radius: 10px;
+}

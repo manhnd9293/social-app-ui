@@ -6,6 +6,7 @@ import {useSelector} from "react-redux";
 import  classes from './chat.module.scss';
 import {SocketContext} from "../rootLayout/RootLayout";
 import {SocketEvent} from "../../utils/Constant";
+import {CurrentConversationCtx} from "./ConversationList";
 
 function ChatFrame() {
   const [conversation, initialMessage] = useLoaderData();
@@ -15,6 +16,7 @@ function ChatFrame() {
   const [reachEndChat, setReachEndChat] = useState(true);
   const endChatDiv = useRef();
   const chatContainer = useRef(null);
+  const moveConversationToTop = useContext(CurrentConversationCtx);
 
 
   const socket = useContext(SocketContext);
@@ -50,15 +52,15 @@ function ChatFrame() {
   useEffect(() => {
     if(!socket) return;
 
-    socket.on(SocketEvent.MessageReceived, (newMessage) => {
-
+    const updateMessage = (newMessage) => {
       if(newMessage.conversationId !== conversation._id) return;
 
       setMessages((messages) => [...messages, newMessage])
-    })
+    };
+    socket.on(SocketEvent.MessageReceived, updateMessage)
 
     return () => {
-      socket.off(SocketEvent.MessageReceived);
+      socket.off(SocketEvent.MessageReceived, updateMessage);
     };
   }, [socket, conversation]);
 
@@ -75,6 +77,7 @@ function ChatFrame() {
 
     socket.emit(SocketEvent.MessageSent, messageData);
     setCurrentMessage('');
+    moveConversationToTop(messageData);
   }
 
   return (
@@ -115,7 +118,7 @@ function ChatFrame() {
             ))}
             <div ref={endChatDiv}></div>
           </div>
-          <div className={`field has-addons`}>
+          <div className={`field has-addons mt-3`}>
             <div className={`control is-expanded`}>
               <input className={`input`}
                      type={'text'}

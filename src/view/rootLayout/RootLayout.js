@@ -51,7 +51,7 @@ function RootLayout() {
 
   return (
     <SocketContext.Provider value={socket}>
-      <div className="App has-background-white-ter ">
+      <div className="App has-background-white-ter">
         <Header/>
         {notification && <Notification/>}
         {process.env.REACT_APP_NODE_ENV !== 'development' && <Loader active={navigation.state === 'loading'}/>}

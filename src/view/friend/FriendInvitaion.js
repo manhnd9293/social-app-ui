@@ -4,8 +4,9 @@ import {Link, useLoaderData, useNavigate} from "react-router-dom";
 import {FriendRequestState, SocketEvent} from "../../utils/Constant";
 import {SocketContext} from "../rootLayout/RootLayout";
 
-function FriendInvitations(props) {
-  const [invitations, setInvitations] = useState(useLoaderData());
+function FriendInvitations() {
+  const initialInvitations = useLoaderData();
+  const [invitations, setInvitations] = useState(initialInvitations);
   const navigate = useNavigate();
   const socket = useContext(SocketContext);
 
@@ -16,8 +17,9 @@ function FriendInvitations(props) {
         requestId,
       }).then(res => res.data);
 
+      socket.emit(SocketEvent.AcceptRequest, conversation);
+      setInvitations(invitations.filter(invite => invite._id !== requestId))
 
-      socket.emit( SocketEvent.AcceptRequest, conversation)
     }
   }
 
