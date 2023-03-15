@@ -15,7 +15,6 @@ function Profile(props) {
 
   async function addConnection() {
 
-    //todo: convert to api call and emit socket
     const requestBody = {
       message: 'Hi ban, cho minh lam wen voi',
       to: user._id,

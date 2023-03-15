@@ -3,7 +3,7 @@ import {beClient} from "../../config/BeClient";
 import utils from "../../utils/utils";
 import {Link, useLoaderData} from "react-router-dom";
 import {SocketContext} from "../rootLayout/RootLayout";
-import {SocketEvent} from "../../utils/Constant";
+import {FriendRequestState, SocketEvent} from "../../utils/Constant";
 import {useSelector} from "react-redux";
 
 function SearchResult() {
@@ -23,7 +23,6 @@ function SearchResult() {
       from: user._id
     }
 
-    //todo: convert to api call then emit socket
     const newRequest = await beClient.post('/request', requestBody).then(res => res.data);
     await socket.emit(SocketEvent.FriendRequest, newRequest);
 
@@ -34,10 +33,14 @@ function SearchResult() {
   }
 
   const updateRequest = (rId, state) => async () => {
-    await beClient.path('/request/state', {
+    const conversation = await beClient.path('/request/state', {
       requestId: rId,
       state
-    });
+    }).then(res => res.data);
+    if(state === FriendRequestState.Accepted){
+      socket.emit( SocketEvent.AcceptRequest, conversation)
+    }
+
     //todo: continue update ui
   }
   return (

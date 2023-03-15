@@ -1,19 +1,23 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {beClient} from "../../config/BeClient";
 import {Link, useLoaderData, useNavigate} from "react-router-dom";
-import {FriendRequestState} from "../../utils/Constant";
+import {FriendRequestState, SocketEvent} from "../../utils/Constant";
+import {SocketContext} from "../rootLayout/RootLayout";
 
 function FriendInvitations(props) {
   const [invitations, setInvitations] = useState(useLoaderData());
   const navigate = useNavigate();
+  const socket = useContext(SocketContext);
 
   function acceptRequest(requestId) {
     return async function () {
-      await beClient.patch('/request/state', {
+      const {conversation} = await beClient.patch('/request/state', {
         state: FriendRequestState.Accepted,
         requestId,
-      });
+      }).then(res => res.data);
 
+
+      socket.emit( SocketEvent.AcceptRequest, conversation)
     }
   }
 

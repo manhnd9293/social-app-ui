@@ -6,6 +6,7 @@ const SocketEvent = {
   MessageReceived: 'message-receive',
   SentMessageFail: 'error-sent-message',
   NewConversation: 'new-conversation',
+  AcceptRequest: 'accept-request'
 }
 
 const FriendRequestState = {

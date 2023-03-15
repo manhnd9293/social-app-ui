@@ -51,7 +51,6 @@ function ChatFrame() {
     if(!socket) return;
 
     socket.on(SocketEvent.MessageReceived, (newMessage) => {
-      console.log({mesConv: newMessage.conversationId, conv: conversation._id});
 
       if(newMessage.conversationId !== conversation._id) return;
 
