@@ -1,6 +1,6 @@
 import React, {createContext, useEffect, useState} from 'react';
 import Header from "../../layout/header/Header";
-import {Outlet, useLoaderData, useNavigate, useNavigation} from "react-router-dom";
+import {Outlet, useNavigate, useNavigation} from "react-router-dom";
 import Footer from "../../layout/footer/Footer";
 import './rootLayout.css';
 import {useDispatch, useSelector} from "react-redux";

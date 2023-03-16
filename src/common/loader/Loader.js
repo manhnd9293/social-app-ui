@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 
 import ReactLoading from 'react-loading';
+
 function Loader({active}) {
   useEffect(()=> {
     if (active) {

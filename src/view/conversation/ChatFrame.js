@@ -1,13 +1,12 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import utils from "../../utils/utils";
-import {Link, Outlet, useLoaderData} from "react-router-dom";
+import {Link, useLoaderData} from "react-router-dom";
 import {beClient} from "../../config/BeClient";
 import {useSelector} from "react-redux";
 import classes from './chat.module.scss';
 import {SocketContext} from "../rootLayout/RootLayout";
 import {SocketEvent} from "../../utils/Constant";
 import {CurrentConversationCtx} from "./ConversationList";
-import ReactLoading from "react-loading";
 
 function ChatFrame() {
   const [conversation, initialMessage] = useLoaderData();
