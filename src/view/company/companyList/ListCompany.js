@@ -8,7 +8,7 @@ import {beClient} from "../../../config/BeClient";
 function ListCompany(props) {
   const {page, search, industry, province} = utils.getUrlQueryParams(['page', 'search', 'industry', 'province'])
   const navigate = useNavigate();
-  const {companies, total} = useLoaderData();
+  const [{companies, total}, industries, provinces] = useLoaderData();
 
   function changePage(page) {
     navigate(`/company${utils.createQueryString({page, search, industry, province})}`)
@@ -48,7 +48,7 @@ function ListCompany(props) {
       <div className='subtitle mt-4 has-text-weight-bold'>List Company</div>
 
       <div className='mt-4'>
-        <FilterBar />
+        <FilterBar industries={industries} provinces={provinces} />
       </div>
       {
         companies.length > 0 ? listCompanyCard : <div>No result found</div>
@@ -67,7 +67,12 @@ function loadCompanies({request}) {
 
 
 
-  return beClient.get(`/company${queryString}`)
+  return Promise.all([
+    beClient.get(`/company${queryString}`),
+    beClient.get(`/company/industries`).then((res) => res.data),
+    beClient.get(`/company/provinces`).then((res) => res.data),
+
+  ])
 }
 
 export {loadCompanies};

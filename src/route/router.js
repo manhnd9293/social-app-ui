@@ -6,7 +6,7 @@ import Test from "../view/test/Test";
 import Login from "../view/login/Login";
 import Home from "../view/home/Home";
 import NewEmployee from "../view/employee/newEmployee/NewEmployee";
-import NewCompany from "../view/company/newCompany/NewCompany";
+import NewCompany, {loadNewCompanyData} from "../view/company/newCompany/NewCompany";
 import ListCompany, {loadCompanies} from "../view/company/companyList/ListCompany";
 import CompanyDetail, {loadCompanyDetail} from "../view/company/companyDetail/CompanyDetail";
 import Profile, {loadProfileData} from "../view/profile/Profile";
@@ -45,7 +45,8 @@ const router = createBrowserRouter([
       },
       {
         path: '/company/new',
-        element: <NewCompany/>
+        element: <NewCompany/>,
+        loader: loadNewCompanyData
       },
       {
         path: '/company/:id/detail',
