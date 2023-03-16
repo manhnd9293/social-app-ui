@@ -19,8 +19,9 @@ function ListCompany() {
   const listCompanyCard =  <div className='mt-4 columns is-multiline'>
     {
       companies.map(company => (
-        <div key={company._id} className='column is-4 is-clickable' onClick={() => navigate(`/company/${company._id}/detail`)}>
-          <div className='card'>
+        <div key={company._id} className='column is-3 is-clickable'
+             onClick={() => navigate(`/company/${company._id}/detail`)}>
+          <div className='card' style={{height: '100%'}}>
             <div className='card-content'>
               <div className="media">
                 <div className="media-left">
@@ -32,9 +33,8 @@ function ListCompany() {
 
               <div className='content'>
                 <div className='has-text-weight-bold'>{company.name}</div>
-                <div>Province: {company.province}</div>
+                <div>Location: {company.province}</div>
                 <div>Industry: {company.industry}</div>
-                <div>size: {company.size}</div>
               </div>
             </div>
           </div>
