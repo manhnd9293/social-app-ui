@@ -3,10 +3,11 @@ import utils from "../../utils/utils";
 import {Link, Outlet, useLoaderData} from "react-router-dom";
 import {beClient} from "../../config/BeClient";
 import {useSelector} from "react-redux";
-import  classes from './chat.module.scss';
+import classes from './chat.module.scss';
 import {SocketContext} from "../rootLayout/RootLayout";
 import {SocketEvent} from "../../utils/Constant";
 import {CurrentConversationCtx} from "./ConversationList";
+import ReactLoading from "react-loading";
 
 function ChatFrame() {
   const [conversation, initialMessage] = useLoaderData();
@@ -14,6 +15,7 @@ function ChatFrame() {
   const [currentMessage, setCurrentMessage] = useState('');
   const [messages, setMessages] = useState(initialMessage);
   const [reachEndChat, setReachEndChat] = useState(true);
+  const [typing, setTyping] = useState(false);
   const endChatDiv = useRef();
   const chatContainer = useRef(null);
   const moveConversationToTop = useContext(CurrentConversationCtx);
@@ -50,22 +52,36 @@ function ChatFrame() {
 
 
   useEffect(() => {
-    if(!socket) return;
+    if (!socket) return;
 
     const updateMessage = (newMessage) => {
-      if(newMessage.conversationId !== conversation._id) return;
+      if (newMessage.conversationId !== conversation._id) return;
 
       setMessages((messages) => [...messages, newMessage])
     };
-    socket.on(SocketEvent.MessageReceived, updateMessage)
+
+    const showTyping = data => {
+      if(data.conversationId !== conversation._id) return;
+      setTyping(true);
+    }
+
+    const hideTyping = data => {
+      setTyping(false);
+    }
+    socket.on(SocketEvent.MessageReceived, updateMessage);
+    socket.on(SocketEvent.Typing, showTyping);
+    socket.on(SocketEvent.EndTyping, hideTyping)
 
     return () => {
       socket.off(SocketEvent.MessageReceived, updateMessage);
+      socket.off(SocketEvent.Typing, showTyping);
+      socket.off(SocketEvent.EndTyping, hideTyping);
+      setTyping(false);
     };
   }, [socket, conversation]);
 
   const handleSubmitFromInput = (e) => {
-    if(e.key !== 'Enter' || !currentMessage) return;
+    if (e.key !== 'Enter' || !currentMessage) return;
 
     const messageData = {
       conversationId: conversation._id,
@@ -79,7 +95,32 @@ function ChatFrame() {
     setCurrentMessage('');
     moveConversationToTop(messageData);
   }
-
+  const isTypingRef = useRef({});
+  const onChangeMessageInput = e => {
+    setCurrentMessage(e.target.value);
+    if(isTypingRef.current?.state){
+      clearTimeout(isTypingRef.current.timeout);
+    } else {
+      isTypingRef.current.state = true
+      socket.emit(SocketEvent.Typing, {
+        user: {
+          _id: user._id,
+          fullName: user.fullName,
+        },
+        conversationId: conversation._id
+      })
+    }
+    isTypingRef.current.timeout = setTimeout(() => {
+      socket.emit(SocketEvent.EndTyping, {
+        user: {
+          _id: user._id,
+          fullName: user.fullName,
+        },
+        conversationId: conversation._id
+      });
+      isTypingRef.current.state = false;
+    }, 500);
+  }
   return (
     <div className={`column`}>
       {
@@ -94,7 +135,7 @@ function ChatFrame() {
                 />
               </p>
             </figure>
-            <div className={`media-content`} >
+            <div className={`media-content`}>
               <Link to={`/profile/${conversation.friend._id}`}>
                 <strong
                   className='title is-size-5'>{utils.upperCaseFirst(conversation.friend.fullName)}</strong>
@@ -105,17 +146,20 @@ function ChatFrame() {
           <div className={`mt-3 ${classes.chatContainer}`}
                ref={chatContainer}
           >
-            {messages.map(m =>(
+            {messages.map(m => (
               <div key={m._id}
-                    className={
-                `${(m.from._id === user._id || m.from === user._id) ? classes.ownMessage : classes.otherMessage}
+                   className={
+                     `${(m.from._id === user._id || m.from === user._id) ? classes.ownMessage : classes.otherMessage}
                 mb-1
                 `
-              }
+                   }
               >
                 <div className={`${classes.message} `}>{m.textContent}</div>
               </div>
             ))}
+            <div className={`${classes.otherMessage} ${!typing && 'is-invisible'}`} >
+              <span className={`is-italic has-text-link`}>typing...</span>
+            </div>
             <div ref={endChatDiv}></div>
           </div>
           <div className={`field has-addons mt-3`}>
@@ -124,7 +168,7 @@ function ChatFrame() {
                      type={'text'}
                      placeholder={'Type your message'}
                      onKeyDown={handleSubmitFromInput}
-                     onChange={e => setCurrentMessage(e.target.value)}
+                     onChange={onChangeMessageInput}
                      value={currentMessage}
               />
             </div>
@@ -141,8 +185,8 @@ function ChatFrame() {
 
 function messageLoader({params}) {
   const {id} = params;
-  const conversation =  beClient.get(`/conversations/${id}`).then(res => res.data)
-  const messages =  beClient.get(`/conversations/${id}/messages`).then(res => res.data)
+  const conversation = beClient.get(`/conversations/${id}`).then(res => res.data)
+  const messages = beClient.get(`/conversations/${id}/messages`).then(res => res.data)
   return Promise.all([conversation, messages]);
 }
 
