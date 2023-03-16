@@ -15,7 +15,7 @@ let defaultValues = {
 
 const defaultFileName = 'no file is selected';
 
-function NewCompany(props) {
+function NewCompany() {
   const [industries, provinces] = useLoaderData();
 
   const {register, formState: {errors}, handleSubmit, reset, getValues} = useForm(

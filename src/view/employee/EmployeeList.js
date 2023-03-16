@@ -2,7 +2,7 @@ import React from 'react';
 import Card from "./Card";
 import Pagination from "../../common/pagination/Pagination";
 
-function EmployeeList(props) {
+function EmployeeList() {
   return (
     <>
       <div className="columns is-multiline">

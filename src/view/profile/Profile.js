@@ -8,7 +8,7 @@ import {SocketEvent} from "../../utils/Constant";
 import FriendOptions from "../friend/FriendOptions";
 import {SocketContext} from "../rootLayout/RootLayout";
 
-function Profile(props) {
+function Profile() {
   const currentUser = useSelector(state => state.user);
   const user = useLoaderData();
   const socket = useContext(SocketContext);

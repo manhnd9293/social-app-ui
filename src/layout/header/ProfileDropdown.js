@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {userActions} from "../../store/UserSlice";
 import {navDropDownActions} from "../../store/NavDropSlice";
 
-function ProfileDropdown(props) {
+function ProfileDropdown() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const navDropdown = useSelector(state => state.navDropdown);

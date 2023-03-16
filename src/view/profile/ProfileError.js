@@ -1,6 +1,6 @@
 import React from 'react';
 
-function ProfileError(props) {
+function ProfileError() {
   return (
     <div>Fail to load Profile</div>
   );

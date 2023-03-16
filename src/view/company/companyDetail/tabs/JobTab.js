@@ -1,6 +1,6 @@
 import React from 'react';
 
-function JobTab(props) {
+function JobTab() {
   return (
     <div> Job list coming soon</div>
   );

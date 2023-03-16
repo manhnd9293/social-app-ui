@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Card(props) {
+function Card() {
   return (
     <div className="card is-clickable">
       <div className="card-image">

@@ -5,7 +5,7 @@ import utils from "../../../utils/utils";
 import {beClient} from "../../../config/BeClient";
 
 
-function ListCompany(props) {
+function ListCompany() {
   const {page, search, industry, province} = utils.getUrlQueryParams(['page', 'search', 'industry', 'province'])
   const navigate = useNavigate();
   const [{companies, total}, industries, provinces] = useLoaderData();
@@ -62,10 +62,7 @@ function ListCompany(props) {
 function loadCompanies({request}) {
   const {search, page, industry, province} =
     utils.getUrlQueryParamsFromRequest(request, ['search', 'page', 'industry', 'province']);
-
   const queryString = utils.createQueryString({search, page, industry, province});
-
-
 
   return Promise.all([
     beClient.get(`/company${queryString}`),
@@ -75,7 +72,8 @@ function loadCompanies({request}) {
   ])
 }
 
+
 export {loadCompanies};
-
-
 export default ListCompany;
+
+

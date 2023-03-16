@@ -2,7 +2,7 @@ import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {notificationActions} from "../../store/NotificationSlice";
 
-function Notification(props) {
+function Notification() {
   const notification = useSelector(state => state.notification);
   const dispatch = useDispatch();
 

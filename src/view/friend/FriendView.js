@@ -2,7 +2,7 @@ import React from 'react';
 import {NavLink, Outlet} from "react-router-dom";
 import utils from "../../utils/utils";
 
-function FriendView(props) {
+function FriendView() {
   return (
     <div style={{width: '75%'}}>
       <div className='title is-size-4 mt-3'>Friends</div>

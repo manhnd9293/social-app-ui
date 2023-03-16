@@ -3,7 +3,7 @@ import {beClient} from "../../config/BeClient";
 import {Link, useLoaderData} from "react-router-dom";
 import utils from "../../utils/utils";
 
-function FriendList(props) {
+function FriendList() {
   const friends = useLoaderData();
   const [allFriends, setAllFriends] = useState(friends);
 

@@ -2,7 +2,7 @@ import React from 'react';
 import {beClient} from "../../config/BeClient";
 import {Link, useLoaderData} from "react-router-dom";
 
-function FriendRequest(props) {
+function FriendRequest() {
   const sentRequests = useLoaderData();
   return (
     <div>
