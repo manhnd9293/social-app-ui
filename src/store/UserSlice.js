@@ -19,6 +19,11 @@ const userSlice = createSlice({
       localStorage.setItem("accessToken", "");
       return defaultUser;
     },
+
+    updateAvatar(state, action) {
+      const { avatar } = action.payload;
+      return {...state, avatar}
+    },
   }
 })
 

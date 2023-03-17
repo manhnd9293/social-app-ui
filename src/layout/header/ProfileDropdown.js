@@ -31,7 +31,7 @@ function ProfileDropdown() {
     >
       <div className='navbar-link is-arrowless is-flex is-flex-direction-column is-justify-content-center'>
         <figure  className='image is-32x32 is-1by1'>
-          <img className="is-rounded" style={{maxHeight: '9rem'}} src={user?.avatar || defaultAvatar}/>
+          <img className="is-rounded has-background-white" style={{maxHeight: '9rem'}} src={user?.avatar || defaultAvatar}/>
         </figure>
       </div>
 

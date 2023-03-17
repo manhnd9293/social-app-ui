@@ -157,7 +157,7 @@ function ChatFrame() {
               </div>
             ))}
             <div className={`${classes.otherMessage} ${!typing && 'is-invisible'}`} >
-              <span className={`is-italic has-text-link`}>typing...</span>
+              <span className={`is-italic has-text-link`}>{`${conversation.friend.fullName} is typing...}`}</span>
             </div>
             <div ref={endChatDiv}></div>
           </div>

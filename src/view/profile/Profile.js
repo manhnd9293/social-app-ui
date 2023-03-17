@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {beClient} from "../../config/BeClient";
 import {useLoaderData} from "react-router-dom";
 import defaultAvatar from '../../common/img/defaultAvatar.jpg';
@@ -7,9 +7,11 @@ import {useSelector} from "react-redux";
 import {SocketEvent} from "../../utils/Constant";
 import FriendOptions from "../friend/FriendOptions";
 import {SocketContext} from "../rootLayout/RootLayout";
+import AvatarModal from "./avatar/AvatarModal";
 
 function Profile() {
   const currentUser = useSelector(state => state.user);
+  const [profilePicModal, setProfilePicModal] = useState(false);
   const user = useLoaderData();
   const socket = useContext(SocketContext);
 
@@ -25,11 +27,16 @@ function Profile() {
       newRequest);
   }
 
+  const avatar = currentUser._id === user._id ? currentUser.avatar : user.avatar;
   return (
     <div>
+      {profilePicModal && <AvatarModal avatar={avatar}
+                                       setShowModal={setProfilePicModal}
+      />}
       <div>
-        <figure className="image is-96x96">
-          <img className={'is-rounded'} src={user.avatar || defaultAvatar} style={{width: 96, height: 96}}/>
+        <figure className="image is-96x96 is-clickable" onClick={event => setProfilePicModal(true)}>
+          <img className={'is-rounded'}
+               src= { avatar || defaultAvatar} style={{width: 96, height: 96}}/>
         </figure>
         <div className='title is-size-4 mt-3'>{utils.upperCaseFirst(user.fullName)}</div>
       </div>
