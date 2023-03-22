@@ -5,7 +5,7 @@ import {beClient} from "../../config/BeClient";
 import {useSelector} from "react-redux";
 import classes from './chat.module.scss';
 import {SocketContext} from "../rootLayout/RootLayout";
-import {SocketEvent} from "../../utils/Constant";
+import {OnlineState, SocketEvent} from "../../utils/Constant";
 import {CurrentConversationCtx} from "./ConversationList";
 
 function ChatFrame() {
@@ -18,11 +18,13 @@ function ChatFrame() {
   const endChatDiv = useRef();
   const chatContainer = useRef(null);
   const moveConversationToTop = useContext(CurrentConversationCtx);
+  const isTypingRef = useRef({});
 
-
-  const socket = useContext(SocketContext);
 
   conversation.friend = conversation.participants.find(p => p._id !== user._id);
+  const [onlineState, setOnlineState] = useState(conversation.friend.onlineState);
+
+  const socket = useContext(SocketContext);
 
   useEffect(() => {
     chatContainer.current.scrollTop = chatContainer.current.scrollHeight;
@@ -47,6 +49,7 @@ function ChatFrame() {
 
   useEffect(() => {
     setMessages(initialMessage);
+    setOnlineState(conversation.friend.onlineState);
   }, [initialMessage]);
 
 
@@ -67,14 +70,23 @@ function ChatFrame() {
     const hideTyping = data => {
       setTyping(false);
     }
+
+    const updateOnlineState = (data) => {
+      const {userId, state} = data;
+      if(userId !== conversation.friend._id) return;
+      setOnlineState(state);
+    };
+
     socket.on(SocketEvent.MessageReceived, updateMessage);
     socket.on(SocketEvent.Typing, showTyping);
     socket.on(SocketEvent.EndTyping, hideTyping)
+    socket.on(SocketEvent.UpdateOnlineState, updateOnlineState);
 
     return () => {
       socket.off(SocketEvent.MessageReceived, updateMessage);
       socket.off(SocketEvent.Typing, showTyping);
       socket.off(SocketEvent.EndTyping, hideTyping);
+      socket.off(SocketEvent.UpdateOnlineState, updateOnlineState);
       setTyping(false);
     };
   }, [socket, conversation]);
@@ -94,7 +106,6 @@ function ChatFrame() {
     setCurrentMessage('');
     moveConversationToTop(messageData);
   }
-  const isTypingRef = useRef({});
   const onChangeMessageInput = e => {
     setCurrentMessage(e.target.value);
     if(isTypingRef.current?.state){
@@ -120,6 +131,7 @@ function ChatFrame() {
       isTypingRef.current.state = false;
     }, 500);
   }
+
   return (
     <div className={`column`}>
       {
@@ -127,12 +139,16 @@ function ChatFrame() {
         <div>
           <article className={`media`}>
             <figure className={`media-left`}>
-              <p className={`image is-64x64`}>
+              <div className={`image is-64x64`}>
                 <img className={`is-rounded`}
                      src={conversation?.friend?.avatar || utils.defaultAvatar}
                      style={{width: 64, height: 64}}
                 />
-              </p>
+                <div className={`${classes.onlineSignal} ${onlineState === OnlineState.Online ? '' : 'is-invisible'}`}
+                     style={{position:'relative', right: -55, top: -10}}
+
+                ></div>
+              </div>
             </figure>
             <div className={`media-content`}>
               <Link to={`/profile/${conversation.friend._id}`}>
@@ -157,7 +173,7 @@ function ChatFrame() {
               </div>
             ))}
             <div className={`${classes.otherMessage} ${!typing && 'is-invisible'}`} >
-              <span className={`is-italic has-text-link`}>{`${conversation.friend.fullName} is typing...}`}</span>
+              <span className={`is-italic has-text-link`}>{`${conversation.friend.fullName} is typing...`}</span>
             </div>
             <div ref={endChatDiv}></div>
           </div>

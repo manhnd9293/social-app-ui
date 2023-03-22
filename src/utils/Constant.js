@@ -8,7 +8,8 @@ const SocketEvent = {
   NewConversation: 'new-conversation',
   AcceptRequest: 'accept-request',
   Typing: 'typing',
-  EndTyping: 'end-typing'
+  EndTyping: 'end-typing',
+  UpdateOnlineState: 'update-online-state'
 }
 
 const FriendRequestState = {
@@ -17,5 +18,11 @@ const FriendRequestState = {
   Decline: 'declined'
 }
 
+const OnlineState = {
+  Online: 'online',
+  Offline: 'offline'
+}
 
-export {SocketEvent, FriendRequestState};
+
+
+export {SocketEvent, FriendRequestState, OnlineState};

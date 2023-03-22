@@ -42,12 +42,20 @@ function RootLayout() {
     }
 
     return () => {
-      // socket.off('connect');
-      // socket.off('disconnect');
-      socket && socket.close();
-      console.log('close socket');
     };
   }, []);
+
+  useEffect(() => {
+    return () => {
+      if(!socket) return;
+
+      socket.off('connect');
+      socket.off('disconnect');
+      socket && socket.close()
+      console.log(`close socket`);
+    };
+  }, [socket]);
+
 
   return (
     <SocketContext.Provider value={socket}>
