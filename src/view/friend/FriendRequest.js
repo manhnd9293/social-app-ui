@@ -1,19 +1,34 @@
 import React from 'react';
 import {beClient} from "../../config/BeClient";
 import {Link, useLoaderData} from "react-router-dom";
+import {useMutation, useQuery} from "react-query";
+import {FriendRequestState} from "../../utils/Constant";
+import utils from "../../utils/utils";
 
 function FriendRequest() {
-  const sentRequests = useLoaderData();
+  // const sentRequests = useLoaderData();
+  const {data, isLoading, isFetching,refetch, error} = useQuery('sentRequests', loadSentRequests);
+  const {mutate, isLoading: removing, error: removeError} = useMutation(removeRequest, {
+    onSuccess: () => {
+      refetch();
+    }
+  });
+
+  function handleRemoveRequest(id) {
+    mutate(id);
+  }
+
+  if(isLoading) return <div>Loading...</div>
   return (
     <div>
       <div className='subtitle'>Sent requests list</div>
-      {sentRequests.map(sendRequest =>
+      {data && data.map(sendRequest =>
         <div key={sendRequest._id} className='card mt-5'>
           <div className="card-content">
             <div className="media">
               <div className="media-left">
                 <figure className="image is-48x48">
-                  <img src={sendRequest.to.avatar} className='is-rounded' alt="Placeholder image"/>
+                  <img src={sendRequest.to.avatar || utils.defaultAvatar} className='is-rounded' alt="Placeholder image"/>
                 </figure>
               </div>
               <div className="media-content">
@@ -27,7 +42,9 @@ function FriendRequest() {
             </div>
           </div>
           <div className='card-footer buttons p-3'>
-            <div className='button is-rounded is-small'>Cancel Request</div>
+            <div className='button is-rounded is-small'
+                 onClick={() => handleRemoveRequest(sendRequest._id)}
+            >Cancel Request</div>
           </div>
         </div>)}
     </div>
@@ -36,6 +53,13 @@ function FriendRequest() {
 
 function loadSentRequests() {
   return beClient.get(`/user/sent-requests`).then(res => res.data);
+}
+
+function removeRequest(id) {
+  return beClient.patch(`/request/state`, {
+    state: FriendRequestState.Cancel,
+    requestId: id
+  }).then(res => res.data);
 }
 
 export {loadSentRequests};

@@ -17,7 +17,7 @@ function ChatFrame() {
   const [typing, setTyping] = useState(false);
   const endChatDiv = useRef();
   const chatContainer = useRef(null);
-  const moveConversationToTop = useContext(CurrentConversationCtx);
+  const {moveConversationToTop} = useContext(CurrentConversationCtx);
   const isTypingRef = useRef({});
 
 

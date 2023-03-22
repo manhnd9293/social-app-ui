@@ -15,7 +15,8 @@ const SocketEvent = {
 const FriendRequestState = {
   Pending: 'pending',
   Accepted: 'accepted',
-  Decline: 'declined'
+  Decline: 'declined',
+  Cancel: 'canceled'
 }
 
 const OnlineState = {

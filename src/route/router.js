@@ -81,7 +81,6 @@ const router = createBrowserRouter([
           {
             path: 'requests',
             element: <FriendRequest/>,
-            loader: loadSentRequests,
           }
         ]
       },
