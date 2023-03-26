@@ -2,23 +2,64 @@ import React, {useState} from 'react';
 import PostCreate from "./PostCreate/PostCreate";
 import {useSelector} from "react-redux";
 import utils from "../../utils/utils";
-import {useQuery} from "react-query";
+import {useMutation, useQuery, useQueryClient} from "react-query";
 import {beClient} from "../../config/BeClient";
 import Post from "./Post/Post";
+import {Media} from "../../utils/Constant";
 
 function loadNewsFeed() {
   return beClient.get('/news-feed').then(res => res.data);
+}
+
+async function mutateReaction({postId, reactionType, reaction}) {
+  if (!reaction) {
+    return beClient.patch(`/post/reaction/`, {
+      id: postId,
+      media: Media.Post,
+      react: reactionType
+    }).then(res => res.data);
+  } else {
+    return beClient.patch(`/post/un-reaction`, {
+      mediaType: Media.Post,
+      mediaId: postId
+    }).then(res => res.data)
+  }
 }
 
 function Home() {
   const [createPost, setCreatePost] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const user = useSelector(state => state.user);
-  const {data: posts, isLoading, isFetching, reFetch} = useQuery('new-feeds', loadNewsFeed);
+  const queryClient = useQueryClient();
+  const {data: posts, isLoading, isFetching, reFetch} = useQuery('news-feed', loadNewsFeed);
+
+  const mutation = useMutation({
+    mutationFn: mutateReaction,
+    onSuccess: (data, variables) => {
+      queryClient.setQueriesData(['news-feed'], (oldData) => {
+        const feeds = structuredClone(oldData);
+        const {postId} = variables;
+        const index = feeds.findIndex(post => post._id === postId);
+        const post = feeds[index];
+        post.reaction = data.reaction;
+        post.totalReaction = data.totalReaction;
+
+        //todo: ask server return update reaction amount
+        return [...feeds.slice(0, index), post, ...feeds.slice(index + 1)];
+      })
+    }
+  });
+
   const onPosted = () => {
     setCreatePost(false)
-    console.log('posted');
   };
+
+  async function reactPost({postId, reactionType}) {
+    const post = posts.find(p => p._id === postId);
+    const reaction = post.reaction || null;
+    mutation.mutate({postId, reactionType, reaction: reaction});
+  }
+
   return (
     <div className=''>
       {createPost && <PostCreate onclose={() => setCreatePost(false)}
@@ -39,7 +80,10 @@ function Home() {
       <div className={`container mx-auto mt-3`} style={{width: '60%', maxWidth: 600}}>
         {
           posts && posts.length > 0 &&
-          posts.map(post => <Post key={post._id} postData={post}/>)
+          posts.map(post => <Post key={post._id}
+                                  postData={post}
+                                  onReaction={reactPost}
+          />)
         }
       </div>
     </div>

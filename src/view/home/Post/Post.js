@@ -3,6 +3,7 @@ import utils from "../../../utils/utils";
 import {useSelector} from "react-redux";
 import classes from "./post.module.scss";
 import {Link} from "react-router-dom";
+import { Reaction} from "../../../utils/Constant";
 
 const listReaction = [
   {
@@ -32,13 +33,14 @@ const listReaction = [
 ]
 
 
-function Post({postData}) {
-  const {byUser, comments, content, date, totalReaction} = postData;
-  const totalReactionCount = totalReaction.reduce((total, reaction) => total + reaction.value, 0);
+function Post({postData, onReaction}) {
+  const {byUser, comments, content, date, totalReaction, reaction, _id} = postData;
   const user = useSelector(state => state.user);
   const [showReaction, setShowReaction] = useState(false);
   const [hoveEmoji, setHoveEmoji] = useState(null);
   const timeOutRef = useRef(null);
+
+  const totalReactionCount = totalReaction.reduce((total, reaction) => total + reaction.value, 0);
   const showListReaction = (e) => {
     clearTimeout(timeOutRef.current);
     timeOutRef.current = setTimeout(() => {
@@ -52,6 +54,10 @@ function Post({postData}) {
       setShowReaction(false);
     }, 800)
   };
+
+  function reactPost(reactionType) {
+    onReaction({postId: _id, reactionType});
+  }
 
   return (
     <div className={`card p-3 mt-3`}>
@@ -109,6 +115,7 @@ function Post({postData}) {
           <div className={`column is-flex is-justify-content-center is-align-items-center is-clickable is-hoverable ${classes.action}`}
                onMouseOver={showListReaction}
                onMouseOut={hideListReaction}
+               onClick={() => reactPost(Reaction.Like)}
           >
 
             <span className={'icon'}>

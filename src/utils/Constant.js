@@ -23,7 +23,21 @@ const OnlineState = {
   Online: 'online',
   Offline: 'offline'
 }
+const Reaction = {
+  Like: 'like',
+  Love: 'love',
+  Angry: 'angry',
+  Haha: 'haha',
+  Sad: 'sad',
+  Wow: 'wow',
+  Care: 'care'
+}
+
+const Media = {
+  Post: 'post',
+  Photo: 'photo',
+  Comment: 'comment'
+}
 
 
-
-export {SocketEvent, FriendRequestState, OnlineState};
+export {SocketEvent, FriendRequestState, OnlineState, Reaction, Media};
