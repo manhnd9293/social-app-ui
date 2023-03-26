@@ -1,5 +1,5 @@
 import defaultAvatar from '../../src/common/img/defaultAvatar.jpg'
-
+import {DateTime} from 'luxon';
 const utils = {
   getUrlQueryParams(queryList) {
     const url = new URL(window.location.href);
@@ -17,7 +17,7 @@ const utils = {
     return params.get(name) || '';
   },
 
-  getUrlQueryParamsFromRequest(request ,queryList) {
+  getUrlQueryParamsFromRequest(request, queryList) {
     const url = new URL(request.url);
     const params = url.searchParams;
     const ans = {}
@@ -38,13 +38,13 @@ const utils = {
 
   createQueryString(queryObject) {
     let ans = '?';
-    for(let key in queryObject) {
+    for (let key in queryObject) {
       if (queryObject[key]) {
         ans += `${key}=${queryObject[key]}&`;
       }
     }
 
-    return ans.substring(0, ans.length -1);
+    return ans.substring(0, ans.length - 1);
   },
 
   upperCaseFirst(str) {
@@ -63,7 +63,7 @@ const utils = {
     }
   },
 
- getBackgroundImageStyle(url) {
+  getBackgroundImageStyle(url) {
     return {
       backgroundImage: `url(${url})`,
       backgroundRepeat: 'no-repeat',
@@ -73,19 +73,35 @@ const utils = {
     }
   },
 
- navLinkActive:  ({ isActive }) =>
-   isActive ? 'is-active' : undefined,
+  navLinkActive: ({isActive}) =>
+    isActive ? 'is-active' : undefined,
 
- defaultAvatar: defaultAvatar,
+  defaultAvatar: defaultAvatar,
 
-  objectId: function()  {
+  objectId: function () {
     return this.hex(Date.now() / 1000) +
       ' '.repeat(16).replace(/./g, () => this.hex(Math.random() * 16))
   },
 
- hex: function (value) {
-  return Math.floor(value).toString(16)
-  }
+  hex: function (value) {
+    return Math.floor(value).toString(16)
+  },
+
+  showTimeDistanceFromNow(date) {
+    const from = DateTime.fromISO(date);
+    const {days, hours, minutes} = DateTime.now().diff(from, ['days', 'hours', 'minutes']).toObject();
+    if (hours < 1) {
+      return `${Math.floor(minutes)}m`
+    } else if(days <= 0) {
+      return `${Math.floor(hours)}h`
+    } else if (days <=1 ) {
+      return 'Yesterday'
+    } else if(days <= 7) {
+      return `${days}d`
+    } else {
+      return from.toFormat('dd MMMM yyyy');
+    }
+  },
 }
 
 export default utils;

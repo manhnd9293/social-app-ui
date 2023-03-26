@@ -41,17 +41,15 @@ function RootLayout() {
         });
     }
 
-    return () => {
-    };
   }, []);
 
   useEffect(() => {
     return () => {
-      if(!socket) return;
+      if (!socket) return;
 
       socket.off('connect');
       socket.off('disconnect');
-      socket && socket.close()
+      socket.close()
       console.log(`close socket`);
     };
   }, [socket]);
@@ -63,7 +61,7 @@ function RootLayout() {
         <Header/>
         {notification && <Notification/>}
         {process.env.REACT_APP_NODE_ENV !== 'development' && <Loader active={navigation.state === 'loading'}/>}
-        <div className='app-body has-background-white mx-auto px-3 px-2-mobile py-2'
+        <div className='app-body mx-auto px-3 px-2-mobile py-2 has-background-white'
              style={{width: '80%', maxWidth: '1215px', height: '100%'}}>
           <div className='container'>
             <Outlet/>
@@ -72,8 +70,9 @@ function RootLayout() {
         <Footer/>
       </div>
     </SocketContext.Provider>
-);
+  );
 }
+
 export {SocketContext}
 
 export default RootLayout;

@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {beClient} from "../../config/BeClient";
 import {useLoaderData} from "react-router-dom";
 import defaultAvatar from '../../common/img/defaultAvatar.jpg';
@@ -16,7 +16,6 @@ function Profile() {
   const socket = useContext(SocketContext);
 
   async function addConnection() {
-
     const requestBody = {
       message: 'Hi ban, cho minh lam wen voi',
       to: user._id,
@@ -26,8 +25,14 @@ function Profile() {
     socket.emit(SocketEvent.FriendRequest,
       newRequest);
   }
-
   const avatar = currentUser._id === user._id ? currentUser.avatar : user.avatar;
+
+
+  useEffect(() => {
+    if (/\/profile\/*/.test(window.location.pathname)) {
+      window.scrollTo(0, 0);
+    }
+  }, [window.location])
   return (
     <div>
       {profilePicModal && <AvatarModal avatar={avatar}
