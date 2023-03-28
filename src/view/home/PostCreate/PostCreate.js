@@ -3,15 +3,30 @@ import {useSelector} from "react-redux";
 import utils from "../../../utils/utils";
 import {useMutation} from "react-query";
 import {beClient} from "../../../config/BeClient";
+import PostImage from "./PostImage";
 
 function sendCreateRequest(post) {
-  return beClient.post('/post', post).then(res => res.data);
+  const form = new FormData();
+  post.files.forEach(file => {
+    form.append('photoFiles', file);
+    form.append('captions', '');
+  })
+  form.append('content', post.content);
+
+  return beClient.post('/post', form, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  }).then(res => res.data);
 }
 
 function PostCreate({onPosted,onclose}) {
   const [content, setContent] = useState('');
+  const [captions, setCaptions] = useState([]);
+  const [files, setFiles] = useState([]);
   const user = useSelector(state => state.user);
   const postRef = useRef(null);
+
   const {mutate, isLoading, error} = useMutation(sendCreateRequest, {
     onSuccess: () => {
       onPosted();
@@ -20,6 +35,7 @@ function PostCreate({onPosted,onclose}) {
   function createPost() {
     const post = {
       content: content.trim(),
+      files
     }
     mutate(post)
   }
@@ -52,8 +68,11 @@ function PostCreate({onPosted,onclose}) {
                     placeholder={`what's on your mind, ${user.fullName} ?`}
                     value={content}
                     onChange={event => setContent(event.target.value)}
+                    rows={3}
                     ref={postRef}
           ></textarea>
+
+          <PostImage setFiles={setFiles} files={files}/>
         </section>
         <footer className="modal-card-foot">
           <button className={`button is-info`}

@@ -102,6 +102,15 @@ const utils = {
       return from.toFormat('dd MMMM yyyy');
     }
   },
+
+  getStyleForImageBackground(url) {
+   return {
+     backgroundImage: `url(${url})`,
+     backgroundRepeat: 'none',
+     backgroundSize: 'cover',
+     backgroundPosition: 'center'
+   }
+  },
 }
 
 export default utils;

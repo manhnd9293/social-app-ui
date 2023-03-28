@@ -88,7 +88,7 @@ function ConversationList() {
   return (
     <div>
       <div className={`title is-size-4 mt-3`}>Conversations</div>
-      <div className='mt-3 columns' >
+      <div className='mt-3 columns has-background-white box' >
         <div className='list column is-4 has-overflow-ellipsis'>
           <div className={'mb-4'}>
             <input className={'input is-small'} type={'text'} placeholder={'Search messages'}/>

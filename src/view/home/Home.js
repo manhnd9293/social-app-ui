@@ -72,7 +72,7 @@ function Home() {
           </figure>
         </div>
         <div className={`column`}>
-          <input className={`input ml-2`} placeholder={`What\'s on your mind, ${user.fullName} ?`}
+          <input className={`input ml-2 is-clickable`} placeholder={`What\'s on your mind, ${user.fullName} ?`}
                  onFocus={()=> setCreatePost(true)}
           />
         </div>
