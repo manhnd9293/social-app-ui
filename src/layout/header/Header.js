@@ -40,7 +40,7 @@ function Header() {
            style={{width: '80%', maxWidth: '1215px'}}>
         <div className="navbar-brand">
           <Link className="navbar-item" to="/">
-            <span className='has-text-weight-bold has-text-info' style={{fontSize: 20}}>H U N I</span>
+            <span className='has-text-link' style={{fontSize: 20, fontWeight: 'bolder'}}>HUNI</span>
           </Link>
 
           <a role="button" className="navbar-burger" aria-label="menu" aria-expanded="false"

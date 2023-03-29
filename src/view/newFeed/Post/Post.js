@@ -249,7 +249,7 @@ const CurrentReaction = React.forwardRef(({reaction, showListReaction, hideListR
     {
       value: Reaction.Like
     };
-  // debugger
+
   useEffect(() => {
     clearTimeout(ref.current);
   }, [reaction])
@@ -265,9 +265,7 @@ const CurrentReaction = React.forwardRef(({reaction, showListReaction, hideListR
              reactPost(reactionData.value);
            }}
       >
-        <span className={'is-size-5 mr-1'}>
-        {reaction && <span>{reactionData.label}</span>}
-        </span>
+        {reaction && <span className={'is-size-5 mr-1'}>{reactionData.label}</span>}
         {
           !reaction && <span className={'icon is-size-5 mr-1'}>
           <i className="fa-regular fa-thumbs-up"></i>
