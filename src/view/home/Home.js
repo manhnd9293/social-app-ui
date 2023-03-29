@@ -3,6 +3,7 @@ import NewsFeed from "../newFeed/NewsFeed";
 import {NavLink} from "react-router-dom";
 import utils from "../../utils/utils";
 import {useSelector} from "react-redux";
+import Sponsors from "./sponsor/Sponsors";
 
 function Home() {
   const user = useSelector(state => state.user);
@@ -62,7 +63,7 @@ function Home() {
         <NewsFeed/>
       </div>
       <div className={`column is-2 mt-3`}>
-        <span className={`subtitle is-5`}>Advertisements</span>
+        <Sponsors/>
       </div>
 
     </div>

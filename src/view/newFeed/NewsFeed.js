@@ -44,7 +44,6 @@ function NewsFeed() {
         post.reaction = data.reaction;
         post.totalReaction = data.totalReaction;
 
-        //todo: ask server return update reaction amount
         return [...feeds.slice(0, index), post, ...feeds.slice(index + 1)];
       })
     }
@@ -65,13 +64,13 @@ function NewsFeed() {
       {createPost && <PostCreate onclose={() => setCreatePost(false)}
                                  onPosted={onPosted}
       />}
-      <div className={'card columns container is-flex is-justify-content-center is-align-items-center mx-auto mt-3'} style={{ maxWidth: 600}}>
-        <div className={`column is-1`}>
+      <div className={'card columns container mx-auto mt-3'} style={{ maxWidth: 600}}>
+        <div className={`column is-1 is-6-mobile`}>
           <figure className="image is-48x48">
             <img className={`is-rounded`} style={{width: 48, height: 48}} src={user.avatar || utils.defaultAvatar}/>
           </figure>
         </div>
-        <div className={`column`}>
+        <div className={`column is-8`}>
           <input className={`input ml-2 is-clickable`} placeholder={`What\'s on your mind, ${user.fullName} ?`}
                  onFocus={()=> setCreatePost(true)}
           />

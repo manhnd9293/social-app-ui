@@ -42,7 +42,14 @@ function PostCreate({onPosted,onclose}) {
 
   useEffect(() => {
     postRef.current.focus();
-    document.body.style.overflow = 'hidden';
+    // document.body.style.height = '100vh';
+    // document.body.style.overflowY = 'hidden';
+
+    return () => {
+      // console.log('on unmount');
+      // document.body.style.height = '100vh';
+      // document.body.style.overflowY = 'scroll';
+    }
   }, [])
 
   return (

@@ -2,13 +2,13 @@ import React, {createContext, useEffect, useState} from 'react';
 import Header from "../../layout/header/Header";
 import {Outlet, useNavigate, useNavigation} from "react-router-dom";
 import Footer from "../../layout/footer/Footer";
-import './rootLayout.css';
 import {useDispatch, useSelector} from "react-redux";
 import {beClient} from "../../config/BeClient";
 import Notification from "../notification/Notification";
 import {userActions} from "../../store/UserSlice";
 import {createSocket} from "../../config/Socket";
 import Loader from "../../common/loader/Loader";
+import classes from "./rootLayout.module.scss";
 
 const SocketContext = createContext(null);
 
@@ -61,8 +61,7 @@ function RootLayout() {
         <Header/>
         {notification && <Notification/>}
         {process.env.REACT_APP_NODE_ENV !== 'development' && <Loader active={navigation.state === 'loading'}/>}
-        <div className='app-body mx-auto px-3 px-2-mobile py-2'
-             style={{width: '80%', maxWidth: '1215px', height: '100%'}}>
+        <div className={`${classes.appBody} mx-auto px-3 px-2-mobile py-2`}>
           <div className='container'>
             <Outlet/>
           </div>
