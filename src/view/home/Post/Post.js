@@ -3,35 +3,7 @@ import utils from "../../../utils/utils";
 import {useSelector} from "react-redux";
 import classes from "./post.module.scss";
 import {Link} from "react-router-dom";
-import { Reaction} from "../../../utils/Constant";
-
-const listReaction = [
-  {
-    label: '👍',
-    value: 'like'
-  },
-  {
-    label: '❤️',
-    value: 'love'
-  },
-  {
-    label: '😄',
-    value: 'haha'
-  },
-  {
-    label: '😯',
-    value: 'wow'
-  },
-  {
-    label: '😡',
-    value: 'angry'
-  },
-  {
-    label: '😢',
-    value: 'sad'
-  }
-]
-
+import {Reaction} from "../../../utils/Constant";
 
 function Post({postData, onReaction}) {
   const {byUser, comments, content, date, totalReaction, reaction, _id, photo, photoPosts} = postData;
@@ -40,7 +12,20 @@ function Post({postData, onReaction}) {
   const [hoveEmoji, setHoveEmoji] = useState(null);
   const timeOutRef = useRef(null);
 
-  const totalReactionCount = totalReaction.reduce((total, reaction) => total + reaction.value, 0);
+  const reactionListRef = useRef(null);
+  useEffect(() => {
+    const hideReactionOptions = (e) => {
+      if (reactionListRef.current && !reactionListRef.current.contains(e.target)) {
+        setShowReaction(false);
+      }
+    }
+    document.addEventListener('mousedown', hideReactionOptions)
+    return () => {
+      document.removeEventListener('mousedown', hideReactionOptions);
+    };
+  }, []);
+
+
   const showListReaction = (e) => {
     clearTimeout(timeOutRef.current);
     timeOutRef.current = setTimeout(() => {
@@ -58,6 +43,8 @@ function Post({postData, onReaction}) {
   function reactPost(reactionType) {
     onReaction({postId: _id, reactionType});
   }
+
+
   return (
     <div className={`card p-3 mt-3`}>
       <div className={`columns`}>
@@ -79,25 +66,30 @@ function Post({postData, onReaction}) {
       </div>
 
       <PhotoPosts photoPosts={photoPosts}/>
-      {photo && <div className={`mt-3 mb-2 is-clickable`} style={{...utils.getStyleForImageBackground(photo), height: 450}}></div>}
+      {photo && <div className={`mt-3 mb-2 is-clickable`}
+                     style={{...utils.getStyleForImageBackground(photo), height: 450}}></div>}
 
-      {
-        totalReactionCount > 0 && totalReactionCount
-      }
 
+      <PostInteractData totalReaction={totalReaction}/>
       {
         showReaction &&
         <div style={{position: 'absolute', zIndex: 100, bottom: 50}}
+             ref={reactionListRef}
         >
-          <div className={`card is-size-4 is-flex is-justify-content-center is-align-items-flex-end is-flex-wrap-nowrap`} style={{height: 35, width: 275}}>
+          <div
+            className={`card is-size-4 is-flex is-justify-content-center is-align-items-flex-end is-flex-wrap-nowrap`}
+            style={{height: 35, width: 275}}>
             {
               listReaction.map((reaction, index) =>
-                <div className={`is-flex is-flex-direction-column m-0 is-align-items-center is-flex-shrink-1 is-flex-grow-1`}>
+                <div
+                  className={`is-flex is-flex-direction-column m-0 is-align-items-center is-flex-shrink-1 is-flex-grow-1`}>
                   {hoveEmoji === reaction.value &&
-                    <div key={reaction.value+'-'} className={`has-background-dark p-1 has-text-white is-size-6 has-text-centered`}
+                    <div key={reaction.value + '-'}
+                         className={`has-background-dark p-1 has-text-white is-size-6 has-text-centered`}
                          style={{borderRadius: '10px'}}
                     >{hoveEmoji}</div>
                   }
+
                   <div key={reaction.value}
                        className={`px-1 is-clickable is-hoverable ${classes.emoji}`}
                        style={{animationDelay: `${10}ms`, width: '100%'}}
@@ -115,6 +107,11 @@ function Post({postData, onReaction}) {
                        }}
                        onMouseOver={showListReaction}
                        onMouseOut={hideListReaction}
+                       onClick={() => {
+                         reactPost(reaction.value);
+                         clearTimeout(timeOutRef.current);
+                         setShowReaction(false);
+                       }}
                   >{reaction.label}
                   </div>
                 </div>
@@ -124,31 +121,27 @@ function Post({postData, onReaction}) {
       }
       {
         <div className={`columns mt-1`}>
-          <div className={`column is-flex is-justify-content-center is-align-items-center is-clickable is-hoverable ${classes.action}`}
-               onMouseOver={showListReaction}
-               onMouseOut={hideListReaction}
-               onClick={() => reactPost(Reaction.Like)}
-          >
-
-            <span className={'icon'}>
-              <i className="fa-regular fa-thumbs-up"></i>
-            </span>
-            <span>Like</span>
-          </div>
-
-          <div className={`column is-flex is-justify-content-center is-align-items-center is-clickable is-hoverable ${classes.action}`}>
-            <span className={`icon`}>
+          <CurrentReaction hideListReaction={hideListReaction}
+                           showListReaction={showListReaction}
+                           reaction={reaction}
+                           reactPost={reactPost}
+                           ref={timeOutRef}
+          />
+          <div
+            className={`column is-flex is-justify-content-center is-align-items-center`}>
+            <button className={`button is-white`}><span className={`icon`}>
               <i className="fa-regular fa-comment"></i>
             </span>
-            <span>Comment</span>
+              <span>Comment</span></button>
           </div>
           {
             user._id !== byUser._id &&
-            <div className={`column is-flex is-justify-content-center is-align-items-center is-clickable is-hoverable ${classes.action}`}>
-              <span className={`icon`}>
+            <div
+              className={`column is-flex is-justify-content-center is-align-items-center`}>
+              <button className={`button is-white`}><span className={`icon`}>
                 <i className="fa-regular fa-share-from-square"/>
               </span>
-              <span>Share</span>
+                <span>Share</span></button>
             </div>
           }
         </div>
@@ -177,7 +170,7 @@ function PhotoPosts({photoPosts}) {
     );
   }
 
-  if(photoPosts.length === 3){
+  if (photoPosts.length === 3) {
     return (
       <div>
         <div style={{
@@ -187,9 +180,9 @@ function PhotoPosts({photoPosts}) {
         <div className={`columns mt-1 px-3 mb-2 is-4`}>
           {[photoPosts[1], photoPosts[2]].map(post =>
             <div style={{
-                ...utils.getStyleForImageBackground(post.url),
-                height: 300
-              }}
+              ...utils.getStyleForImageBackground(post.url),
+              height: 300
+            }}
                  className={`column`}
                  key={post._id}
             ></div>
@@ -221,6 +214,103 @@ function PhotoPosts({photoPosts}) {
 
     </div>
   )
+}
+
+const listReaction = [
+  {
+    label: '👍',
+    value: 'like'
+  },
+  {
+    label: '❤️',
+    value: 'love'
+  },
+  {
+    label: '😄',
+    value: 'haha'
+  },
+  {
+    label: '😯',
+    value: 'wow'
+  },
+  {
+    label: '😡',
+    value: 'angry'
+  },
+  {
+    label: '😢',
+    value: 'sad'
+  }
+]
+
+
+const CurrentReaction = React.forwardRef(({reaction, showListReaction, hideListReaction, reactPost}, ref) =>{
+  const reactionData = listReaction.find(r => r.value === reaction) ||
+    {
+      value: Reaction.Like
+    };
+  // debugger
+  useEffect(() => {
+    clearTimeout(ref.current);
+  }, [reaction])
+  return (
+    <div
+      className={`column is-flex is-justify-content-center is-align-items-center  `}
+    >
+
+      <div className={`button is-white`}
+           onMouseOver={showListReaction}
+           onMouseOut={hideListReaction}
+           onClick={() => {
+             reactPost(reactionData.value);
+           }}
+      >
+        <span className={'is-size-5 mr-1'}>
+        {reaction && <span>{reactionData.label}</span>}
+        </span>
+        {
+          !reaction && <span className={'icon is-size-5 mr-1'}>
+          <i className="fa-regular fa-thumbs-up"></i>
+        </span>
+
+        }
+        <span>{utils.upperCaseFirst(reactionData.value)}</span>
+      </div>
+    </div>
+  )
+
+})
+
+function getEmotion(reactionType) {
+  const reaction = listReaction.find(r => r.value === reactionType);
+  return reaction.label;
+}
+
+function PostInteractData({totalReaction, comments}) {
+  const totalReactionCount = totalReaction.reduce((total, reaction) => total + reaction.value, 0);
+  const sortReactions = structuredClone(totalReaction).filter(r => r.value > 0).sort((a, b) => b.value - a.value);
+  if (totalReactionCount === 0) return null;
+  return (
+    <div className={`is-flex`}>
+      <div className={`is-flex is-align-items-center`} style={{flexBasis: '50%'}}>
+        {sortReactions.map((r, index) =>
+          <div style={{
+            backgroundColor: 'white',
+            borderRadius: 30, width: 30, textAlign: 'center',
+            border: '1px solid white',
+            marginLeft: `${index > 0 ? '-8px' : 0}`,
+            zIndex: Number(10 - index)
+          }}
+               className={`is-size-6`}
+               key={r.type}
+          >
+            {getEmotion(r.type)}
+          </div>)}
+        <span className={`ml-1`}>{totalReactionCount}</span>
+      </div>
+    </div>
+  )
+
 }
 
 export default Post;

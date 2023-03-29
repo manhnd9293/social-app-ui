@@ -12,7 +12,7 @@ function loadNewsFeed() {
 }
 
 async function mutateReaction({postId, reactionType, reaction}) {
-  if (!reaction) {
+  if (!reaction || reaction !== reactionType) {
     return beClient.patch(`/post/reaction/`, {
       id: postId,
       media: Media.Post,
