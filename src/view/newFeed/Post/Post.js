@@ -69,7 +69,7 @@ function Post({postData, onReaction}) {
       {photo && <div className={`mt-3 mb-2 is-clickable`}
                      style={{...utils.getStyleForImageBackground(photo), height: 450}}></div>}
 
-
+      <div style={{height: 1, backgroundColor: '#dcdbdb'}} className={`mt-3 mb-3`}/>
       <PostInteractData totalReaction={totalReaction}/>
       {
         showReaction &&
@@ -289,24 +289,27 @@ function PostInteractData({totalReaction, comments}) {
   const sortReactions = structuredClone(totalReaction).filter(r => r.value > 0).sort((a, b) => b.value - a.value);
   if (totalReactionCount === 0) return null;
   return (
-    <div className={`is-flex`}>
-      <div className={`is-flex is-align-items-center`} style={{flexBasis: '50%'}}>
-        {sortReactions.map((r, index) =>
-          <div style={{
-            backgroundColor: 'white',
-            borderRadius: 30, width: 30, textAlign: 'center',
-            border: '1px solid white',
-            marginLeft: `${index > 0 ? '-8px' : 0}`,
-            zIndex: Number(10 - index)
-          }}
-               className={`is-size-6`}
-               key={r.type}
-          >
-            {getEmotion(r.type)}
-          </div>)}
-        <span className={`ml-1`}>{totalReactionCount}</span>
+    <>
+      <div className={`is-flex`}>
+        <div className={`is-flex is-align-items-center`} style={{flexBasis: '50%'}}>
+          {sortReactions.map((r, index) =>
+            <div style={{
+              backgroundColor: 'white',
+              borderRadius: 30, width: 30, textAlign: 'center',
+              border: '1px solid white',
+              marginLeft: `${index > 0 ? '-8px' : 0}`,
+              zIndex: Number(10 - index)
+            }}
+                 className={`is-size-6`}
+                 key={r.type}
+            >
+              {getEmotion(r.type)}
+            </div>)}
+          <span className={`ml-1`}>{totalReactionCount}</span>
+        </div>
       </div>
-    </div>
+      <div style={{height: 1, backgroundColor: '#dcdbdb'}} className={`mt-2`}/>
+    </>
   )
 
 }

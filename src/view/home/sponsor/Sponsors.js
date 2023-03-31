@@ -29,7 +29,7 @@ function Sponsors() {
           <Link to={s.url} key={s.name} className={`is-clickable mt-5 has-text-black is-block`}
           >
             <div className={`columns`}>
-              <div className={`column is-6 has-background-white`}>
+              <div className={`column is-6 has-background-white is-flex is-align-items-center`}>
                 <figure className={`is-64x64`}>
                   <img src={s.banner}/>
                 </figure>

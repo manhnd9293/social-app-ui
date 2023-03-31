@@ -25,7 +25,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "css-build": "node-sass --omit-source-map-url sass/appstyle.scss public/css/appstyle.css",
+    "css-watch": "yarn css-build"
   },
   "eslintConfig": {
     "extends": [
