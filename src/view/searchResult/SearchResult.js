@@ -49,10 +49,10 @@ function SearchResult() {
         Search view
       </div>
       <div>
-        <div>People</div>
-        <div className={`list has-visible-pointer-controls`} style={{width: '50%'}}>{
+        <div className={`subtitle is-5`}>People</div>
+        <div className={`list has-visible-pointer-controls has-hoverable-list-items has-background-white`} style={{width: '50%'}}>{
           people.map(p =>
-            <div key={p._id} className={`list-item`}>
+            <div key={p._id} className={`list-item is-hoverable`}>
               <div className={`list-item-image`}>
                 <figure className={`image is-64x64`}>
                   <img className={`is-rounded`} src={p.avatar || utils.defaultAvatar}

@@ -19,6 +19,7 @@ import ConversationList, {conversationsLoader} from "../view/conversation/Conver
 import ChatFrame, {messageLoader} from "../view/conversation/ChatFrame";
 import RootError from "../view/rootLayout/RootError";
 import SearchResult, {loadSearchResult} from "../view/searchResult/SearchResult";
+import Notifications from "../view/Notifications/Notifications";
 
 const router = createBrowserRouter([
   {
@@ -95,6 +96,10 @@ const router = createBrowserRouter([
             loader: messageLoader
           }
         ]
+      },
+      {
+        path: '/notifications',
+        element: <Notifications/>
       },
       {
         path: '/test',

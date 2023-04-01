@@ -1,11 +1,12 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Link, useNavigate} from "react-router-dom";
 import {SocketEvent} from "../../utils/Constant";
-import MenuIcon from "./MenuIcon";
 import MenuIconLink from "./MenuIconLink";
 import ProfileDropdown from "./ProfileDropdown";
 import {SocketContext} from "../../view/rootLayout/RootLayout";
 import utils from "../../utils/utils";
+
+import logo from '../../assets/connectivity.png'
 
 function Header() {
 
@@ -40,7 +41,8 @@ function Header() {
            style={{width: '80%', maxWidth: '1215px'}}>
         <div className="navbar-brand">
           <Link className="navbar-item" to="/">
-            <span className='has-text-link' style={{fontSize: 20, fontWeight: 'bolder'}}>HUNI</span>
+            <img width={30} height={28} src={logo}/>
+            <span className='has-text-link ml-2' style={{fontSize: 20, fontWeight: 'bolder', letterSpacing: 4}}>HUNI</span>
           </Link>
 
           <a role="button" className="navbar-burger" aria-label="menu" aria-expanded="false"
@@ -81,7 +83,7 @@ function Header() {
 
             <MenuIconLink list={unreadMessage} icon="fa-solid fa-message" name='message' to='/conversations'/>
 
-            <MenuIcon list={unreadNotification} icon="fa-solid fa-bell" name='notification'/>
+            <MenuIconLink to={`notifications`} icon="fa-solid fa-bell" name='notification'/>
 
             <ProfileDropdown/>
           </div>

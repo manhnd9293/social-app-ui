@@ -4,7 +4,7 @@ import {Outlet, useNavigate, useNavigation} from "react-router-dom";
 import Footer from "../../layout/footer/Footer";
 import {useDispatch, useSelector} from "react-redux";
 import {beClient} from "../../config/BeClient";
-import Notification from "../notification/Notification";
+import NotificationModal from "../notification/NotificationModal";
 import {userActions} from "../../store/UserSlice";
 import {createSocket} from "../../config/Socket";
 import Loader from "../../common/loader/Loader";
@@ -59,7 +59,7 @@ function RootLayout() {
     <SocketContext.Provider value={socket}>
       <div className="App has-background-white-ter">
         <Header/>
-        {notification && <Notification/>}
+        {notification && <NotificationModal/>}
         {process.env.REACT_APP_NODE_ENV !== 'development' && <Loader active={navigation.state === 'loading'}/>}
         <div className={`${classes.appBody} mx-auto px-3 px-2-mobile py-2`}>
           <div className='container'>

@@ -24,8 +24,7 @@ function FriendList() {
 
   return (
     <div>
-      <div className='subtitle'>Friend List</div>
-      <div className={`list has-visible-pointer-controls`}>
+      <div className={`list has-visible-pointer-controls has-background-white`}>
         {
           allFriends.map(friend =>
               <div key={friend._id} className={`list-item`}>
@@ -47,8 +46,8 @@ function FriendList() {
 
                 <div className={`list-item-controls`}>
                   <div className={`buttons is-right`}>
-                    <div className={`button is-info`}>Message</div>
-                    <button className="button" onClick={() => unfriend(friend.friendId._id)}>
+                    <div className={`button is-info is-small is-rounded`}>Message</div>
+                    <button className="button is-small is-rounded" onClick={() => unfriend(friend.friendId._id)}>
                     Unfriend
                     </button>
                   </div>
