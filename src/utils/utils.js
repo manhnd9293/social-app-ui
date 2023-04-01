@@ -56,6 +56,7 @@ const utils = {
   },
 
   getErrorMessage(error) {
+    if(!error) return;
     if (error.code === 'ERR_NETWORK') {
       return error.message;
     } else {

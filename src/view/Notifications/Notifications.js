@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {beClient} from "../../config/BeClient";
 import {useQuery} from "react-query";
 import utils from "../../utils/utils";
@@ -11,7 +11,12 @@ function loadNotifications({queryKey}) {
 function Notifications() {
   const [page, setPage] = useState(0);
   const {data: notifications, isLoading, isError, error} = useQuery(['notifications', page], loadNotifications);
+  useEffect(() => {
+    if (notifications) {
+      console.log({notifications})
 
+    }
+  }, [notifications])
   return (
     <div>
       <div className={`subtitle mt-3`}>Notifications</div>

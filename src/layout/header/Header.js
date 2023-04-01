@@ -7,6 +7,7 @@ import {SocketContext} from "../../view/rootLayout/RootLayout";
 import utils from "../../utils/utils";
 
 import logo from '../../assets/connectivity.png'
+import {useSelector} from "react-redux";
 
 function Header() {
 
@@ -16,6 +17,7 @@ function Header() {
   const socket = useContext(SocketContext);
   const [searchValue, setSearchValue] = useState(utils.getUrlQueryParam(`key`));
   const navigate = useNavigate();
+  const user = useSelector(state => state.user);
 
   useEffect(() => {
     if(!socket) return;
@@ -79,11 +81,19 @@ function Header() {
 
             <MenuIconLink icon="fa-solid fa-building" name='company' hasNumber={false} to='/company'/>
 
-            <MenuIconLink icon="fa-solid fa-user-group" list={unreadFriendRequest} name='connection' to='/friends'/>
+            <MenuIconLink icon="fa-solid fa-user-group"
+                          name='connection' to='/friends'
+                          number={user.unreadInvitations}
+            />
 
-            <MenuIconLink list={unreadMessage} icon="fa-solid fa-message" name='message' to='/conversations'/>
+            <MenuIconLink icon="fa-solid fa-message"
+                          name='message'
+                          to='/conversations'
+                          number={user.unreadMessages}
+            />
 
-            <MenuIconLink to={`notifications`} icon="fa-solid fa-bell" name='notification'/>
+            <MenuIconLink number={user.unreadNotifications}
+                          to={`notifications`} icon="fa-solid fa-bell" name='notification'/>
 
             <ProfileDropdown/>
           </div>

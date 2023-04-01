@@ -1,6 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
 
-const defaultUser = {_id: null, username: ''};
+const defaultUser = {_id: null, username: '', unreadNotifications: 0, unreadInvitations: 0};
 
 const userSlice = createSlice({
   name: 'user',

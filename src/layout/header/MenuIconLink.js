@@ -2,13 +2,13 @@ import React from 'react';
 import utils from "../../utils/utils";
 import {Link} from "react-router-dom";
 
-function MenuIconLink({list, icon, name, hasNumber = true, to}) {
-  list = list || [];
+function MenuIconLink({number, icon, name, hasNumber = true, to}) {
+
 
   const numberPart = (
-    <span className={`${list.length === 0 && 'is-invisible'} has-background-danger tag is-danger is-normal`}
-          style={{position: 'relative', top: -10, fontSize: 9}}>
-        {list.length < 100 ? list.length : '99+'}
+    <span className={`${number === 0 && 'is-invisible'} has-background-danger tag is-danger is-normal`}
+          style={{position: 'relative', top: -10, fontSize: 9, borderRadius: 20, padding: 6}}>
+        {number < 100 ? number : '99+'}
     </span>
   )
 
@@ -18,7 +18,7 @@ function MenuIconLink({list, icon, name, hasNumber = true, to}) {
       <div className='is-flex is-flex-direction-column is-align-items-center'>
         <div>
           <i className={icon}></i>
-          {(hasNumber && list.length > 0) && numberPart}
+          {(hasNumber && number > 0) && numberPart}
         </div>
         <div style={{fontSize: 11}}>{utils.upperCaseFirst(name)}</div>
       </div>
