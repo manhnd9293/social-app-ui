@@ -88,7 +88,7 @@ function Login() {
           <div className="field mt-3">
             <div className="control container has-text-centered">
               <button className="button is-link is-rounded">
-                Sign In
+                <strong>Sign in</strong>
               </button>
             </div>
           </div>

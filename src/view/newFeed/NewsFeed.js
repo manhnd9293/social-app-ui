@@ -6,6 +6,7 @@ import {useMutation, useQuery, useQueryClient} from "react-query";
 import {beClient} from "../../config/BeClient";
 import Post from "./Post/Post";
 import {Media} from "../../utils/Constant";
+import PostDetail from "./PostDetail";
 
 function loadNewsFeed() {
   return beClient.get('/news-feed').then(res => res.data);
@@ -29,6 +30,7 @@ async function mutateReaction({postId, reactionType, reaction}) {
 function NewsFeed() {
   const [createPost, setCreatePost] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
+  const [focusedPost, setFocusedPost] = useState(null);
   const user = useSelector(state => state.user);
   const queryClient = useQueryClient();
   const {data: posts, isLoading, isFetching, reFetch} = useQuery('news-feed', loadNewsFeed);
@@ -59,6 +61,9 @@ function NewsFeed() {
     mutation.mutate({postId, reactionType, reaction: reaction});
   }
 
+  function focusPost(post) {
+    setFocusedPost(post)
+  }
   return (
     <div className=''>
       {createPost && <PostCreate onclose={() => setCreatePost(false)}
@@ -82,9 +87,17 @@ function NewsFeed() {
           posts.map(post => <Post key={post._id}
                                   postData={post}
                                   onReaction={reactPost}
+                                  onCommentClick={focusPost}
           />)
         }
       </div>
+      {
+        focusedPost &&
+        <PostDetail post={focusedPost}
+                    reactPost={reactPost}
+                    closePostModal={()=>setFocusedPost(null)}
+        />
+      }
     </div>
   );
 }

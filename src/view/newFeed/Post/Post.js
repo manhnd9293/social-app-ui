@@ -4,8 +4,9 @@ import {useSelector} from "react-redux";
 import classes from "./post.module.scss";
 import {Link} from "react-router-dom";
 import {Reaction} from "../../../utils/Constant";
+import ReactLoading from "react-loading";
 
-function Post({postData, onReaction}) {
+function Post({postData, onReaction, onCommentClick}) {
   const {byUser, comments, content, date, totalReaction, reaction, _id, photo, photoPosts} = postData;
   const user = useSelector(state => state.user);
   const [showReaction, setShowReaction] = useState(false);
@@ -46,7 +47,7 @@ function Post({postData, onReaction}) {
 
 
   return (
-    <div className={`card p-3 mt-3`}>
+    <div className={`card p-3 mb-3`}>
       <div className={`columns`}>
         <div className={`column is-1`}>
           <figure className="image is-48x48">
@@ -127,12 +128,15 @@ function Post({postData, onReaction}) {
                            reactPost={reactPost}
                            ref={timeOutRef}
           />
-          <div
-            className={`column is-flex is-justify-content-center is-align-items-center`}>
-            <button className={`button is-white`}><span className={`icon`}>
+          <div className={`column is-flex is-justify-content-center is-align-items-center`}>
+            <button className={`button is-white`}
+                    onClick={e => onCommentClick && onCommentClick(postData)}
+            >
+              <span className={`icon`}>
               <i className="fa-regular fa-comment"></i>
-            </span>
-              <span>Comment</span></button>
+              </span>
+              <span>Comment</span>
+            </button>
           </div>
           {
             user._id !== byUser._id &&
@@ -311,7 +315,8 @@ function PostInteractData({totalReaction, comments}) {
       <div style={{height: 1, backgroundColor: '#dcdbdb'}} className={`mt-2`}/>
     </>
   )
-
 }
+
+
 
 export default Post;
