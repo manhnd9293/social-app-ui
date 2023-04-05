@@ -1,4 +1,5 @@
 import React from 'react';
+import utils from "../../utils/utils";
 
 function getPaginationArray({currentPage , totalItem, itemPerPage = 10}) {
   currentPage = currentPage || 1;
@@ -44,11 +45,11 @@ function Pagination({currentPage, totalItem, itemPerPage = 10, onChangePage}) {
           listPage.map((page, index) => (
             <>
               {index > 0 && listPage[index] > listPage[index - 1] + 1 &&
-                <li key={`h-${index}`}>
+                <li key={`${utils.objectId()}`}>
                   <span className="pagination-ellipsis is-clickable">&hellip;</span>
                 </li>
               }
-              <li key={index}
+              <li key={utils.objectId()}
                   className={`pagination-link ${currentPage === page ? 'is-current' : ''} is-clickable`}
                   onClick={changePage(page)}
               >{page}</li>

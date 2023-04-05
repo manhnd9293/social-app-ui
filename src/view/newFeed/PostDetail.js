@@ -76,12 +76,12 @@ function PostDetail({post,reactPost,closePostModal}) {
             {
               listComment.length > 0 &&
               listComment.map(comment => (
-                <div key={comment._id} className={`mt-3 p-3`}>
+                <div key={comment._id} className={`mt-1 p-3`}>
                   <article className={`media`}>
                     <figure className={`media-left`}>
-                      <p className={`image is-64x64`}>
+                      <p className={`image is-48x48`}>
                         <img src={comment.userId.avatar || utils.defaultAvatar}
-                             style={{width: 64, height: 64}}
+                             style={{width: 48, height: 48}}
                              className={`is-rounded`}
                         />
                       </p>
