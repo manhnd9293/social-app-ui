@@ -39,5 +39,12 @@ const Media = {
   Comment: 'comment'
 }
 
+const Relation = {
+  Friend: 'friend',
+  Stranger: 'stranger',
+  SentRequest: 'sent-request',
+  ReceiveRequest: 'receive-request',
+  Me: 'me'
+}
 
-export {SocketEvent, FriendRequestState, OnlineState, Reaction, Media};
+export {SocketEvent, FriendRequestState, OnlineState, Reaction, Media, Relation};

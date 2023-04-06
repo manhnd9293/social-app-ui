@@ -1,6 +1,10 @@
 import React from 'react';
+import {useSelector} from "react-redux";
 
-function ViewAvatar({avatar, setEditing, setShowModal}) {
+function ViewAvatar({avatar, setEditing}) {
+  const user = useSelector(state => state.user);
+  const profileId = window.location.pathname.split('/')[2];
+  console.log({profileId})
   function deleteAvatar() {
     console.log(`delete avatar`);
   }
@@ -15,8 +19,12 @@ function ViewAvatar({avatar, setEditing, setShowModal}) {
         </div>
       </div>
       <div className={`modal-card-foot`}>
-        <button className={`button`} onClick={deleteAvatar}>Delete Avatar</button>
-        <button className={`button is-info`} onClick={event => setEditing(true)}>Edit</button>
+        {
+          user._id === profileId && <>
+            <button className={`button`} onClick={deleteAvatar}>Delete Avatar</button>
+            <button className={`button is-info`} onClick={event => setEditing(true)}>Edit</button>
+          </>
+        }
       </div>
     </>
   );
