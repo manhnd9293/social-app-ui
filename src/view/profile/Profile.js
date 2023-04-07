@@ -29,6 +29,7 @@ function Profile() {
     }
   }, [window.location.href]);
 
+  const profileId = window.location.pathname.split('/')[2];
   return (
     <div>
       {profilePicModal && <AvatarModal avatar={avatar}
@@ -46,12 +47,45 @@ function Profile() {
       <div className={`columns is-3 mt-3`}>
         <div className={`column is-5`}>
           <div className={`card p-3`}>
-            <strong>Intro</strong>
-            <div>Bio</div>
-            <div>Live</div>
-            <div>Date of birth</div>
-            <div>From</div>
-            <div>Single</div>
+            <strong className={`is-size-5`}>Intro</strong>
+            <div>
+              <span className={`icon mr-1`}>
+                <i className="fa-solid fa-graduation-cap"></i>
+              </span>
+              <span>Studied at Foreign Trade University</span>
+
+            </div>
+            <div>
+              <span className={`icon mr-1`}>
+                <i className="fa-solid fa-house-chimney"></i>
+              </span>
+              <span>Lives in Hanoi, Vietnam</span>
+            </div>
+            <div>
+              <span className={`icon mr-1`}>
+                <i className="fa-solid fa-cake-candles"></i>
+              </span>
+              <span>Birth 9 Jan 1993</span>
+            </div>
+            <div>
+              <span className={`icon mr-1`}>
+                <i className="fa-solid fa-location-dot"></i>
+              </span>
+              <span>From Thai Binh</span>
+            </div>
+            <div>
+              <span className={`icon mr-1`}>
+                <i className="fa-solid fa-heart"></i>
+              </span>
+              <span>Single</span>
+            </div>
+            <div className={`mt-3`}>
+              {
+                currentUser._id === profileId &&
+                <div className={`button`} style={{backgroundColor: '#eaeaea'}}>
+                  <span style={{color: '#504d4d', fontWeight: 'bold'}}>Edit details</span>
+                </div>
+              }            </div>
           </div>
 
           <div className={`card mt-3`}>
@@ -75,7 +109,7 @@ function Profile() {
           </div>
 
           <div className={`card mt-5`} style={{position: "sticky", top: 80}}>
-            <strong className={`ml-1`}>Friends ({user.friendList.length})</strong>
+            <strong className={`ml-1 is-size-6`}>Friends ({user.friendList.length})</strong>
             <div className={`columns is-multiline mt-1`} style={{margin: 0, width: '100%'}}>
               {user.friendList.slice(0,9).map(friend =>
                 <Link key={friend._id}

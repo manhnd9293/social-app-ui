@@ -37,7 +37,6 @@ function ProfileDropdown() {
 
       <div className='navbar-dropdown is-right'>
         <Link to={`/profile/${user._id}`} className='navbar-item'>Profile</Link>
-        <Link to='/setting' className='navbar-item'>Setting</Link>
         <div className='navbar-divider'></div>
         <a className='navbar-item' onClick={logOut}>
           Sign out
