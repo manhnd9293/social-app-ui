@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
 import {beClient} from "../../config/BeClient";
-import {Link, useLoaderData} from "react-router-dom";
+import {Link, useLoaderData, useNavigate} from "react-router-dom";
 import utils from "../../utils/utils";
 
 function FriendList() {
   const friends = useLoaderData();
   const [allFriends, setAllFriends] = useState(friends);
+  const navigate = useNavigate();
 
   if (friends.length === 0) {
     return (
@@ -46,7 +47,9 @@ function FriendList() {
 
                 <div className={`list-item-controls`}>
                   <div className={`buttons is-right`}>
-                    <div className={`button is-info is-small is-rounded`}>Message</div>
+                    <div className={`button is-info is-small is-rounded`}
+                         onClick={() => navigate(`/conversations/${friend.conversationId}`)}
+                    >Message</div>
                     <button className="button is-small is-rounded" onClick={() => unfriend(friend.friendId._id)}>
                     Unfriend
                     </button>

@@ -1,5 +1,7 @@
 import {io} from 'socket.io-client';
 import {SocketEvent} from "../utils/Constant";
+import store from "../store";
+import {userActions} from "../store/UserSlice";
 
 
 function createSocket(user) {
@@ -17,6 +19,10 @@ function createSocket(user) {
 
     socket.on(SocketEvent.NewConversation, (conversation) => {
       socket.emit(SocketEvent.NewConversation, conversation);
+    });
+
+    socket.on(SocketEvent.FriendRequest, (request) => {
+      store.dispatch(userActions.addUnseenRequest())
     })
 
   })

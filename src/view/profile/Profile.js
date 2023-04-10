@@ -83,9 +83,10 @@ function Profile() {
               {
                 currentUser._id === profileId &&
                 <div className={`button`} style={{backgroundColor: '#eaeaea'}}>
-                  <span style={{color: '#504d4d', fontWeight: 'bold'}}>Edit details</span>
+                  <span style={{color: '#504d4d'}}>Edit details</span>
                 </div>
-              }            </div>
+              }
+            </div>
           </div>
 
           <div className={`card mt-3`}>

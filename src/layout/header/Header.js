@@ -82,8 +82,8 @@ function Header() {
             <MenuIconLink icon="fa-solid fa-building" name='company' hasNumber={false} to='/company'/>
 
             <MenuIconLink icon="fa-solid fa-user-group"
-                          name='connection' to='/friends'
-                          number={user.unreadInvitations}
+                          name='connection' to={user.unseenInvitations > 0 ? '/friends/invite' : '/friends'}
+                          number={user.unseenInvitations}
             />
 
             <MenuIconLink icon="fa-solid fa-message"

@@ -1,6 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
 
-const defaultUser = {_id: null, username: '', unreadNotifications: 0, unreadInvitations: 0};
+const defaultUser = {_id: null, username: '', unreadNotifications: 0, unseenInvitations: 0};
 
 const userSlice = createSlice({
   name: 'user',
@@ -24,6 +24,16 @@ const userSlice = createSlice({
       const { avatar } = action.payload;
       return {...state, avatar}
     },
+
+    seenFriendRequest(state, action){
+      const {unseenInvitations} = action.payload;
+      state.unseenInvitations = unseenInvitations;
+      return state;
+    },
+
+    addUnseenRequest(state) {
+      state.unseenInvitations++;
+    }
   }
 })
 
