@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {beClient} from "../../config/BeClient";
 import {useQuery} from "react-query";
 import utils from "../../utils/utils";
+import {useDispatch} from "react-redux";
+import {userActions} from "../../store/UserSlice";
 
 function loadNotifications({queryKey}) {
   const [_, page] = queryKey;
@@ -11,9 +13,16 @@ function loadNotifications({queryKey}) {
 function Notifications() {
   const [page, setPage] = useState(0);
   const {data: notifications, isLoading, isError, error} = useQuery(['notifications', page], loadNotifications);
+  const dispatch = useDispatch();
+
   useEffect(() => {
     if (notifications) {
-      console.log({notifications})
+      beClient.patch('/notifications/seen', {
+        notificationIds: notifications.map(notification => notification._id)
+      }).then(res => {
+        const updateUnseen = res.data;
+        dispatch(userActions.updateSeenNotifications({updateUnseen}));
+      })
 
     }
   }, [notifications])

@@ -33,6 +33,12 @@ const userSlice = createSlice({
 
     addUnseenRequest(state) {
       state.unseenInvitations++;
+    },
+
+    updateSeenNotifications(state, payload) {
+      const {updateUnseen} = {...payload};
+      state.unreadNotifications = updateUnseen;
+      return state;
     }
   }
 })
