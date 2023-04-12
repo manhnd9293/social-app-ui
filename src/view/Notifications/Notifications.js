@@ -4,6 +4,7 @@ import {useQuery} from "react-query";
 import utils from "../../utils/utils";
 import {useDispatch} from "react-redux";
 import {userActions} from "../../store/UserSlice";
+import {NotificationType} from "../../utils/Constant";
 
 function loadNotifications({queryKey}) {
   const [_, page] = queryKey;
@@ -25,19 +26,20 @@ function Notifications() {
       })
 
     }
-  }, [notifications])
+  }, [notifications]);
+
   return (
     <div>
       <div className={`subtitle mt-3`}>Notifications</div>
       {notifications && <div className={`list has-hoverable-list-items has-overflow-ellipsi has-background-white block`} style={{maxWidth: 600}}>
         {notifications.map(n =>
-          <div className={`list-item is-clickable is-hoverable`} key={n._id}>
+          <div className={`list-item is-clickable is-hoverable`} key={n._id} style={!n.seen ? {backgroundColor: '#d6e1ee'} : {}}>
             <article className={`media`}>
               <figure className={`media-left is-64x64 image`}>
                 <img className={`is-rounded`} src={n.from.avatar || utils.defaultAvatar} style={{width: 64, height: 64}}/>
               </figure>
               <div className={`media-content`}>
-                <strong>{n.from.fullName}</strong> like your post
+                <strong>{n.from.fullName}</strong> {getNotificationMessage(n)}
               </div>
             </article>
           </div>
@@ -45,6 +47,24 @@ function Notifications() {
       </div>}
     </div>
   );
+}
+
+function getNotificationMessage(notification) {
+
+  let message = '';
+  switch (notification.type) {
+    case NotificationType.Reaction:
+      message = `reacted ${notification.payload.reaction} your ${notification.payload.media}`;
+      break;
+    case NotificationType.FriendAccept:
+      message = `accepted your friend request. You now can send direct private messages to each others`;
+      break;
+    case NotificationType.Comment:
+      message = `commented on your post`;
+      break;
+  }
+
+  return message;
 }
 
 export default Notifications;

@@ -23,6 +23,10 @@ function createSocket(user) {
 
     socket.on(SocketEvent.FriendRequest, (request) => {
       store.dispatch(userActions.addUnseenRequest())
+    });
+
+    socket.on(SocketEvent.Notification, data => {
+      store.dispatch(userActions.updateSeenNotifications(data))
     })
 
   })

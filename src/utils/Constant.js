@@ -1,6 +1,5 @@
 const SocketEvent = {
   JoinRoom: 'join-room',
-  FriendRequest: 'friend-request',
   Auth: 'authentication',
   MessageSent: 'message-sent',
   MessageReceived: 'message-receive',
@@ -9,7 +8,9 @@ const SocketEvent = {
   AcceptRequest: 'accept-request',
   Typing: 'typing',
   EndTyping: 'end-typing',
-  UpdateOnlineState: 'update-online-state'
+  UpdateOnlineState: 'update-online-state',
+  FriendRequest: 'friend-request',
+  Notification: 'notification'
 }
 
 const FriendRequestState = {
@@ -47,4 +48,10 @@ const Relation = {
   Me: 'me'
 }
 
-export {SocketEvent, FriendRequestState, OnlineState, Reaction, Media, Relation};
+const NotificationType = {
+  Reaction: 'reaction',
+  FriendAccept: 'friend-accept',
+  Comment: 'comment'
+}
+
+export {SocketEvent, FriendRequestState, OnlineState, Reaction, Media, Relation, NotificationType};

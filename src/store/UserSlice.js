@@ -1,6 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
 
-const defaultUser = {_id: null, username: '', unreadNotifications: 0, unseenInvitations: 0};
+const defaultUser = {_id: null, username: '', unseenNotifications: 0, unseenInvitations: 0};
 
 const userSlice = createSlice({
   name: 'user',
@@ -35,11 +35,12 @@ const userSlice = createSlice({
       state.unseenInvitations++;
     },
 
-    updateSeenNotifications(state, payload) {
-      const {updateUnseen} = {...payload};
-      state.unreadNotifications = updateUnseen;
+    updateSeenNotifications(state, action) {
+      const {unseen: updateUnseen} = {...action.payload};
+      state.unseenNotifications = updateUnseen;
       return state;
-    }
+    },
+
   }
 })
 

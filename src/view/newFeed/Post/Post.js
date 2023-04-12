@@ -68,10 +68,10 @@ function Post({postData, onReaction, onCommentClick}) {
 
       <PhotoPosts photoPosts={photoPosts}/>
       {photo && <div className={`mt-3 mb-2 is-clickable`}
-                     style={{...utils.getStyleForImageBackground(photo), height: 450}}></div>}
+                     style={{...utils.getStyleForImageBackground(photo), height: 420}}></div>}
 
       <div style={{height: 1, backgroundColor: '#dcdbdb'}} className={`mt-3 mb-3`}/>
-      <PostInteractData totalReaction={totalReaction}/>
+      <PostInteractData totalReaction={totalReaction} comments={comments}/>
       {
         showReaction &&
         <div style={{position: 'absolute', zIndex: 100, bottom: 50}}
@@ -294,7 +294,7 @@ function PostInteractData({totalReaction, comments}) {
   if (totalReactionCount === 0) return null;
   return (
     <>
-      <div className={`is-flex`}>
+      <div className={`is-flex is-justify-content-space-between`}>
         <div className={`is-flex is-align-items-center`} style={{flexBasis: '50%'}}>
           {sortReactions.map((r, index) =>
             <div style={{
@@ -311,6 +311,10 @@ function PostInteractData({totalReaction, comments}) {
             </div>)}
           <span className={`ml-1`}>{totalReactionCount}</span>
         </div>
+        {
+          comments > 0 &&
+          <div>{comments} comment{comments > 1 && 's'} </div>
+        }
       </div>
       <div style={{height: 1, backgroundColor: '#dcdbdb'}} className={`mt-2`}/>
     </>
