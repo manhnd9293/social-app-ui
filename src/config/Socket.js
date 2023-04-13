@@ -22,11 +22,11 @@ function createSocket(user) {
     });
 
     socket.on(SocketEvent.FriendRequest, (request) => {
-      store.dispatch(userActions.addUnseenRequest())
+      store.dispatch(userActions.updateUnseenRequest(request));
     });
 
     socket.on(SocketEvent.Notification, data => {
-      store.dispatch(userActions.updateSeenNotifications(data))
+      store.dispatch(userActions.updateSeenNotifications(data));
     })
 
   })

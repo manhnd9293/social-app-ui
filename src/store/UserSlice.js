@@ -31,8 +31,9 @@ const userSlice = createSlice({
       return state;
     },
 
-    addUnseenRequest(state) {
-      state.unseenInvitations++;
+    updateUnseenRequest(state, action) {
+      const {unseen} = {...action.payload};
+      state.unseenInvitations = unseen;
     },
 
     updateSeenNotifications(state, action) {

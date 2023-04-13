@@ -22,9 +22,7 @@ function SearchResult() {
       to: friendId,
       from: user._id
     }
-
-    const newRequest = await beClient.post('/request', requestBody).then(res => res.data);
-    await socket.emit(SocketEvent.FriendRequest, newRequest);
+    await beClient.post('/request', requestBody).then(res => res.data);
 
     const update = structuredClone(people);
     const updatePerson = update.find(p => p._id === friendId);
