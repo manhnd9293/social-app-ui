@@ -50,8 +50,17 @@ function ChatFrame() {
   useEffect(() => {
     setMessages(initialMessage);
     setOnlineState(conversation.friend.onlineState);
-  }, [initialMessage]);
 
+    const unseen = initialMessage.filter(m => !m.seen && m.from !== user._id);
+    if (unseen.length > 0) {
+      beClient.patch('/messages/seen', {
+        conversationId: conversation._id,
+        messageIds: unseen.map(m => m._id)
+      }).then(res => {
+
+      })
+    }
+  }, [initialMessage]);
 
   useEffect(() => {
     if (!socket) return;
