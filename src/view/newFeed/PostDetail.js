@@ -25,6 +25,7 @@ function PostDetail({post,reactPost,closePostModal}) {
         mediaId: post._id
       }).then(res => res.data);
       setListComment([
+        ...listComment,
         {
           userId: {
             fullName: user.fullName,
@@ -34,8 +35,7 @@ function PostDetail({post,reactPost,closePostModal}) {
           content: comment,
           totalReaction: [],
           _id: utils.objectId()
-        },
-        ...listComment
+        }
       ])
     }
   }
