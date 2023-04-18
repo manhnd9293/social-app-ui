@@ -40,11 +40,12 @@ function NewsFeed() {
     onSuccess: (data, variables) => {
       queryClient.setQueriesData(['news-feed'], (oldData) => {
         const feeds = structuredClone(oldData);
-        const {postId} = variables;
+        const { postId } = variables;
         const index = feeds.findIndex(post => post._id === postId);
         const post = feeds[index];
         post.reaction = data.reaction;
         post.totalReaction = data.totalReaction;
+        focusedPost && setFocusedPost(structuredClone(post));
 
         return [...feeds.slice(0, index), post, ...feeds.slice(index + 1)];
       })
@@ -87,9 +88,9 @@ function NewsFeed() {
           posts.map(post =>
             <div className={`mb-3`}>
               <Post key={post._id}
-                                       postData={post}
-                                       onReaction={reactPost}
-                                       onCommentClick={focusPost}
+                    postData={post}
+                    onReaction={reactPost}
+                    onCommentClick={focusPost}
               />
             </div>
           )

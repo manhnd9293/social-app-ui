@@ -128,10 +128,13 @@ function Profile() {
         </div>
         <div className={`column is-7`}>
           {
-            timeline.map(post => <Post key={post._id}
-                                       postData={post}
+            timeline.map(post =>
+              <div className={`mb-3`}>
+                <Post key={post._id}
+                      postData={post}
 
-            />)
+                />
+              </div>)
           }
         </div>
       </div>

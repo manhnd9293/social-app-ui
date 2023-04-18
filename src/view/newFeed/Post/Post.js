@@ -15,8 +15,8 @@ function Post({postData, onReaction, onCommentClick, showComments}) {
   const [showReaction, setShowReaction] = useState(false);
   const [hoveEmoji, setHoveEmoji] = useState(null);
   const timeOutRef = useRef(null);
-
   const reactionListRef = useRef(null);
+
   useEffect(() => {
     const hideReactionOptions = (e) => {
       if (reactionListRef.current && !reactionListRef.current.contains(e.target)) {
@@ -28,7 +28,6 @@ function Post({postData, onReaction, onCommentClick, showComments}) {
       document.removeEventListener('mousedown', hideReactionOptions);
     };
   }, []);
-
 
   const showListReaction = (e) => {
     clearTimeout(timeOutRef.current);
@@ -74,85 +73,89 @@ function Post({postData, onReaction, onCommentClick, showComments}) {
                      style={{...utils.getStyleForImageBackground(photo), height: 420}}></div>}
 
       <div style={{height: 1, backgroundColor: '#dcdbdb'}} className={`mt-3 mb-3`}/>
-      <PostInteractData totalReaction={totalReaction} comments={comments}/>
-      {
-        showReaction &&
-        <div style={{position: 'absolute', zIndex: 100, bottom: 50}}
-             ref={reactionListRef}
-        >
-          <div
-            className={`card is-size-4 is-flex is-justify-content-center is-align-items-flex-end is-flex-wrap-nowrap`}
-            style={{height: 35, width: 275}}>
-            {
-              ListReaction.map((reaction, index) =>
-                <div
-                  className={`is-flex is-flex-direction-column m-0 is-align-items-center is-flex-shrink-1 is-flex-grow-1`}>
-                  {hoveEmoji === reaction.value &&
-                    <div key={reaction.value + '-'}
-                         className={`has-background-dark p-1 has-text-white is-size-6 has-text-centered`}
-                         style={{borderRadius: '10px'}}
-                    >{hoveEmoji}</div>
-                  }
 
-                  <div key={reaction.value}
-                       className={`px-1 is-clickable is-hoverable ${classes.emoji}`}
-                       style={{animationDelay: `${10}ms`, width: '100%'}}
-                       onMouseEnter={(e) => {
-                         setHoveEmoji(reaction.value);
-                         e.target.style.removeProperty('animation-delay');
-                         e.target.classList.remove(classes.emoji)
-                         e.target.classList.remove(classes.downEmo)
-                         e.target.classList.add(classes.upEmo)
-                       }}
-                       onMouseLeave={(e) => {
-                         setHoveEmoji(null);
-                         e.target.classList.remove(classes.upEmo)
-                         e.target.classList.add(classes.downEmo)
-                       }}
-                       onMouseOver={showListReaction}
-                       onMouseOut={hideListReaction}
-                       onClick={() => {
-                         reactPost(reaction.value);
-                         clearTimeout(timeOutRef.current);
-                         setShowReaction(false);
-                       }}
-                  >{reaction.label}
-                  </div>
-                </div>
-              )}
-          </div>
+      <PostInteractData totalReaction={totalReaction}
+                        comments={comments}
+      />
+
+      <div className={`columns mt-1`} style={{position: 'relative'}}>
+        <CurrentReaction hideListReaction={hideListReaction}
+                         showListReaction={showListReaction}
+                         reaction={reaction}
+                         reactPost={reactPost}
+                         ref={timeOutRef}
+        />
+        <div className={`column is-flex is-justify-content-center is-align-items-center`}>
+          <button className={`button is-white`}
+                  onClick={e => onCommentClick && onCommentClick(postData)}
+          >
+            <span className={`icon`}>
+            <i className="fa-regular fa-comment"></i>
+            </span>
+            <span>Comment</span>
+          </button>
         </div>
-      }
-      {
-        <div className={`columns mt-1`}>
-          <CurrentReaction hideListReaction={hideListReaction}
-                           showListReaction={showListReaction}
-                           reaction={reaction}
-                           reactPost={reactPost}
-                           ref={timeOutRef}
-          />
-          <div className={`column is-flex is-justify-content-center is-align-items-center`}>
-            <button className={`button is-white`}
-                    onClick={e => onCommentClick && onCommentClick(postData)}
-            >
-              <span className={`icon`}>
-              <i className="fa-regular fa-comment"></i>
-              </span>
-              <span>Comment</span>
-            </button>
+        {
+          user._id !== byUser._id &&
+          <div
+            className={`column is-flex is-justify-content-center is-align-items-center`}>
+            <button className={`button is-white`}><span className={`icon`}>
+              <i className="fa-regular fa-share-from-square"/>
+            </span>
+              <span>Share</span></button>
           </div>
-          {
-            user._id !== byUser._id &&
+        }
+        {
+          showReaction &&
+          <div style={{position: 'absolute', zIndex: 100, top: -30}}
+               ref={reactionListRef}
+          >
             <div
-              className={`column is-flex is-justify-content-center is-align-items-center`}>
-              <button className={`button is-white`}><span className={`icon`}>
-                <i className="fa-regular fa-share-from-square"/>
-              </span>
-                <span>Share</span></button>
+              className={`card is-size-4 is-flex is-justify-content-center is-align-items-flex-end is-flex-wrap-nowrap`}
+              style={{height: 35, width: 275}}>
+              {
+                ListReaction.map((reaction, index) =>
+                  <div
+                    className={`is-flex is-flex-direction-column m-0 is-align-items-center is-flex-shrink-1 is-flex-grow-1`}>
+                    {hoveEmoji === reaction.value &&
+                      <div key={reaction.value + '-'}
+                           className={`has-background-dark p-1 has-text-white is-size-6 has-text-centered`}
+                           style={{borderRadius: '10px'}}
+                      >{hoveEmoji}</div>
+                    }
+
+                    <div key={reaction.value}
+                         className={`px-1 is-clickable is-hoverable ${classes.emoji}`}
+                         style={{animationDelay: `${10}ms`, width: '100%'}}
+                         onMouseEnter={(e) => {
+                           setHoveEmoji(reaction.value);
+                           e.target.style.removeProperty('animation-delay');
+                           e.target.classList.remove(classes.emoji)
+                           e.target.classList.remove(classes.downEmo)
+                           e.target.classList.add(classes.upEmo)
+                         }}
+                         onMouseLeave={(e) => {
+                           setHoveEmoji(null);
+                           e.target.classList.remove(classes.upEmo)
+                           e.target.classList.add(classes.downEmo)
+                         }}
+                         onMouseOver={showListReaction}
+                         onMouseOut={hideListReaction}
+                         onClick={() => {
+                           reactPost(reaction.value);
+                           clearTimeout(timeOutRef.current);
+                           setShowReaction(false);
+                         }}
+                    >{reaction.label}
+                    </div>
+                  </div>
+                )}
             </div>
-          }
-        </div>
-      }
+          </div>
+        }
+
+      </div>
+
       {showComments && <PostComments post={postData}/>}
     </div>
   );

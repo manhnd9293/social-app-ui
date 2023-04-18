@@ -1,8 +1,8 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect } from 'react';
 import Post from "./Post/Post";
 
 
-function PostDetail({post,reactPost,closePostModal}) {
+function PostDetail({post, reactPost, closePostModal}) {
 
   useEffect(() => {
     const root = document.getElementsByTagName( 'html' )[0];
