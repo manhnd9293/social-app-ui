@@ -84,11 +84,15 @@ function NewsFeed() {
       <div className={`container mx-auto mt-3`} style={{maxWidth: 600}}>
         {
           posts && posts.length > 0 &&
-          posts.map(post => <Post key={post._id}
-                                  postData={post}
-                                  onReaction={reactPost}
-                                  onCommentClick={focusPost}
-          />)
+          posts.map(post =>
+            <div className={`mb-3`}>
+              <Post key={post._id}
+                                       postData={post}
+                                       onReaction={reactPost}
+                                       onCommentClick={focusPost}
+              />
+            </div>
+          )
         }
       </div>
       {

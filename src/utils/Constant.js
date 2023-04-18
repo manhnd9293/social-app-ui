@@ -54,4 +54,31 @@ const NotificationType = {
   Comment: 'comment'
 }
 
-export {SocketEvent, FriendRequestState, OnlineState, Reaction, Media, Relation, NotificationType};
+const ListReaction = [
+  {
+    label: '👍',
+    value: 'like'
+  },
+  {
+    label: '❤️',
+    value: 'love'
+  },
+  {
+    label: '😄',
+    value: 'haha'
+  },
+  {
+    label: '😯',
+    value: 'wow'
+  },
+  {
+    label: '😡',
+    value: 'angry'
+  },
+  {
+    label: '😢',
+    value: 'sad'
+  }
+]
+
+export {SocketEvent, FriendRequestState, OnlineState, Reaction, Media, Relation, NotificationType, ListReaction};
