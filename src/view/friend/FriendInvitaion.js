@@ -26,8 +26,6 @@ function FriendInvitations() {
     }
   }, [invitations]);
 
-
-
   async function acceptRequest(requestId) {
     const {conversation} = await beClient.patch('/request/state', {
       state: FriendRequestState.Accepted,

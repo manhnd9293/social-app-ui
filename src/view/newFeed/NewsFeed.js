@@ -14,7 +14,7 @@ function loadNewsFeed() {
 
 async function mutateReaction({postId, reactionType, reaction}) {
   if (!reaction || reaction !== reactionType) {
-    return beClient.patch(`/post/reaction/`, {
+    return beClient.patch(`/post/reaction`, {
       id: postId,
       media: Media.Post,
       react: reactionType
@@ -65,6 +65,20 @@ function NewsFeed() {
   function focusPost(post) {
     setFocusedPost(post)
   }
+
+  function loadMorePosts() {
+    if(posts.length === 0) return;
+
+    return beClient.get(`/news-feed?lastId=${posts[posts.length-1]._id}`).then(res => {
+      const morePosts = res.data;
+
+      queryClient.setQueriesData(['news-feed'], oldPosts => {
+        const feeds = structuredClone(oldPosts);
+        return [...feeds, ...morePosts];
+      })
+    });
+  }
+
   return (
     <div className=''>
       {createPost && <PostCreate onclose={() => setCreatePost(false)}
@@ -95,6 +109,11 @@ function NewsFeed() {
             </div>
           )
         }
+      </div>
+      <div>
+        <div className={`button`}
+             onClick={loadMorePosts}
+        >Load more</div>
       </div>
       {
         focusedPost &&
