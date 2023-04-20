@@ -110,7 +110,7 @@ function NewsFeed() {
           )
         }
       </div>
-      <div>
+      <div className={`container has-text-centered`}>
         <div className={`button`}
              onClick={loadMorePosts}
         >Load more</div>

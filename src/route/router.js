@@ -10,7 +10,7 @@ import NewCompany, {loadNewCompanyData} from "../view/company/newCompany/NewComp
 import ListCompany, {loadCompanies} from "../view/company/companyList/ListCompany";
 import CompanyDetail, {loadCompanyDetail} from "../view/company/companyDetail/CompanyDetail";
 import Profile, {loadProfileData} from "../view/profile/Profile";
-import ProfileError from "../view/profile/ProfileError";
+import ProfileError from "../view/profile/error/ProfileError";
 import FriendView from "../view/friend/FriendView";
 import FriendInvitations, {loadInvitationList} from "../view/friend/FriendInvitaion";
 import FriendRequest, {loadSentRequests} from "../view/friend/FriendRequest";

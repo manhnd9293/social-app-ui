@@ -17,7 +17,7 @@ function App() {
 
   useEffect(() => {
     console.log("%cStop!", "color:red;font-size:50px;font-weight:bold");
-    console.log('This is a browser feature intended for developers. If someone told you to copy-paste something here to enable a feature or "hack" someone\'s account, it is a scam and will give them access to your Facebook account.');
+    console.log('This is a browser feature intended for developers. If someone told you to copy-paste something here to enable a feature or "hack" someone\'s account, it is a scam and will give them access to your Huni account.');
   }, [])
 
   return (

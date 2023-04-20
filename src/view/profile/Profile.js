@@ -8,7 +8,10 @@ import { Relation, SocketEvent} from "../../utils/Constant";
 import FriendOptions from "../friend/FriendOptions";
 import {SocketContext} from "../rootLayout/RootLayout";
 import AvatarModal from "./avatar/AvatarModal";
-import Post from "../newFeed/Post/Post";
+import Intro from "./Intro";
+import ProfilePhotos from "./ProfilePhotos";
+import RegularFriends from "./RegularFriends";
+import Timeline from "./Timeline";
 
 function Profile() {
   const currentUser = useSelector(state => state.user);
@@ -29,7 +32,6 @@ function Profile() {
     }
   }, [window.location.href]);
 
-  const profileId = window.location.pathname.split('/')[2];
   return (
     <div>
       {profilePicModal && <AvatarModal avatar={avatar}
@@ -46,100 +48,14 @@ function Profile() {
       />
       <div className={`columns is-3 mt-3`}>
         <div className={`column is-5`}>
-          <div className={`card p-3`}>
-            <strong className={`is-size-5`}>Intro</strong>
-            <div>
-              <span className={`icon mr-1`}>
-                <i className="fa-solid fa-graduation-cap"></i>
-              </span>
-              <span>Studied at Foreign Trade University</span>
-
-            </div>
-            <div>
-              <span className={`icon mr-1`}>
-                <i className="fa-solid fa-house-chimney"></i>
-              </span>
-              <span>Lives in Hanoi, Vietnam</span>
-            </div>
-            <div>
-              <span className={`icon mr-1`}>
-                <i className="fa-solid fa-cake-candles"></i>
-              </span>
-              <span>Birth 9 Jan 1993</span>
-            </div>
-            <div>
-              <span className={`icon mr-1`}>
-                <i className="fa-solid fa-location-dot"></i>
-              </span>
-              <span>From Thai Binh</span>
-            </div>
-            <div>
-              <span className={`icon mr-1`}>
-                <i className="fa-solid fa-heart"></i>
-              </span>
-              <span>Single</span>
-            </div>
-            <div className={`mt-3`}>
-              {
-                currentUser._id === profileId &&
-                <div className={`button`} style={{backgroundColor: '#eaeaea'}}>
-                  <span style={{color: '#504d4d'}}>Edit details</span>
-                </div>
-              }
-            </div>
-          </div>
-
-          <div className={`card mt-3`}>
-            <div>
-              <strong className={`ml-1`}>Photos</strong>
-            </div>
-            <div className={`mt-1 columns is-multiline`}
-                 style={{width: '100%', margin: 0}}>
-              {
-                user.recentPhotos.map((photo) =>
-                  <div className={`column is-4 is-clickable`}
-                       key={utils.objectId()}
-                       style={{padding:2}}>
-                    <figure className={`image`}>
-                      <div style={{...utils.getStyleForImageBackground(photo.url), height: 128}}></div>
-                    </figure>
-                  </div>
-                )
-              }
-            </div>
-          </div>
-
-          <div className={`card mt-5`} style={{position: "sticky", top: 80}}>
-            <strong className={`ml-1 is-size-6`}>Friends ({user.friendList.length})</strong>
-            <div className={`columns is-multiline mt-1`} style={{margin: 0, width: '100%'}}>
-              {user.friendList.slice(0,9).map(friend =>
-                <Link key={friend._id}
-                      className={`column is-4 is-clickable has-text-black p-0`}
-                      to={`/profile/${friend._id}`}
-                >
-                  <figure className={`image`} style={{padding: 3}}>
-                    <img style={{width:'100%', height: 130, maxWidth: 200}} src={friend.avatar || utils.defaultAvatar}></img>
-                  </figure>
-                  <div className={`mt-1 ml-1 mb-1`}>{utils.upperCaseFirst(friend.fullName)}</div>
-                </Link>
-              )}
-            </div>
-          </div>
+          <Intro/>
+          <ProfilePhotos user={user}/>
+          <RegularFriends user={user}/>
         </div>
         <div className={`column is-7`}>
-          {
-            timeline.map(post =>
-              <div className={`mb-3`}>
-                <Post key={post._id}
-                      postData={post}
-
-                />
-              </div>)
-          }
+          <Timeline timeline={timeline}/>
         </div>
       </div>
-
-
     </div>
   );
 }
@@ -285,8 +201,6 @@ function RelationOptions({label, optionsList}) {
 
   );
 }
-
-
 
 function loadProfileData({params}) {
   const {id} = params;
