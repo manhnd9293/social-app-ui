@@ -1,7 +1,7 @@
 import React, {useRef, useState} from 'react';
 import ReactLoading from "react-loading";
 import {beClient} from "../../../config/BeClient";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {userActions} from "../../../store/UserSlice";
 
 function PreviewUpload({setEditing, setShowModal}) {

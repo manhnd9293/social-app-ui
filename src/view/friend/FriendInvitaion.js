@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {beClient} from "../../config/BeClient";
-import {Link, useLoaderData, useNavigate} from "react-router-dom";
+import {Link, useLoaderData} from "react-router-dom";
 import {FriendRequestState, SocketEvent} from "../../utils/Constant";
 import {SocketContext} from "../rootLayout/RootLayout";
 import {useDispatch} from "react-redux";

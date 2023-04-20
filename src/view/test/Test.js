@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect} from 'react';
 import {beClient} from "../../config/BeClient";
 import {useInfiniteQuery} from "react-query";
 

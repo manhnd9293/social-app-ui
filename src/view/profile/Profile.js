@@ -1,10 +1,10 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import {beClient} from "../../config/BeClient";
-import {Link, useLoaderData} from "react-router-dom";
+import {useLoaderData} from "react-router-dom";
 import defaultAvatar from '../../common/img/defaultAvatar.jpg';
 import utils from "../../utils/utils";
 import {useSelector} from "react-redux";
-import { Relation, SocketEvent} from "../../utils/Constant";
+import {Relation, SocketEvent} from "../../utils/Constant";
 import FriendOptions from "../friend/FriendOptions";
 import {SocketContext} from "../rootLayout/RootLayout";
 import AvatarModal from "./avatar/AvatarModal";

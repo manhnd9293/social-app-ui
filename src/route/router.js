@@ -13,7 +13,7 @@ import Profile, {loadProfileData} from "../view/profile/Profile";
 import ProfileError from "../view/profile/error/ProfileError";
 import FriendView from "../view/friend/FriendView";
 import FriendInvitations, {loadInvitationList} from "../view/friend/FriendInvitaion";
-import FriendRequest, {loadSentRequests} from "../view/friend/FriendRequest";
+import FriendRequest from "../view/friend/FriendRequest";
 import FriendList, {loadFriendsList} from "../view/friend/FriendList";
 import ConversationList, {conversationsLoader} from "../view/conversation/ConversationList";
 import ChatFrame, {messageLoader} from "../view/conversation/ChatFrame";

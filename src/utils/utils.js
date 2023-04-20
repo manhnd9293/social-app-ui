@@ -1,5 +1,6 @@
 import defaultAvatar from '../../src/common/img/defaultAvatar.jpg'
 import {DateTime} from 'luxon';
+
 const utils = {
   getUrlQueryParams(queryList) {
     const url = new URL(window.location.href);

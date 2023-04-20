@@ -1,6 +1,6 @@
 import React from 'react';
 import {beClient} from "../../config/BeClient";
-import {Link, useLoaderData} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {useMutation, useQuery} from "react-query";
 import {FriendRequestState} from "../../utils/Constant";
 import utils from "../../utils/utils";
