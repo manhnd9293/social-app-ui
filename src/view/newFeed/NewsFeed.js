@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import PostCreate from "./PostCreate/PostCreate";
 import {useSelector} from "react-redux";
 import utils from "../../utils/utils";
@@ -29,11 +29,12 @@ async function mutateReaction({postId, reactionType, reaction}) {
 
 function NewsFeed() {
   const [createPost, setCreatePost] = useState(false);
-  const [currentPage, setCurrentPage] = useState(0);
   const [focusedPost, setFocusedPost] = useState(null);
   const user = useSelector(state => state.user);
   const queryClient = useQueryClient();
-  const {data: posts, isLoading, isFetching, reFetch} = useQuery('news-feed', loadNewsFeed);
+  const {data, isLoading, isFetching, reFetch} = useQuery('news-feed', loadNewsFeed);
+  const loadFeedBreakPoint = useRef(null);
+  const {posts, hasMore} = {...data};
 
   const mutation = useMutation({
     mutationFn: mutateReaction,
@@ -41,16 +42,38 @@ function NewsFeed() {
       queryClient.setQueriesData(['news-feed'], (oldData) => {
         const feeds = structuredClone(oldData);
         const { postId } = variables;
-        const index = feeds.findIndex(post => post._id === postId);
-        const post = feeds[index];
+        const index = feeds.posts.findIndex(post => post._id === postId);
+        const post = feeds.posts[index];
         post.reaction = data.reaction;
         post.totalReaction = data.totalReaction;
         focusedPost && setFocusedPost(structuredClone(post));
 
-        return [...feeds.slice(0, index), post, ...feeds.slice(index + 1)];
+        return {
+          posts: [...feeds.posts.slice(0, index), post, ...feeds.posts.slice(index + 1)],
+          hasMore: feeds.hasMore
+        };
       })
     }
   });
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      const loadMorePost = entries[0];
+      if (loadMorePost.isIntersecting && hasMore) {
+        loadMorePosts();
+      }
+      if (!hasMore) {
+        observer.unobserve(loadFeedBreakPoint.current);
+        loadFeedBreakPoint.current = null;
+      }
+    });
+    loadFeedBreakPoint.current && observer.observe(loadFeedBreakPoint.current);
+
+    return () => {
+      loadFeedBreakPoint.current && observer.unobserve(loadFeedBreakPoint.current);
+    };
+  }, [posts]);
+
 
   const onPosted = () => {
     setCreatePost(false)
@@ -67,14 +90,14 @@ function NewsFeed() {
   }
 
   function loadMorePosts() {
-    if(posts.length === 0) return;
+    if(posts.length === 0 || !hasMore) return;
 
     return beClient.get(`/news-feed?lastId=${posts[posts.length-1]._id}`).then(res => {
-      const morePosts = res.data;
-
+      const morePosts = res.data.posts;
+      const hasMore = res.data.hasMore;
       queryClient.setQueriesData(['news-feed'], oldPosts => {
         const feeds = structuredClone(oldPosts);
-        return [...feeds, ...morePosts];
+        return {posts: [...feeds.posts, ...morePosts], hasMore}
       })
     });
   }
@@ -99,21 +122,17 @@ function NewsFeed() {
       <div className={`container mx-auto mt-3`} style={{maxWidth: 600}}>
         {
           posts && posts.length > 0 &&
-          posts.map(post =>
+          posts.map((post, index) =>
             <div className={`mb-3`}>
               <Post key={post._id}
                     postData={post}
                     onReaction={reactPost}
                     onCommentClick={focusPost}
               />
+              {index === posts.length - 6 && <div ref={loadFeedBreakPoint}/>}
             </div>
           )
         }
-      </div>
-      <div className={`container has-text-centered`}>
-        <div className={`button`}
-             onClick={loadMorePosts}
-        >Load more</div>
       </div>
       {
         focusedPost &&
