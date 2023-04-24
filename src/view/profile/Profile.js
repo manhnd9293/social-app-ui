@@ -18,11 +18,16 @@ function Profile() {
   const [profilePicModal, setProfilePicModal] = useState(false);
   const [initialUser, timeline] = useLoaderData();
   const [user, setUser] = useState(initialUser);
+  const [posts, setPosts] = useState(timeline.posts);
+  const [hasMore, setHasMore] = useState(timeline.hasMore);
 
   useEffect(() => {
     setUser(initialUser);
   },[initialUser])
 
+  useEffect(() => {
+    setPosts(timeline.posts);
+  }, [timeline]);
 
   const avatar = currentUser._id === user._id ? currentUser.avatar : user.avatar;
 
@@ -53,7 +58,9 @@ function Profile() {
           <RegularFriends user={user}/>
         </div>
         <div className={`column is-7`}>
-          <Timeline timeline={timeline}/>
+          <Timeline posts={posts}
+                    hasMore={hasMore}
+          />
         </div>
       </div>
     </div>

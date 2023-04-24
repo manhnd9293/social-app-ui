@@ -5,7 +5,7 @@ import utils from "../../utils/utils";
 import {useSelector} from "react-redux";
 
 
-function Timeline({timeline}) {
+function Timeline({posts, hasMore}) {
   const [createPost, setCreatePost] = useState(false);
   const user = useSelector(state => state.user);
 
@@ -39,11 +39,10 @@ function Timeline({timeline}) {
         </div>
       }
       {
-        timeline && timeline.map(post =>
+        posts && posts.map(post =>
           <div className={`mb-3`}>
             <Post key={post._id}
                   postData={post}
-
             />
           </div>)
       }
