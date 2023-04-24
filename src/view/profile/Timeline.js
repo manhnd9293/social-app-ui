@@ -5,12 +5,16 @@ import utils from "../../utils/utils";
 import {useSelector} from "react-redux";
 
 
-function Timeline({posts, hasMore}) {
+function Timeline({posts, hasMore, onReaction}) {
   const [createPost, setCreatePost] = useState(false);
   const user = useSelector(state => state.user);
 
   function onPosted() {
 
+  }
+
+  function reacted(data) {
+    onReaction(data)
   }
 
   return (
@@ -43,6 +47,7 @@ function Timeline({posts, hasMore}) {
           <div className={`mb-3`}>
             <Post key={post._id}
                   postData={post}
+                  onReaction={reacted}
             />
           </div>)
       }

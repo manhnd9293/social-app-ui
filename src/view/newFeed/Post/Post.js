@@ -57,11 +57,11 @@ function Post({postData, onReaction, onCommentClick, showComments}) {
           </figure>
         </div>
 
-        <div className={`column ml-2`}>
+        <div className={`column ml-2 is-3`}>
           <Link to={`/profile/${byUser._id}`} style={{color: 'black'}}>
-            <div className={`is-size-6 has-text-weight-bold`}>{utils.upperCaseFirst(byUser.fullName)}</div>
-            <div className={`is-size-7`}>{utils.showTimeDistanceFromNow(date)}</div>
+            <span className={`is-size-6 has-text-weight-bold`}>{utils.upperCaseFirst(byUser.fullName)}</span>
           </Link>
+          <div className={`is-size-7`}>{utils.showTimeDistanceFromNow(date)}</div>
         </div>
       </div>
       <div style={{marginTop: -10}}>

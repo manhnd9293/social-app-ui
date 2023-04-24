@@ -7,6 +7,7 @@ import {beClient} from "../../config/BeClient";
 import Post from "./Post/Post";
 import {Media} from "../../utils/Constant";
 import PostDetail from "./PostDetail";
+import postService from "../../services/PostService";
 
 function loadNewsFeed() {
   return beClient.get('/news-feed').then(res => res.data);
@@ -146,3 +147,5 @@ function NewsFeed() {
 }
 
 export default NewsFeed;
+
+export {mutateReaction}
