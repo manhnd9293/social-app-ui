@@ -10,23 +10,19 @@ import ProfilePhotos from "./ProfilePhotos";
 import RegularFriends from "./RegularFriends";
 import Timeline from "./Timeline";
 import RelationManagement from "./relations/RelationManagement";
-import postService from "../../services/PostService";
 
 function Profile() {
   const currentUser = useSelector(state => state.user);
   const [profilePicModal, setProfilePicModal] = useState(false);
   const [initialUser, timeline] = useLoaderData();
   const [user, setUser] = useState(initialUser);
-  const [posts, setPosts] = useState(timeline.posts);
-  const [hasMore, setHasMore] = useState(timeline.hasMore);
+
 
   useEffect(() => {
     setUser(initialUser);
   },[initialUser])
 
-  useEffect(() => {
-    setPosts(timeline.posts);
-  }, [timeline]);
+
 
   const avatar = currentUser._id === user._id ? currentUser.avatar : user.avatar;
 
@@ -36,17 +32,7 @@ function Profile() {
     }
   }, [window.location.href]);
 
-  async function onReaction({postId, reactionType}) {
-    const post = posts.find(p => p._id === postId);
-    const reaction = post.reaction || null;
-    const updateData = await postService.mutateReaction({postId, reactionType, reaction});
-    const copyPosts = structuredClone(posts);
-    const index = copyPosts.findIndex(p => p._id === postId);
-    const updatePost = copyPosts[index];
-    updatePost.reaction = updateData.reaction;
-    updatePost.totalReaction = updateData.totalReaction;
-    setPosts(copyPosts);
-  }
+
 
   return (
     <div>
@@ -69,10 +55,7 @@ function Profile() {
           <RegularFriends user={user}/>
         </div>
         <div className={`column is-7`}>
-          <Timeline posts={posts}
-                    hasMore={hasMore}
-                    onReaction={onReaction}
-          />
+          <Timeline initialPosts={timeline}/>
         </div>
       </div>
     </div>
