@@ -4,7 +4,7 @@ import {ListReaction} from "../../../utils/Constant";
 function PostInteractData({totalReaction, comments}) {
   const totalReactionCount = totalReaction.reduce((total, reaction) => total + reaction.value, 0);
   const sortReactions = structuredClone(totalReaction).filter(r => r.value > 0).sort((a, b) => b.value - a.value);
-  if (totalReactionCount === 0 && comments.length === 0) return null;
+  if (totalReactionCount === 0 && comments === 0) return null;
   return (
     <>
       <div className={`is-flex is-justify-content-space-between`}>

@@ -9,7 +9,7 @@ import PhotoPosts from "./PhotoPosts";
 import {ListReaction} from "../../../utils/Constant";
 import PostInteractData from "./PostInteractionData";
 
-function Post({postData, onReaction, onCommentClick, showComments}) {
+function Post({postData, onReaction, onCommentClick, showComments, updateTotalComment}) {
   const {byUser, comments, content, date, totalReaction, reaction, _id, photo, photoPosts} = postData;
   const user = useSelector(state => state.user);
   const [showReaction, setShowReaction] = useState(false);
@@ -48,6 +48,9 @@ function Post({postData, onReaction, onCommentClick, showComments}) {
   }
 
 
+  const onUpdateTotalComment = (postId, newTotalComment) => {
+    updateTotalComment(postId, newTotalComment)
+  };
   return (
     <div className={`card p-3`}>
       <div className={`columns`}>
@@ -114,9 +117,9 @@ function Post({postData, onReaction, onCommentClick, showComments}) {
               className={`card is-size-4 is-flex is-justify-content-center is-align-items-flex-end is-flex-wrap-nowrap`}
               style={{height: 35, width: 275}}>
               {
-                ListReaction.map((reaction, index) =>
-                  <div
-                    className={`is-flex is-flex-direction-column m-0 is-align-items-center is-flex-shrink-1 is-flex-grow-1`}>
+                ListReaction.map((reaction) =>
+                  <div key={reaction.value}
+                       className={`is-flex is-flex-direction-column m-0 is-align-items-center is-flex-shrink-1 is-flex-grow-1`}>
                     {hoveEmoji === reaction.value &&
                       <div key={reaction.value + '-'}
                            className={`has-background-dark p-1 has-text-white is-size-6 has-text-centered`}
@@ -124,8 +127,7 @@ function Post({postData, onReaction, onCommentClick, showComments}) {
                       >{hoveEmoji}</div>
                     }
 
-                    <div key={reaction.value}
-                         className={`px-1 is-clickable is-hoverable ${classes.emoji}`}
+                    <div className={`px-1 is-clickable is-hoverable ${classes.emoji}`}
                          style={{animationDelay: `${10}ms`, width: '100%'}}
                          onMouseEnter={(e) => {
                            setHoveEmoji(reaction.value);
@@ -156,7 +158,9 @@ function Post({postData, onReaction, onCommentClick, showComments}) {
 
       </div>
 
-      {showComments && <PostComments post={postData}/>}
+      {showComments && <PostComments post={postData}
+                                     onUpdateTotalComment={onUpdateTotalComment}
+      />}
     </div>
   );
 }

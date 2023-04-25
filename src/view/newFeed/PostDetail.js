@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import Post from "./Post/Post";
 
 
-function PostDetail({post, reactPost, closePostModal}) {
+function PostDetail({post, reactPost, closePostModal, updateTotalComment}) {
 
   useEffect(() => {
     const root = document.getElementsByTagName( 'html' )[0];
@@ -29,6 +29,7 @@ function PostDetail({post, reactPost, closePostModal}) {
           <Post postData={post}
                 onReaction={reactPost}
                 showComments={true}
+                updateTotalComment={updateTotalComment}
           />
         </div>
       </div>

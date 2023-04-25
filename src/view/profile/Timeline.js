@@ -37,6 +37,15 @@ function Timeline({initialPosts}) {
     focusedPost && setFocusedPost(structuredClone(updatePost));
   }
 
+  const updateTotalComment = (postId, totalComment) => {
+    const updatePostIndex = posts.findIndex(p => p._id === postId);
+    const copyPosts = structuredClone(posts);
+    const updatePost = copyPosts[updatePostIndex];
+    updatePost.comments = totalComment;
+    setPosts(copyPosts);
+    focusedPost && setFocusedPost(structuredClone(updatePost));
+  };
+
   return (
     <>
       {
@@ -78,6 +87,7 @@ function Timeline({initialPosts}) {
         <PostDetail post={focusedPost}
                     reactPost={onReaction}
                     closePostModal={()=>setFocusedPost(null)}
+                    updateTotalComment={updateTotalComment}
         />
       }
     </>

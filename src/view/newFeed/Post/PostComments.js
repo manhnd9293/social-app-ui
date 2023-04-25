@@ -1,16 +1,17 @@
 import React, {useEffect, useRef, useState} from "react";
 import {useSelector} from "react-redux";
 import {beClient} from "../../../config/BeClient";
-import {Media} from "../../../utils/Constant";
-import {DateTime} from "luxon";
 import utils from "../../../utils/utils";
+import postService from "../../../services/PostService";
+import {DateTime} from "luxon";
 
-function PostComments({post}) {
+function PostComments({post, onUpdateTotalComment}) {
   const [comment, setComment] = useState('');
   const user = useSelector(state => state.user);
 
   const [listComment, setListComment] = useState([]);
   const commentRef = useRef(null);
+  const postRef = useRef(null);
 
   useEffect(() => {
     commentRef.current.focus();
@@ -19,13 +20,12 @@ function PostComments({post}) {
   async function handleKeyDown(e) {
     if (e.key === 'Enter' && comment.length > 0) {
       setComment('');
-      await beClient.post('/post/comment', {
-        content: comment,
-        mediaType: Media.Post,
-        mediaId: post._id
-      }).then(res => res.data);
+
+      const response = await postService.comment({postId: post._id, comment})
+        .then(res => res.data);
       setListComment([
         ...listComment,
+        // response.newComment
         {
           userId: {
             fullName: user.fullName,
@@ -37,6 +37,11 @@ function PostComments({post}) {
           _id: utils.objectId()
         }
       ])
+
+      onUpdateTotalComment(post._id, listComment.length + 1);
+      if(postRef.current) {
+        postRef.current.scrollTop = postRef.current.scrollHeight;
+      }
     }
   }
 
@@ -47,7 +52,10 @@ function PostComments({post}) {
   },[])
 
   return (
-    <div style={{marginTop: -12}} className={`has-background-white`}>
+    <div style={{marginTop: -12, position: 'relative'}}
+         className={`has-background-white`}
+         ref={postRef}
+    >
       {
         listComment.length > 0 &&
         listComment.map(comment => (
@@ -78,7 +86,8 @@ function PostComments({post}) {
           </div>
         ))
       }
-      <div className={`is-flex is-align-items-center p-2`}>
+      <div className={`is-flex is-align-items-center p-2 block has-background-white`}
+           style={{position: 'sticky', bottom: 0, zIndex: 99}}>
         <figure className={`is-48x48 image`}>
           <img src={user.avatar || utils.defaultAvatar}
                style={{width: 48, height: 48}}

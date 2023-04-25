@@ -57,6 +57,22 @@ function NewsFeed() {
     }
   });
 
+  const updateTotalComment = (postId, totalComment) => {
+    queryClient.setQueriesData(['news-feed'], (oldData) => {
+      const feeds = structuredClone(oldData);
+      const index = feeds.posts.findIndex(post => post._id === postId);
+      const post = feeds.posts[index];
+      post.comments = totalComment;
+      focusedPost && setFocusedPost(structuredClone(post));
+
+      return {
+        posts: [...feeds.posts.slice(0, index), post, ...feeds.posts.slice(index + 1)],
+        hasMore: feeds.hasMore
+      };
+    })
+
+  };
+
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
       const loadMorePost = entries[0];
@@ -103,6 +119,7 @@ function NewsFeed() {
     });
   }
 
+
   return (
     <div className=''>
       {createPost && <PostCreate onclose={() => setCreatePost(false)}
@@ -124,9 +141,10 @@ function NewsFeed() {
         {
           posts && posts.length > 0 &&
           posts.map((post, index) =>
-            <div className={`mb-3`}>
-              <Post key={post._id}
-                    postData={post}
+            <div className={`mb-3`}
+                 key={post._id}
+            >
+              <Post postData={post}
                     onReaction={reactPost}
                     onCommentClick={focusPost}
               />
@@ -140,6 +158,7 @@ function NewsFeed() {
         <PostDetail post={focusedPost}
                     reactPost={reactPost}
                     closePostModal={()=>setFocusedPost(null)}
+                    updateTotalComment={updateTotalComment}
         />
       }
     </div>
