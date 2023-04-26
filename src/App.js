@@ -6,6 +6,7 @@ import router from "./route/router";
 import React, {useEffect} from "react";
 import {useDispatch} from "react-redux";
 import {navDropDownActions} from "./store/NavDropSlice";
+import 'bulma-switch';
 
 
 function App() {

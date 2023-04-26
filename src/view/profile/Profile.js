@@ -5,7 +5,7 @@ import defaultAvatar from '../../common/img/defaultAvatar.jpg';
 import utils from "../../utils/utils";
 import {useSelector} from "react-redux";
 import AvatarModal from "./avatar/AvatarModal";
-import Intro from "./Intro";
+import Intro from "./intro/Intro";
 import ProfilePhotos from "./ProfilePhotos";
 import RegularFriends from "./RegularFriends";
 import Timeline from "./Timeline";

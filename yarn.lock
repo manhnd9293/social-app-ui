@@ -1087,11 +1087,6 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@creativebulma/bulma-divider@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@creativebulma/bulma-divider/-/bulma-divider-1.1.0.tgz#fb0c3527efc5b8d7b1ac52cd065e9f8c57b5a8bc"
-  integrity sha512-Lx5MlUhgAnTF+wNZ5LXcaE1K0F2m0Pkwte1p08FBsIyRV6Oq7BuKPk/O9XJPcF+vR6BjCxNy/hjYFXtNmoXbNg==
-
 "@csstools/normalize.css@*":
   version "12.0.0"
   resolved "https://registry.yarnpkg.com/@csstools/normalize.css/-/normalize.css-12.0.0.tgz#a9583a75c3f150667771f30b60d9f059473e62c4"
@@ -3087,6 +3082,11 @@ bulma-list@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/bulma-list/-/bulma-list-1.2.0.tgz#0734b13a8ae8eaa3e5d3d4aca66cb3a0989b0e7c"
   integrity sha512-hOEVB32dtDyhXS+IqAt1TyRgZFjUTQ2RNXDG7MbvVokjMVeURDIDalGFO8UwjfkpjFMKQzJTlD/rdi3oDtdaHg==
+
+bulma-switch@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/bulma-switch/-/bulma-switch-2.0.4.tgz#a6dea1a026d025a7093a3675b2a599a36820e3a3"
+  integrity sha512-kMu4H0Pr0VjvfsnT6viRDCgptUq0Rvy7y7PX6q+IHg1xUynsjszPjhAdal5ysAlCG5HNO+5YXxeiu92qYGQolw==
 
 bulma@^0.9.4:
   version "0.9.4"
