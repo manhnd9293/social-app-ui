@@ -26,7 +26,11 @@ function EditIntro({onClose}) {
             <div>
               <div className="field">
                 <input id="switchRoundedInfo" type="checkbox" name="switchRoundedInfo"
-                       className="switch is-rounded is-info" checked="checked"/>
+                       className="switch is-rounded is-info" checked="checked"
+                       onChange={() => {
+
+                       }}
+                />
                   <label htmlFor="switchRoundedInfo">
                     Studied at Foreign Trade University
                   </label>
