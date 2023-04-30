@@ -22,8 +22,6 @@ function Profile() {
     setUser(initialUser);
   },[initialUser])
 
-
-
   const avatar = currentUser._id === user._id ? currentUser.avatar : user.avatar;
 
   useEffect(() => {
@@ -50,11 +48,11 @@ function Profile() {
       />
       <div className={`columns is-3 mt-3`}>
         <div className={`column is-5`}>
-          <Intro/>
+          <Intro user={user}/>
           <ProfilePhotos user={user}/>
           <RegularFriends user={user}/>
         </div>
-        <div className={`column is-7`}>
+        <div className={`column mt-3 is-7`}>
           <Timeline initialPosts={timeline}/>
         </div>
       </div>

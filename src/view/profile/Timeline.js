@@ -49,9 +49,8 @@ function Timeline({initialPosts}) {
   return (
     <>
       {
-        createPost && <PostCreate onclose={() => setCreatePost(false)}
-                                  onPosted={onPosted}
-        />
+        createPost &&
+        <PostCreate onclose={() => setCreatePost(false)}/>
       }
       {
         <div className={'card columns container mx-auto'}>
