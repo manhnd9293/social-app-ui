@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import BaseModal from "../../../../common/modal/BaseModal";
+import AddDataBtn from "../../common/AddDataBtn";
 
 function EditIntro({onClose}) {
 
@@ -116,16 +117,7 @@ function EditIntro({onClose}) {
   );
 }
 
-function AddDataBtn({name}) {
-  return (
-    <div className={`button is-outlined is-small is-info is-rounded mt-3`}>
-            <span className={`icon`}>
-              <i className="fa-solid fa-plus"></i>
-            </span>
-      <span>{name}</span>
-    </div>
-  )
-}
+
 
 export default EditIntro;
 const currentUser = {

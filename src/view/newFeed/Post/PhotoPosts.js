@@ -24,19 +24,20 @@ function PhotoPosts({photoPosts}) {
   if (photoPosts.length === 3) {
     return (
       <div>
-        <div style={{
-          ...utils.getStyleForImageBackground(photoPosts[0].url),
-          height: 300
-        }}></div>
-        <div className={`columns mt-1 px-3 mb-2 is-4`}>
-          {[photoPosts[1], photoPosts[2]].map(post =>
-            <div style={{
-              ...utils.getStyleForImageBackground(post.url),
-              height: 300
-            }}
-                 className={`column`}
-                 key={post._id}
-            ></div>
+        <div className={`columns mt-1 mb-2 is-1 is-variable is-multiline`}>
+          <div style={{
+            ...utils.getStyleForImageBackground(photoPosts[0].url),
+            height: 250,
+            marginBottom: -8
+          }}
+               className={`column is-12 is-clickable`}
+          />
+          {[photoPosts[1], photoPosts[2]].map((post, index) =>
+            <div className={`column is-6 ${index == 0 ? `pl-0`: `pr-0`} is-clickable`}>
+              <div style={{...utils.getStyleForImageBackground(post.url), height: 250}}
+                   key={post._id}
+              ></div>
+            </div>
           )}
         </div>
       </div>
