@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import BaseModal from "../../../common/modal/BaseModal";
+import BaseModal from "../../../../common/modal/BaseModal";
 
 function EditIntro({onClose}) {
 
@@ -145,7 +145,7 @@ const currentUser = {
   ],
   relationship: {
     state: 'Single',
-    show: 'true'
+    show: true
   }
 }
 

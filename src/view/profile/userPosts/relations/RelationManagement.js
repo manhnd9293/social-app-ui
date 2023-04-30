@@ -1,9 +1,9 @@
 import {useSelector} from "react-redux";
 import React, {useContext, useEffect, useState} from "react";
-import {SocketContext} from "../../rootLayout/RootLayout";
-import {beClient} from "../../../config/BeClient";
-import {Relation, SocketEvent} from "../../../utils/Constant";
-import FriendOptions from "../../friend/FriendOptions";
+import {SocketContext} from "../../../rootLayout/RootLayout";
+import {beClient} from "../../../../config/BeClient";
+import {Relation, SocketEvent} from "../../../../utils/Constant";
+import FriendOptions from "../../../friend/FriendOptions";
 import RelationOptions from "./RelationOptions";
 
 function RelationManagement({user}) {

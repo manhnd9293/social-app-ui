@@ -22,7 +22,7 @@ function CompanyDetail() {
 
   const tabs = ['about', 'jobs', 'people'];
   const {tab: initialTab} = utils.getUrlQueryParams('tab');
-  const [currentTab, setCurrentTab] = useState(initialTab || 'about')
+  const [currentTab, setCurrentTab] = useState(initialTab || 'about');
   const company = useLoaderData();
   const changeTab = (tabName) => () => {
     utils.setUrlParams('tab', tabName);
