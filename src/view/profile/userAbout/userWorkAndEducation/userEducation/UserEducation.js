@@ -11,8 +11,8 @@ function UserEducation() {
       <AddDataBtn name={`Add college`}/>
       <div className={`mt-4`}>
         {
-          colleges.map(college =>
-            <div className={`is-flex`}>
+          colleges.map((college, index) =>
+            <div className={`is-flex`} key={`${college.name}-${index}`}>
               <div>
                 <figure className={`image is-48x48`}>
                   <img className={`is-rounded`} src={process.env.REACT_APP_DEFAULT_COMPANY_LOGO}></img>
@@ -32,8 +32,8 @@ function UserEducation() {
       <AddDataBtn name={`Add a high school`}/>
       <div className={`mt-4`}>
         {
-          highSchools.map(highSchool =>
-            <div className={`is-flex`}>
+          highSchools.map((highSchool, index) =>
+            <div className={`is-flex`} key={`${highSchool.name}-${index}`}>
               <div>
                 <figure className={`image is-48x48`}>
                   <img className={`is-rounded`} src={process.env.REACT_APP_DEFAULT_COMPANY_LOGO}></img>

@@ -12,7 +12,7 @@ function UserWorkAndEducation() {
       <div className={`mt-4`}>
         {
           works.map(work =>
-            <div className={`is-flex`}>
+            <div className={`is-flex`} key={work.place}>
               <div>
                 <figure className={`image is-48x48`}>
                   <img className={`is-rounded`} src={process.env.REACT_APP_DEFAULT_COMPANY_LOGO}></img>

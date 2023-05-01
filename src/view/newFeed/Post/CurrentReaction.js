@@ -42,9 +42,11 @@ function getReactionTextColor(reactionType) {
   if(!reactionType) return ''
   switch (reactionType) {
     case Reaction.Love:
-      return '#d74c7a'
+      return '#f1425b'
+    case Reaction.Angry:
+      return '#e9781c'
     default:
-      return '#e8a311'
+      return '#fabd46'
   }
 }
 
