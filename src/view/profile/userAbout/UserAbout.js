@@ -27,7 +27,7 @@ function UserAbout() {
                 </ul>
               </div>
             </div>
-            <div>
+            <div className={`column is-9`}>
               <Outlet/>
             </div>
           </div>

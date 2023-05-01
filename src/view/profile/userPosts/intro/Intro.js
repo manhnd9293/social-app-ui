@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useSelector} from "react-redux";
 import EditIntro from "./EditIntro";
 
@@ -13,6 +13,13 @@ function Intro({user}) {
     console.log(`save bio:  ${content}`);
     setEditBio(false);
   };
+
+  useEffect(() => {
+    return () => {
+      setEditBio(false);
+    }
+  }, [user._id])
+
   return (
     <>
       <div className={`card p-3`}>
@@ -28,7 +35,7 @@ function Intro({user}) {
           </div>
         }
         {
-          editBio &&
+          editBio && isCurrentUser &&
           <div className={`mt-3`}>
             <BioEditBox content={user.bio}
                         onCancel={()=> setEditBio(false)}
