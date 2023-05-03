@@ -2,32 +2,60 @@ import React, {useContext, useState} from 'react';
 import {ProfileUserContext} from "../../Profile";
 import AddDataBtn from "../../common/AddDataBtn";
 import WorkPlaceForm from "../userInfoForm/WorkPlaceForm";
+import {useSelector} from "react-redux";
+import {beClient} from "../../../../config/BeClient";
 
+function getUserMostRecentWork(user) {
+  if(!user.works) return null;
+
+  const presentWorks = user.works.filter(w => w.isPresent);
+  if(presentWorks.length > 0) return presentWorks[0];
+  return user.works[0];
+}
 function OverviewWorkplace() {
-  const user = useContext(ProfileUserContext);
-  const [work, setWork] = useState(user.work);
+  const {user} = useContext(ProfileUserContext);
+  const [work, setWork] = useState(getUserMostRecentWork(user));
   const [showWorkOptions, setShowWorkOptions] = useState(false);
   const [editWork, setEditWork] = useState(false);
   const [addWork, setAddWork] = useState(false);
-  const isCurrentUser = true;
+  const currentUser = useSelector(state => state.user);
+  const isCurrentUser = currentUser._id === user._id;
 
-  function onAddWork(work) {
-    console.log({work});
-    setWork(structuredClone(work));
+  async function onAddWork(work) {
+    const {data} = await beClient.patch('/user/about', {
+      add: {
+        works: work
+      }
+    });
+    const updatedWork = structuredClone(work);
+    updatedWork._id = data._id;
+    setWork(updatedWork);
     setAddWork(false);
   }
 
-  function updateWork(updatedData) {
+  async function updateWork(updatedData) {
+    await beClient.patch('/user/about', {
+      update: {
+        works: updatedData
+      }
+    });
     setWork(updatedData);
     setEditWork(false);
     setShowWorkOptions(false)
   }
 
-  function deleteWork() {
+  async function deleteWork(workId) {
+    await beClient.patch('/user/about', {
+      delete: {
+        works: {
+          _id: workId
+        }
+      }
+    })
     setWork(null);
     setShowWorkOptions(false);
   }
-
+  // debugger
   return (
     <div>
       {isCurrentUser && !work && !addWork && <AddDataBtn name={`Add a workplace`}
@@ -50,7 +78,7 @@ function OverviewWorkplace() {
                 <i className="fa-solid fa-briefcase"></i>
               </span>
               <span className={`is-size-6`}>
-                {work.position} at <strong>{work.company}</strong>
+                {work.position || 'Work'} at <strong>{work.company}</strong>
               </span>
             </div>
           }
@@ -77,7 +105,7 @@ function OverviewWorkplace() {
                       <span className={`ml-1`}>Edit workplace</span>
                     </a>
                     <a className={`dropdown-item`}
-                       onClick={deleteWork}
+                       onClick={() => deleteWork(work._id)}
                     >
                       <span className={`icon`}>
                         <i className="fa-solid fa-trash-can"></i>
@@ -107,10 +135,12 @@ function OverviewWorkplace() {
   );
 }
 
-function Work(company, position, city, description) {
+function Work(company, position, city, description, isPresent) {
   this.company = company || '';
   this.position = position || '';
   this.city = city || '';
-  this.description = description || ''
+  this.description = description || '';
+  this.isPresent = isPresent || false;
 }
+
 export default OverviewWorkplace;

@@ -33,9 +33,10 @@ function PhotoPosts({photoPosts}) {
                className={`column is-12 is-clickable`}
           />
           {[photoPosts[1], photoPosts[2]].map((post, index) =>
-            <div className={`column is-6 ${index == 0 ? `pl-0`: `pr-0`} is-clickable`}>
+            <div className={`column is-6 ${index == 0 ? `pl-0`: `pr-0`} is-clickable`}
+                 key={post._id}
+            >
               <div style={{...utils.getStyleForImageBackground(post.url), height: 250}}
-                   key={post._id}
               ></div>
             </div>
           )}

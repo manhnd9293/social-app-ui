@@ -5,9 +5,10 @@ function WorkPlaceForm({work, onSave, onCancel}) {
   const [position, setPosition] = useState(work?.position);
   const [city, setCity] = useState(work?.city);
   const [description, setDescription] = useState(work?.description);
+  const [isPresent, setIsPresent] = useState(work?.isPresent || false);
   // debugger
   function handleSaveWork() {
-    onSave({company, position, city, description});
+    onSave({company, position, city, description, isPresent, _id: work._id});
   }
 
   return (
@@ -51,6 +52,15 @@ function WorkPlaceForm({work, onSave, onCancel}) {
                     value={description}
                     onChange={event => setDescription(event.target.value)}
           />
+        </div>
+      </div>
+
+      <div className="field">
+        <div className="control">
+          <label className="checkbox">
+            <input type="checkbox" checked={isPresent} onChange={event => setIsPresent(event.target.checked)}/>
+            <span className={`ml-1`}>Is Present</span>
+          </label>
         </div>
       </div>
 
