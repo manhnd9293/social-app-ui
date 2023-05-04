@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {ProfileUserContext} from "../../Profile";
 import AddDataBtn from "../../common/AddDataBtn";
 import WorkPlaceForm from "../userInfoForm/WorkPlaceForm";
@@ -13,13 +13,30 @@ function getUserMostRecentWork(user) {
   return user.works[0];
 }
 function OverviewWorkplace() {
-  const {user} = useContext(ProfileUserContext);
-  const [work, setWork] = useState(getUserMostRecentWork(user));
+  const {user, setUser} = useContext(ProfileUserContext);
+  // const [work, setWork] = useState(getUserMostRecentWork(user));
+  const work = getUserMostRecentWork(user);
   const [showWorkOptions, setShowWorkOptions] = useState(false);
   const [editWork, setEditWork] = useState(false);
   const [addWork, setAddWork] = useState(false);
+  const moreOptionRef = useRef(null);
   const currentUser = useSelector(state => state.user);
   const isCurrentUser = currentUser._id === user._id;
+
+  useEffect(() => {
+    function handleBodyClick(e) {
+      if(moreOptionRef.current && !moreOptionRef.current.contains(e.target)){
+        setShowWorkOptions(false);
+      }
+    }
+
+    document.body.addEventListener('mousedown', handleBodyClick);
+    return () => {
+      document.body.removeEventListener('mousedown', handleBodyClick);
+    };
+  }, []);
+
+
 
   async function onAddWork(work) {
     const {data} = await beClient.patch('/user/about', {
@@ -29,7 +46,8 @@ function OverviewWorkplace() {
     });
     const updatedWork = structuredClone(work);
     updatedWork._id = data._id;
-    setWork(updatedWork);
+    // setWork(updatedWork);
+    setUser({...user, works: [updatedWork]})
     setAddWork(false);
   }
 
@@ -39,7 +57,8 @@ function OverviewWorkplace() {
         works: updatedData
       }
     });
-    setWork(updatedData);
+    // setWork(updatedData);
+    setUser({...user, works: [updatedData]})
     setEditWork(false);
     setShowWorkOptions(false)
   }
@@ -52,7 +71,8 @@ function OverviewWorkplace() {
         }
       }
     })
-    setWork(null);
+    // setWork(null);
+    setUser({...user, works: user.works?.filter(w => w._id !== workId) || []});
     setShowWorkOptions(false);
   }
   // debugger
@@ -86,7 +106,7 @@ function OverviewWorkplace() {
           {
             isCurrentUser &&
             <div className={`mr-6`}>
-              <div className={`dropdown is-right ${showWorkOptions && `is-active`}`}>
+              <div className={`dropdown is-right ${showWorkOptions && `is-active`}`} ref={moreOptionRef}>
                 <div className={`dropdown-trigger`}>
                   <div className={`icon is-clickable`}
                        onClick={() => setShowWorkOptions(!showWorkOptions)}

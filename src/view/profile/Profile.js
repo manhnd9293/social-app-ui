@@ -58,7 +58,7 @@ function Profile() {
           </ul>
         </div>
       </div>
-      <ProfileUserContext.Provider value={{user, timeline}}>
+      <ProfileUserContext.Provider value={{user, timeline, setUser}}>
         <Outlet/>
       </ProfileUserContext.Provider>
     </div>
