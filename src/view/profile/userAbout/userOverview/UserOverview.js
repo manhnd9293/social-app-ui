@@ -1,5 +1,6 @@
-import React, {useState} from 'react';
+import React from 'react';
 import OverviewWorkplace from "./OverviewWorkplace";
+import HomeTownInfo from "./HomeTownInfo";
 
 function UserOverview() {
 
@@ -8,15 +9,9 @@ function UserOverview() {
     <div>
       <div>Overview</div>
       <OverviewWorkplace/>
+      <HomeTownInfo/>
     </div>
   );
-}
-
-const user = {
-  work: {
-    title: 'Software Engineer',
-    company: 'Advesa Vietnam'
-  }
 }
 
 export default UserOverview;

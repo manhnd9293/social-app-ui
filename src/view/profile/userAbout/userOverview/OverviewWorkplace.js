@@ -14,7 +14,6 @@ function getUserMostRecentWork(user) {
 }
 function OverviewWorkplace() {
   const {user, setUser} = useContext(ProfileUserContext);
-  // const [work, setWork] = useState(getUserMostRecentWork(user));
   const work = getUserMostRecentWork(user);
   const [showWorkOptions, setShowWorkOptions] = useState(false);
   const [editWork, setEditWork] = useState(false);
