@@ -81,4 +81,12 @@ const ListReaction = [
   }
 ]
 
-export {SocketEvent, FriendRequestState, OnlineState, Reaction, Media, Relation, NotificationType, ListReaction};
+const MutationAction = {
+  Create: 'create',
+  Update: 'update',
+  Push: 'push',
+  Pull: 'pull',
+  Delete: 'delete'
+}
+
+export {SocketEvent, FriendRequestState, OnlineState, Reaction, Media, Relation, NotificationType, ListReaction, MutationAction};

@@ -2,6 +2,8 @@ import React, {useContext, useEffect, useRef, useState} from 'react';
 import {useSelector} from "react-redux";
 import {ProfileUserContext} from "../../Profile";
 import AddDataBtn from "../../common/AddDataBtn";
+import {beClient} from "../../../../config/BeClient";
+import {MutationAction} from "../../../../utils/Constant";
 
 function HomeTownInfo() {
   const {user, setUser} = useContext(ProfileUserContext);
@@ -28,22 +30,37 @@ function HomeTownInfo() {
   }, []);
 
 
-  function deleteHometown() {
+  async function deleteHometown() {
     // call api delete hometown
+    await beClient.patch('/user/about', {
+      [MutationAction.Delete]: {
+        hometown: 1
+      }
+    })
     setUser({...user, hometown: null});
     setEditHometown(false);
     setShowHometownOptions(false);
   }
 
-  function onAddHometown(data) {
+  async function onAddHometown(hometown) {
     // call api add hometown
-    setUser({...user, hometown: data});
+    await beClient.patch('/user/about', {
+      update: {
+        hometown
+      }
+    });
+    setUser({...user, hometown});
     setAddHomeTown(false);
   };
 
-  function updateHometown(cityTown) {
+  async function updateHometown(hometown) {
     // call api update hometown
-    setUser({...user, hometown: cityTown});
+    await beClient.patch('/user/about', {
+      update: {
+        hometown
+      }
+    })
+    setUser({...user, hometown});
     setEditHometown(false);
     setShowHometownOptions(false);
   }
@@ -85,7 +102,7 @@ function HomeTownInfo() {
                 <i className="fa-solid fa-location-dot"></i>
               </span>
               <span className={`is-size-6`}>
-                From {hometown}
+                From <strong>{hometown.name}</strong>
               </span>
             </div>
           }
@@ -132,10 +149,10 @@ function HomeTownInfo() {
 }
 
 function HomeTownForm({hometown, onSave, onCancel}) {
-  const [cityTown, setCityTown] = useState(hometown.cityTown);
+  const [name, setName] = useState(hometown.name);
 
   function handleSaveHometown() {
-    onSave({cityTown})
+    onSave({name})
   }
 
   return (
@@ -144,8 +161,8 @@ function HomeTownForm({hometown, onSave, onCancel}) {
         <label className="label">Company</label>
         <div className="control">
           <input className="input" type="text" placeholder="City or town"
-                 value={cityTown}
-                 onChange={event => setCityTown(event.target.value)}
+                 value={name}
+                 onChange={event => setName(event.target.value)}
           />
         </div>
       </div>
@@ -158,7 +175,7 @@ function HomeTownForm({hometown, onSave, onCancel}) {
         </div>
         <div className="control">
           <button className={`button is-info is-small has-text-weight-bold`}
-                  disabled={!cityTown}
+                  disabled={!name}
                   onClick={handleSaveHometown}
           >Save</button>
         </div>
@@ -168,8 +185,8 @@ function HomeTownForm({hometown, onSave, onCancel}) {
   )
 }
 
-function HomeTown(cityTown) {
-  this.cityTown = cityTown || '';
+function HomeTown(name) {
+  this.name = name || '';
 }
 
 export default HomeTownInfo;

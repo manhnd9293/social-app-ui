@@ -4,6 +4,7 @@ import AddDataBtn from "../../common/AddDataBtn";
 import WorkPlaceForm from "../userInfoForm/WorkPlaceForm";
 import {useSelector} from "react-redux";
 import {beClient} from "../../../../config/BeClient";
+import {MutationAction} from "../../../../utils/Constant";
 
 function getUserMostRecentWork(user) {
   if(!user.works) return null;
@@ -12,6 +13,7 @@ function getUserMostRecentWork(user) {
   if(presentWorks.length > 0) return presentWorks[0];
   return user.works[0];
 }
+
 function OverviewWorkplace() {
   const {user, setUser} = useContext(ProfileUserContext);
   const work = getUserMostRecentWork(user);
@@ -39,24 +41,22 @@ function OverviewWorkplace() {
 
   async function onAddWork(work) {
     const {data} = await beClient.patch('/user/about', {
-      add: {
+      [MutationAction.Push]: {
         works: work
       }
     });
     const updatedWork = structuredClone(work);
     updatedWork._id = data._id;
-    // setWork(updatedWork);
     setUser({...user, works: [updatedWork]})
     setAddWork(false);
   }
 
   async function updateWork(updatedData) {
     await beClient.patch('/user/about', {
-      update: {
+      [MutationAction.Update]: {
         works: updatedData
       }
     });
-    // setWork(updatedData);
     setUser({...user, works: [updatedData]})
     setEditWork(false);
     setShowWorkOptions(false)
@@ -64,17 +64,17 @@ function OverviewWorkplace() {
 
   async function deleteWork(workId) {
     await beClient.patch('/user/about', {
-      delete: {
+      [MutationAction.Pull]: {
         works: {
           _id: workId
         }
       }
     })
-    // setWork(null);
+
     setUser({...user, works: user.works?.filter(w => w._id !== workId) || []});
     setShowWorkOptions(false);
   }
-  // debugger
+
   return (
     <div>
       {isCurrentUser && !work && !addWork && <AddDataBtn name={`Add a workplace`}
