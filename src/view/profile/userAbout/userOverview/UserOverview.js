@@ -1,6 +1,7 @@
 import React from 'react';
 import OverviewWorkplace from "./OverviewWorkplace";
 import HomeTownInfo from "./HomeTownInfo";
+import OverviewCurrentPlace from "./OverviewCurrentPlace";
 
 function UserOverview() {
 
@@ -9,6 +10,7 @@ function UserOverview() {
     <div>
       <div>Overview</div>
       <OverviewWorkplace/>
+      <OverviewCurrentPlace/>
       <HomeTownInfo/>
     </div>
   );
