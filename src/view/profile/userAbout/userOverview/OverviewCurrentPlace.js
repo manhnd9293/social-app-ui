@@ -159,7 +159,7 @@ function LivePlaceForm({hometown, onSave, onCancel}) {
   return (
     <div>
       <div className="field">
-        <label className="label">Company</label>
+        <label className="label">Current Place</label>
         <div className="control">
           <input className="input" type="text" placeholder="City or town"
                  value={name}

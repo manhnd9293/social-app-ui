@@ -1,3 +1,4 @@
+
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import {useSelector} from "react-redux";
 import {ProfileUserContext} from "../../Profile";
@@ -5,21 +6,22 @@ import AddDataBtn from "../../common/AddDataBtn";
 import {beClient} from "../../../../config/BeClient";
 import {MutationAction} from "../../../../utils/Constant";
 
-function HomeTownInfo() {
+function UserRelationshipOverview() {
   const {user, setUser} = useContext(ProfileUserContext);
-  const [addHometown, setAddHomeTown] = useState(false);
-  const [editHometown, setEditHometown] = useState(false);
+  const [addRelationship, setAddRelationship] = useState(false);
+  const [editRelationship, setEditRelationship] = useState(false);
   const currentUser = useSelector(state => state.user);
-  const [showHometownOptions, setShowHometownOptions] = useState(false);
+  const [showRelationshipOptions, setShowRelationshipOptions] = useState(false);
   const moreOptionRef = useRef(null);
 
   const isCurrentUser = currentUser._id === user._id;
-  const hometown = user.hometown;
+  const currentRel = user.relationship;
+  // const currentRel = 'Single';
 
   useEffect(() => {
     function handleBodyClick(e) {
       if(moreOptionRef.current && !moreOptionRef.current.contains(e.target)){
-        setShowHometownOptions(false);
+        setShowRelationshipOptions(false);
       }
     }
 
@@ -30,90 +32,91 @@ function HomeTownInfo() {
   }, []);
 
 
-  async function deleteHometown() {
+  async function deleteRel() {
     // call api delete hometown
     await beClient.patch('/user/about', {
       [MutationAction.Delete]: {
-        hometown: 1
+        relationship: 1
       }
     })
-    setUser({...user, hometown: null});
-    setEditHometown(false);
-    setShowHometownOptions(false);
+    setUser({...user, relationship: null});
+    setEditRelationship(false);
+    setShowRelationshipOptions(false);
   }
 
-  async function onAddHometown(hometown) {
+  async function onAddRel({name}) {
     // call api add hometown
+    const updated = {...user.relationship, name};
+
     await beClient.patch('/user/about', {
       update: {
-        hometown
+        relationship: updated
       }
     });
-    setUser({...user, hometown});
-    setAddHomeTown(false);
+    setUser({...user, relationship: updated});
+    setAddRelationship(false);
   };
 
-  async function updateHometown(hometown) {
+  async function updateRelationship({name}) {
     // call api update hometown
+    const updated = {...user.relationship, name};
     await beClient.patch('/user/about', {
       update: {
-        hometown
+        relationship: updated
       }
     })
-    setUser({...user, hometown});
-    setEditHometown(false);
-    setShowHometownOptions(false);
+    setUser({...user, relationship: updated});
+    setEditRelationship(false);
+    setShowRelationshipOptions(false);
   }
 
   return (
     <div>
       {
-        isCurrentUser && !hometown && !addHometown &&
-        <AddDataBtn name={`Add a hometown`}
-                    onClick={() => setAddHomeTown(true)}
+        isCurrentUser && !currentRel && !addRelationship &&
+        <AddDataBtn name={`Add current place`}
+                    onClick={() => setAddRelationship(true)}
         />
       }
       {
-        isCurrentUser && addHometown &&
+        isCurrentUser && addRelationship &&
         <div>
-          <HomeTownForm hometown={new HomeTown()}
-                        onSave={onAddHometown}
-                        onCancel={() => setAddHomeTown(false)}
+          <RelationshipForm relationship={''}
+                         onSave={onAddRel}
+                         onCancel={() => setAddRelationship(false)}
           />
         </div>
       }
       {
-        editHometown &&
-        <HomeTownForm hometown={hometown}
-                      onSave={updateHometown}
-                      onCancel={()=> {
-                        setEditHometown(false);
-                        setShowHometownOptions(false);
-                      }}
+        editRelationship &&
+        <RelationshipForm relationship={currentRel}
+                       onSave={updateRelationship}
+                       onCancel={()=> {
+                         setEditRelationship(false);
+                         setShowRelationshipOptions(false);
+                       }}
 
         />
       }
       {
-        hometown && !editHometown &&
+        currentRel && !editRelationship &&
         <div className={`is-flex mt-3 is-justify-content-space-between`}>
           {
             <div>
               <span className={`icon mr-3`}>
-                <i className="fa-solid fa-location-dot"></i>
+                <i className="fa-solid fa-heart"></i>
               </span>
-              <span className={`is-size-6`}>
-                From <strong>{hometown.name}</strong>
-              </span>
+              <span className={`is-size-6`}>{currentRel.name}</span>
             </div>
           }
 
           {
             isCurrentUser &&
             <div className={`mr-6`}>
-              <div className={`dropdown is-right ${showHometownOptions && `is-active`}`} ref={moreOptionRef}>
+              <div className={`dropdown is-right ${showRelationshipOptions && `is-active`}`} ref={moreOptionRef}>
                 <div className={`dropdown-trigger`}>
                   <div className={`icon is-clickable`}
-                       onClick={() => setShowHometownOptions(!showHometownOptions)}
+                       onClick={() => setShowRelationshipOptions(!showRelationshipOptions)}
                   >
                     <i className="fa-solid fa-ellipsis"></i>
                   </div>
@@ -121,20 +124,20 @@ function HomeTownInfo() {
                 <div className={`dropdown-menu`}>
                   <div className={`dropdown-content`}>
                     <a className={`dropdown-item`}
-                       onClick={() => setEditHometown(true)}
+                       onClick={() => setEditRelationship(true)}
                     >
                       <span className={`icon`}>
                         <i className="fa-solid fa-pen"></i>
                       </span>
-                      <span className={`ml-1`}>Edit hometown</span>
+                      <span className={`ml-1`}>Edit Relationship</span>
                     </a>
                     <a className={`dropdown-item`}
-                       onClick={deleteHometown}
+                       onClick={deleteRel}
                     >
                       <span className={`icon`}>
                         <i className="fa-solid fa-trash-can"></i>
                       </span>
-                      <span className={`ml-1`}>Delete hometown</span>
+                      <span className={`ml-1`}>Delete Relationship</span>
                     </a>
                   </div>
                 </div>
@@ -148,22 +151,27 @@ function HomeTownInfo() {
   );
 }
 
-function HomeTownForm({hometown, onSave, onCancel}) {
-  const [name, setName] = useState(hometown.name);
+function RelationshipForm({relationship, onSave, onCancel}) {
+  const [name, setName] = useState(relationship.name);
 
-  function handleSaveHometown() {
+  function handleSaveLivePlace() {
     onSave({name})
   }
 
   return (
     <div>
-      <div className="field">
-        <label className="label">Hometown</label>
-        <div className="control">
-          <input className="input" type="text" placeholder="City or town"
+      <div className="field mt-1">
+        <label className="label">Relationship</label>
+        <div className="control select">
+          <select  placeholder="Status"
                  value={name}
                  onChange={event => setName(event.target.value)}
-          />
+          >
+            <option>Status</option>
+            <option>Single</option>
+              <option>In a relationship</option>
+              <option>Others</option>
+          </select>
         </div>
       </div>
 
@@ -176,17 +184,12 @@ function HomeTownForm({hometown, onSave, onCancel}) {
         <div className="control">
           <button className={`button is-info is-small has-text-weight-bold`}
                   disabled={!name}
-                  onClick={handleSaveHometown}
+                  onClick={handleSaveLivePlace}
           >Save</button>
         </div>
       </div>
-
     </div>
   )
 }
 
-function HomeTown(name) {
-  this.name = name || '';
-}
-
-export default HomeTownInfo;
+export default UserRelationshipOverview;
