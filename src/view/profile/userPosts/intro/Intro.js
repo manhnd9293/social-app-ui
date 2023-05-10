@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {useSelector} from "react-redux";
 import EditIntro from "./EditIntro";
+import {beClient} from "../../../../config/BeClient";
+import {MutationAction} from "../../../../utils/Constant";
 
 function Intro({user}) {
   const [edit, setEdit] = useState(false);
@@ -8,13 +10,19 @@ function Intro({user}) {
   const currentUser = useSelector(state => state.user);
   const isCurrentUser = user._id === currentUser._id;
   const [editBio, setEditBio] = useState(false);
+  const [bio, setBio] = useState(user.bio);
 
-  function saveBio(content) {
-    console.log(`save bio:  ${content}`);
+  async function saveBio(content) {
+    await beClient.patch('/user/about', {
+      [MutationAction.Update]: {bio: content}
+    });
+    setBio(content);
     setEditBio(false);
   };
 
   useEffect(() => {
+    setBio(user.bio);
+
     return () => {
       setEditBio(false);
     }
@@ -24,27 +32,32 @@ function Intro({user}) {
     <>
       <div className={`card p-3`}>
         <strong className={`is-size-5`}>Intro</strong>
+        <div className={`mt-1 has-text-centered`}>
+          {
+            !editBio && bio && bio
+          }
+        </div>
         {
-          isCurrentUser && !user.bio && !editBio &&
+          isCurrentUser && !editBio &&
           <div className={`mt-3`}>
             <button className={`button`} style={{backgroundColor: '#eaeaea'}}
                     onClick={()=> setEditBio(true)}
             >
-              <span style={{color: '#504d4d'}} >Add bio</span>
+              <span style={{color: '#504d4d'}} >{bio ? 'Update Bio' : 'Add Bio'}</span>
             </button>
           </div>
         }
         {
           editBio && isCurrentUser &&
           <div className={`mt-3`}>
-            <BioEditBox content={user.bio}
+            <BioEditBox content={bio}
                         onCancel={()=> setEditBio(false)}
                         onSave={saveBio}
             />
           </div>
         }
         <div>
-        <span className={`icon mr-1 mt-3`}>
+        <span className={`icon mr-1 mt-2`}>
           <i className="fa-solid fa-graduation-cap"></i>
         </span>
           <span>Studied at Foreign Trade University</span>
@@ -90,22 +103,37 @@ function Intro({user}) {
 }
 
 function BioEditBox({content, onCancel, onSave}) {
-  const [bioContent, setBioContent] = useState(content);
+  const [bioContent, setBioContent] = useState(content || '');
+  const [remainChar, setRemainChar] = useState(101 - bioContent.length);
 
+  const updateBio = ()=> {
+    onSave(bioContent)
+  };
+  const onChangeBioContent = e => {
+    const newContent = e.target.value;
+    const addChar = newContent.length > bioContent.length;
+    if((remainChar > 0 && addChar) || !addChar) {
+      setBioContent(newContent);
+      setRemainChar(v => v + (addChar ? -1 : 1));
+    }
+  };
   return (
     <div>
       <textarea className={`textarea has-fixed-size`}
                 value={bioContent}
-                onChange={e => setBioContent(e.target.value)}
+                onChange={onChangeBioContent}
                 rows={3}
                 placeholder={`Describe who you are`}
       />
+      <div>
+        {`${remainChar} characters remaining`}
+      </div>
       <div className={`buttons mt-3`}>
         <div className={`button is-small`} onClick={onCancel}>
           Cancel
         </div>
 
-        <div className={`button is-info is-small`} onClick={()=> onSave(bioContent)}>
+        <div className={`button is-info is-small`} onClick={updateBio}>
           Save
         </div>
       </div>
