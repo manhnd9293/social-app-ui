@@ -27,6 +27,8 @@ import UserWorkAndEducation from "../view/profile/userAbout/userWorkAndEducation
 import UserPlaces from "../view/profile/userAbout/userPlaces/UserPlaces";
 import UserDetails from "../view/profile/userAbout/userDetails/UserDetails";
 import UserContact from "../view/profile/userAbout/userContact/UserContact";
+import UserFriends from "../view/profile/userFriend/UserFriends";
+import UserPhotos from "../view/profile/userPhotos/UserPhotos";
 
 const router = createBrowserRouter([
   {
@@ -96,7 +98,14 @@ const router = createBrowserRouter([
                 element: <UserDetails/>
               }
             ]
-
+          },
+          {
+            path: 'friends',
+            element: <UserFriends/>
+          },
+          {
+            path: 'photos',
+            element: <UserPhotos/>
           }
         ]
       },

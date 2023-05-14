@@ -44,7 +44,6 @@ function Profile() {
                style={{width: 96}}>{utils.upperCaseFirst(user.fullName)}</div>
         </div>
         <RelationManagement user={user}/>
-        {/*<div style={{height: 1, backgroundColor: '#e0e0e0'}} className={`mt-2`}/>*/}
         <div className="tabs">
           <ul>
             {
