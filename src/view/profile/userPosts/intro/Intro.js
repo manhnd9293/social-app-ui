@@ -102,20 +102,19 @@ function Intro({user}) {
   );
 }
 
+const maxContentLength = 101;
 function BioEditBox({content, onCancel, onSave}) {
   const [bioContent, setBioContent] = useState(content || '');
-  const [remainChar, setRemainChar] = useState(101 - bioContent.length);
 
+  const [remainChar, setRemainChar] = useState(maxContentLength - bioContent.length);
   const updateBio = ()=> {
     onSave(bioContent)
   };
   const onChangeBioContent = e => {
     const newContent = e.target.value;
-    const addChar = newContent.length > bioContent.length;
-    if((remainChar > 0 && addChar) || !addChar) {
-      setBioContent(newContent);
-      setRemainChar(v => v + (addChar ? -1 : 1));
-    }
+    if(newContent.length > maxContentLength) return;
+    setBioContent(newContent);
+    setRemainChar(maxContentLength - newContent.length);
   };
   return (
     <div>
