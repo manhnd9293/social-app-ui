@@ -13,6 +13,22 @@ function loadNewsFeed() {
   return beClient.get('/news-feed').then(res => res.data);
 }
 
+function sendCreateRequest(post) {
+  const form = new FormData();
+  post.files.forEach(file => {
+    form.append('photoFiles', file);
+    form.append('captions', '');
+  })
+  form.append('content', post.content);
+
+  return beClient.post('/post', form, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  }).then(res => res.data);
+}
+
+
 async function mutateReaction({postId, reactionType, reaction}) {
   if (!reaction || reaction !== reactionType) {
     return beClient.patch(`/post/reaction`, {
@@ -36,6 +52,32 @@ function NewsFeed() {
   const {data, isLoading, isFetching, reFetch} = useQuery('news-feed', loadNewsFeed);
   const loadFeedBreakPoint = useRef(null);
   const {posts, hasMore} = {...data};
+
+  const {
+    mutate: createPostMutate,
+    isLoading: isCreatePostLoading,
+    error: createPostError
+  } = useMutation(sendCreateRequest, {
+    onSuccess: (data, variables) => {
+      queryClient.setQueriesData(['news-feed'], (oldData) => {
+        const byUserData = {
+          byUser: {
+            avatar: user.avatar,
+            fullName: user.fullName,
+            _id: user._id
+          }
+        }
+        debugger
+        const feeds = structuredClone(oldData);
+        feeds.posts.unshift({...data, ...byUserData});
+
+        return {
+          posts: feeds.posts,
+          hasMore: feeds.hasMore
+        }
+      })
+    }
+  });
 
   const mutation = useMutation({
     mutationFn: mutateReaction,
@@ -92,8 +134,9 @@ function NewsFeed() {
   }, [posts]);
 
 
-  const onPosted = () => {
-    setCreatePost(false)
+  const onPosted = (post) => {
+    createPostMutate(post);
+    setCreatePost(false);
   };
 
   async function reactPost({postId, reactionType}) {

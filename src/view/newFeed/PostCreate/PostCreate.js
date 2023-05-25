@@ -27,38 +27,38 @@ function PostCreate({onPosted,onclose}) {
   const user = useSelector(state => state.user);
   const postRef = useRef(null);
 
-  const {mutate, isLoading, error} = useMutation(sendCreateRequest, {
-    onSuccess: () => {
-      onPosted();
-    }
-  });
+
   function createPost() {
     const post = {
       content: content.trim(),
       files
     }
-    mutate(post)
+    onPosted(post);
   }
 
   useEffect(() => {
     postRef.current.focus();
-    // document.body.style.height = '100vh';
-    // document.body.style.overflowY = 'hidden';
+    const root = document.getElementsByTagName( 'html' )[0];
+    root.className += ' is-clipped';
 
     return () => {
-      // console.log('on unmount');
-      // document.body.style.height = '100vh';
-      // document.body.style.overflowY = 'scroll';
+      root.className = root.className.split(' ').filter(s => s !== 'is-clipped').join(' ')
     }
   }, [])
 
   return (
     <div className="modal is-active">
-      <div className="modal-background" onClick={onclose}></div>
+      <div className="modal-background"
+           style={{opacity: 0.9}}
+           onClick={onclose}
+      ></div>
       <div className="modal-card">
         <header className="modal-card-head">
           <p className="modal-card-title">Create Post</p>
-          <button className="delete" aria-label="close"></button>
+          <button className="delete"
+                  aria-label="close"
+                  onClick={onclose}
+          ></button>
         </header>
         <section className="modal-card-body">
           <div className={`columns`}>
