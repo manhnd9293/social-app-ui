@@ -29,7 +29,6 @@ function PostInteractData({totalReaction, comments}) {
           <div>{comments} comment{comments > 1 && 's'} </div>
         }
       </div>
-      <div style={{height: 1, backgroundColor: '#dcdbdb'}} className={`mt-2`}/>
     </>
   )
 }

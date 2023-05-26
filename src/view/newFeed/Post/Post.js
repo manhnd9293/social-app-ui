@@ -80,7 +80,7 @@ function Post({postData, onReaction, onCommentClick, showComments, updateTotalCo
       <PostInteractData totalReaction={totalReaction}
                         comments={comments}
       />
-
+      {(totalReaction.length > 0 || comments > 0) && <div style={{height: 1, backgroundColor: '#dcdbdb'}} className={`mt-2`}/>}
       <div className={`columns mt-1`} style={{position: 'relative'}}>
         <CurrentReaction hideListReaction={hideListReaction}
                          showListReaction={showListReaction}

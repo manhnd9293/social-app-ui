@@ -67,7 +67,6 @@ function NewsFeed() {
             _id: user._id
           }
         }
-        debugger
         const feeds = structuredClone(oldData);
         feeds.posts.unshift({...data, ...byUserData});
 
