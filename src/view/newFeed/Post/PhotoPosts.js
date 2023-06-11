@@ -36,8 +36,7 @@ function PhotoPosts({photoPosts}) {
             <div className={`column is-6 ${index == 0 ? `pl-0`: `pr-0`} is-clickable`}
                  key={post._id}
             >
-              <div style={{...utils.getStyleForImageBackground(post.url), height: 250}}
-              ></div>
+              <div style={{...utils.getStyleForImageBackground(post.url), height: 250}}/>
             </div>
           )}
         </div>

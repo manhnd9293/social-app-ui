@@ -56,36 +56,59 @@ function Intro({user}) {
             />
           </div>
         }
-        <div>
-        <span className={`icon mr-1 mt-2`}>
-          <i className="fa-solid fa-graduation-cap"></i>
-        </span>
+        {
+          user.works && user.works.length > 0 &&
+          <div>
+            <span className={`icon mr-1 mt-2`}>
+              <i className="fa-solid fa-briefcase"></i>
+            </span>
+            <span>{user.works[0].position || 'Work'} at {user.works[0].company}</span>
+          </div>
+        }
+        {
+          user.educations &&
+          <div>
+            <span className={`icon mr-1 mt-2`}>
+              <i className="fa-solid fa-graduation-cap"></i>
+            </span>
           <span>Studied at Foreign Trade University</span>
-        </div>
-        <div>
-        <span className={`icon mr-1`}>
-          <i className="fa-solid fa-house-chimney"></i>
-        </span>
-          <span>Lives in Hanoi, Vietnam</span>
-        </div>
-        <div>
-        <span className={`icon mr-1`}>
-          <i className="fa-solid fa-cake-candles"></i>
-        </span>
-          <span>Birth 9 Jan 1993</span>
-        </div>
-        <div>
-        <span className={`icon mr-1`}>
-          <i className="fa-solid fa-location-dot"></i>
-        </span>
-          <span>From Thai Binh</span>
-        </div>
-        <div>
-        <span className={`icon mr-1`}>
-          <i className="fa-solid fa-heart"></i>
-        </span>
-          <span>Single</span>
-        </div>
+        </div>}
+        {
+          user.currentPlace &&
+          <div>
+            <span className={`icon mr-1`}>
+              <i className="fa-solid fa-house-chimney"></i>
+            </span>
+            <span>Lives in {user.currentPlace.name}</span>
+          </div>
+        }
+        {
+          user.dob &&
+          <div>
+            <span className={`icon mr-1`}>
+              <i className="fa-solid fa-cake-candles"></i>
+            </span>
+            <span>Birth {user.dob.date}</span>
+          </div>
+        }
+        {
+          user.hometown &&
+          <div>
+            <span className={`icon mr-1`}>
+              <i className="fa-solid fa-location-dot"></i>
+            </span>
+            <span>From {user.hometown.name}</span>
+          </div>
+        }
+        {
+          user.relationship &&
+          <div>
+            <span className={`icon mr-1`}>
+              <i className="fa-solid fa-heart"></i>
+            </span>
+            <span>{user.relationship.name}</span>
+          </div>
+        }
         <div className={`mt-3`}>
           {
             currentUser._id === profileId &&
