@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import BaseModal from "../../../../common/modal/BaseModal";
 import AddDataBtn from "../../common/AddDataBtn";
+import {Link} from "react-router-dom";
 
 function EditIntro({onClose}) {
 
@@ -34,7 +35,7 @@ function EditIntro({onClose}) {
             <span className={`icon`}>
               <i className="fa-solid fa-plus"></i>
             </span>
-            <span>Add a workplace</span>
+            <Link to={'about/work_and_educations'}><span>Add a workplace</span></Link>
           </div>
         </div>
         <div className={`mt-3`}>
@@ -60,34 +61,38 @@ function EditIntro({onClose}) {
 
                     </div>
                     <div className={`icon is-clickable`}>
-                      <i className="fa-solid fa-pen"></i>
+                      <Link to={'about/work_and_educations'}><i className="fa-solid fa-pen"></i></Link>
                     </div>
                   </div>
                 )
               }
             </div>
           </div>
-          <div className={`button is-outlined is-small is-info is-rounded mt-3`}>
+          <Link to={'about/work_and_educations'}>
+            <div className={`button is-outlined is-small is-info is-rounded mt-3`}>
             <span className={`icon`}>
               <i className="fa-solid fa-plus"></i>
             </span>
-            <span>Add high school</span>
-          </div>
+              <Link to={'about/work_and_educations'}><span>Add high school</span></Link>
+            </div>
+          </Link>
           <br/>
-          <div className={`button is-outlined is-small is-info is-rounded mt-3`}>
+          <Link to={'about/work_and_educations'}>
+            <div className={`button is-outlined is-small is-info is-rounded mt-3`}>
             <span className={`icon`}>
               <i className="fa-solid fa-plus"></i>
             </span>
-            <span>Add college</span>
-          </div>
+              <span>Add college</span>
+            </div>
+          </Link>
         </div>
         <div className={`mt-3`}>
           <div className={`has-text-weight-bold`}>Current city</div>
-          <AddDataBtn name={'Add City'}/>
+          <Link to={`about/places`}><AddDataBtn name={'Add City'}/></Link>
         </div>
         <div className={`mt-3`}>
           <div className={`has-text-weight-bold`}>Home town</div>
-          <AddDataBtn name={'Add hometown'}/>
+          <Link to={`about/places`}><AddDataBtn name={'Add hometown'}/></Link>
         </div>
         <div className={`mt-3`}>
           <div className={`has-text-weight-bold`}>Relationship</div>
@@ -108,7 +113,7 @@ function EditIntro({onClose}) {
 
             </div>
             <div className={`icon is-clickable`}>
-              <i className="fa-solid fa-pen"></i>
+              <Link to={'about'}><i className="fa-solid fa-pen"></i></Link>
             </div>
           </div>
         </div>
