@@ -1,0 +1,85 @@
+.action:hover {
+    background-color: #f1efef;
+}
+
+//.emojiHover {
+//    animation-name: enlarge;
+//    animation-duration: 100ms;
+//    animation-fill-mode: forwards;
+//}
+
+
+
+//@keyframes enlarge {
+//    from {
+//        font-size: 1em;
+//    }
+//    to {
+//        font-size: 1.3em;
+//    }
+//}
+
+@keyframes upThenDown {
+    0% {
+        transform: translateY(0);
+    }
+    25% {
+        transform: translateY(-4px);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+
+    75% {
+        transform: translateY(-4px);
+    ;
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+.emoji {
+    animation-name: upThenDown;
+    animation-duration: 100ms;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-out;
+}
+
+@keyframes up {
+    from {
+        transform: translateY(0px);
+    }
+
+    to {
+        //transform: translateY(-12px);
+        //height: 200%;
+        font-size: 1.5em;
+    }
+}
+
+@keyframes down {
+    from {
+        //transform: translateY(-12px);
+        //height: 120%;
+        font-size: 1.5em;
+    }
+    to {
+        //transform: translateY(0px);
+        //height: 100%;
+        font-size: 1em;
+    }
+}
+.upEmo{
+    animation-name: up;
+    animation-duration: 100ms;
+    animation-fill-mode: forwards;
+
+}
+
+.downEmo{
+    animation-name: down;
+    animation-duration: 100ms;
+    animation-fill-mode: forwards;
+}

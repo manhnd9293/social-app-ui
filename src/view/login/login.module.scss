@@ -1,0 +1,15 @@
+.loginBox {
+  position: fixed;
+  right: 8%;
+  top: 25%;
+  height: 450px;
+
+  width: 450px;
+}
+
+
+@media only screen and (max-width: 912px) {
+  .loginBox {
+    margin: auto auto;
+  }
+}

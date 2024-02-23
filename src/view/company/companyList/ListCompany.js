@@ -5,10 +5,10 @@ import utils from "../../../utils/utils";
 import {beClient} from "../../../config/BeClient";
 
 
-function ListCompany(props) {
+function ListCompany() {
   const {page, search, industry, province} = utils.getUrlQueryParams(['page', 'search', 'industry', 'province'])
   const navigate = useNavigate();
-  const {companies, total} = useLoaderData();
+  const [{companies, total}, industries, provinces] = useLoaderData();
 
   function changePage(page) {
     navigate(`/company${utils.createQueryString({page, search, industry, province})}`)
@@ -19,8 +19,9 @@ function ListCompany(props) {
   const listCompanyCard =  <div className='mt-4 columns is-multiline'>
     {
       companies.map(company => (
-        <div key={company._id} className='column is-4 is-clickable' onClick={() => navigate(`/company/${company._id}/detail`)}>
-          <div className='card'>
+        <div key={company._id} className='column is-3 is-clickable'
+             onClick={() => navigate(`/company/${company._id}/detail`)}>
+          <div className='card' style={{height: '100%'}}>
             <div className='card-content'>
               <div className="media">
                 <div className="media-left">
@@ -32,9 +33,8 @@ function ListCompany(props) {
 
               <div className='content'>
                 <div className='has-text-weight-bold'>{company.name}</div>
-                <div>Province: {company.province}</div>
+                <div>Location: {company.province}</div>
                 <div>Industry: {company.industry}</div>
-                <div>size: {company.size}</div>
               </div>
             </div>
           </div>
@@ -48,12 +48,11 @@ function ListCompany(props) {
       <div className='subtitle mt-4 has-text-weight-bold'>List Company</div>
 
       <div className='mt-4'>
-        <FilterBar />
+        <FilterBar industries={industries} provinces={provinces} />
       </div>
       {
         companies.length > 0 ? listCompanyCard : <div>No result found</div>
       }
-
 
       <Pagination currentPage={Number(page)} totalItem={total} onChangePage={changePage}/>
     </div>
@@ -63,15 +62,18 @@ function ListCompany(props) {
 function loadCompanies({request}) {
   const {search, page, industry, province} =
     utils.getUrlQueryParamsFromRequest(request, ['search', 'page', 'industry', 'province']);
-
   const queryString = utils.createQueryString({search, page, industry, province});
 
+  return Promise.all([
+    beClient.get(`/company${queryString}`),
+    beClient.get(`/company/industries`).then((res) => res.data),
+    beClient.get(`/company/provinces`).then((res) => res.data),
 
-
-  return beClient.get(`/company${queryString}`)
+  ])
 }
 
+
 export {loadCompanies};
-
-
 export default ListCompany;
+
+

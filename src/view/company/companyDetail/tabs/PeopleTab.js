@@ -1,6 +1,6 @@
 import React from 'react';
 
-function PeopleTab(props) {
+function PeopleTab() {
   return (
     <div>
       People list coming soon

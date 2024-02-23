@@ -2,7 +2,7 @@ import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {notificationActions} from "../../store/NotificationSlice";
 
-function Notification(props) {
+function NotificationModal() {
   const notification = useSelector(state => state.notification);
   const dispatch = useDispatch();
 
@@ -31,4 +31,4 @@ function Notification(props) {
   );
 }
 
-export default Notification;
+export default NotificationModal;

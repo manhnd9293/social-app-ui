@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useForm} from "react-hook-form";
 import {Link, useNavigate} from "react-router-dom";
 import {beClient} from "../../config/BeClient";
@@ -21,6 +21,13 @@ function Register() {
   const [signUpError, setSignUpError] = useState(null);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    document.getElementById('app-body').classList.remove('has-navbar-fixed-top')
+    return () => {
+      document.getElementById('app-body').classList.add('has-navbar-fixed-top')
+    }
+  },[])
 
   const onSubmit=(data) => {
     beClient.post('/user/sign-up', {
@@ -48,7 +55,8 @@ function Register() {
     if(value.indexOf(' ') !== -1) {
       return 'username must not have white space';
     }
-    const {data: {exist}} = await beClient.get(`/user/check-username-exist?username=${value}`).catch(e => setSignUpError(e));
+    const response = await beClient.get(`/user/check-username-exist?username=${value}`).catch(e => setSignUpError(e));
+    const {data: {exist}} = response;
     if (exist) {
       return 'username existed';
     }

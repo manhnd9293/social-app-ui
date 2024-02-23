@@ -22,7 +22,7 @@ function CompanyDetail() {
 
   const tabs = ['about', 'jobs', 'people'];
   const {tab: initialTab} = utils.getUrlQueryParams('tab');
-  const [currentTab, setCurrentTab] = useState(initialTab || 'about')
+  const [currentTab, setCurrentTab] = useState(initialTab || 'about');
   const company = useLoaderData();
   const changeTab = (tabName) => () => {
     utils.setUrlParams('tab', tabName);
@@ -30,7 +30,7 @@ function CompanyDetail() {
   }
 
   return (
-    <div>
+    <div className={`has-background-white`}>
         <figure className="image is-96x96 mt-4">
           <img src={company.logo || process.env.REACT_APP_DEFAULT_COMPANY_LOGO}/>
         </figure>
@@ -51,8 +51,8 @@ function CompanyDetail() {
 
         </ul>
       </div>
-        <TabView name={currentTab} company={company}/>
 
+      <div className={`p-2`}><TabView name={currentTab} company={company}/></div>
     </div>
   );
 }

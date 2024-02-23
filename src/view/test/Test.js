@@ -1,37 +1,65 @@
-import React, {useState} from 'react';
-import Pagination from "../../common/pagination/Pagination";
-import {useNavigate} from "react-router-dom";
+import React, {useEffect} from 'react';
+import {beClient} from "../../config/BeClient";
+import {useInfiniteQuery} from "react-query";
+
+async function loadTests({pageParam = 0}) {
+  return beClient.get(`/test?lastId=${pageParam}`);
+}
 
 function Test() {
-  const [currentPage, setCurrentPage] = useState(1);
-  const navigate = useNavigate();
-  function onChangePage(page) {
 
-    setCurrentPage(page)
-  }
+  const {
+    data,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+    status
+  } = useInfiniteQuery({
+    queryKey: ['tests'],
+    queryFn: loadTests,
+    getNextPageParam: (lastPage, pages) => {
+      if(!lastPage.hasNext) return false;
 
-  function buttonCLick(e) {
-    e.stopPropagation();
-    console.log('button');
-  }
+      const lastId = lastPage.items[lastPage.items.length -1];
+      // debugger
+      return lastId;
+    }
+  });
 
-  function outSideClick() {
-    console.log('outSide div');
-  }
+  useEffect(() => {
+    console.log('load new page');
+  }, [data?.pages?.length])
 
-  return (
-    <div>
-      <Pagination currentPage={currentPage}
-                  totalItem={100}
-                  onChangePage={onChangePage}
-      />
-      <div className='has-background-info' style={{width: 200, height: 200}} onClick={outSideClick}>
-        <div>
-          <button onClick={buttonCLick}>Me</button>
-        </div>
+  return status === 'loading' ? (
+    <p>Loading...</p>
+  ) : status === 'error' ? (
+    <p>Error: {error.message}</p>
+  ) : (
+    <>
+      {data.pages.map((group, i) => (
+        <React.Fragment key={i}>
+          {group.items.map((item) => (
+            <p key={item}>{item}</p>
+          ))}
+        </React.Fragment>
+      ))}
+      <div>
+        <button
+          onClick={() => fetchNextPage()}
+          disabled={!hasNextPage || isFetchingNextPage}
+        >
+          {isFetchingNextPage
+            ? 'Loading more...'
+            : hasNextPage
+              ? 'Load More'
+              : 'Nothing more to load'}
+        </button>
       </div>
-    </div>
-  );
+      <div>{isFetching && !isFetchingNextPage ? 'Fetching...' : null}</div>
+    </>)
 }
+
 
 export default Test;

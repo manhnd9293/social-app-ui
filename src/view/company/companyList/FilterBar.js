@@ -1,10 +1,9 @@
 import React, {useState} from 'react';
 import utils from "../../../utils/utils";
 import {Link, useNavigate} from "react-router-dom";
-const industries = ['it', 'car', 'beauty', 'agriculture', 'service', 'tourist']
-const provinces = ['Hanoi', "HoChiMinh city", "Danang", 'Other'];
 
-function FilterBar({onSubmit}) {
+
+function FilterBar({industries, provinces}) {
   const {
     province: initProvince,
     search: initSearch,
@@ -30,7 +29,6 @@ function FilterBar({onSubmit}) {
       filter();
     }
   }
-
   return (
     <div>
       <div className='is-flex-direction-row is-align-items-center is-justify-content-space-around '>
@@ -50,8 +48,8 @@ function FilterBar({onSubmit}) {
               <select value={industry} onChange={(e) => setIndustry(e.target.value)}>
                 <option value={''}>All industry</option>
                 {
-                  industries.map((industry, index) => (
-                    <option key={index} value={industry}>{industry[0].toUpperCase() + industry.slice(1)}</option>
+                  industries.map((i) => (
+                    <option key={i.id} value={i.value}>{i.label}</option>
                   ))
                 }
               </select>
@@ -63,8 +61,8 @@ function FilterBar({onSubmit}) {
               <select value={province} onChange={event => setProvince(event.target.value)}>
                 <option value=''>All city</option>
                 {
-                  provinces.map((province, index) => (
-                    <option key={index} value={province}>{utils.upperCaseFirst(province)}</option>
+                  provinces.map((p) => (
+                    <option key={p.id} value={p.value}>{p.label}</option>
                   ))
                 }
               </select>
@@ -80,9 +78,12 @@ function FilterBar({onSubmit}) {
           </div>
 
         </div>
+
         <div>
           <Link to='new'>
-            <div className='button is-link'>Add new</div>
+            <div className='button is-link'>
+              <strong>Add New</strong>
+            </div>
           </Link>
         </div>
 

@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Link, useNavigate} from "react-router-dom";
+import {Link, useLoaderData, useNavigate} from "react-router-dom";
 import {useForm} from "react-hook-form";
 import axios from "axios";
 import {beClient} from "../../../config/BeClient";
@@ -15,7 +15,9 @@ let defaultValues = {
 
 const defaultFileName = 'no file is selected';
 
-function NewCompany(props) {
+function NewCompany() {
+  const [industries, provinces] = useLoaderData();
+
   const {register, formState: {errors}, handleSubmit, reset, getValues} = useForm(
     {mode: 'all', defaultValues}
   );
@@ -123,10 +125,12 @@ function NewCompany(props) {
                     required: 'Industry is required'
                   })
                   }>
-                  <option value='Select' disabled> Select Industry</option>
-                  <option value='Information Technology'>Information Technology</option>
-                  <option value='F&B'>F&B</option>
-                  <option value='Beauty & Spa'>Beauty & Spa</option>
+                    <option value={'Select'}>Select industry</option>
+                    {
+                      industries.map((i) => (
+                        <option key={i.id} value={i.value}>{i.label}</option>
+                      ))
+                    }
                 </select>
 
               </div>
@@ -144,9 +148,12 @@ function NewCompany(props) {
                     required: 'Province is required'
                   })
                   }>
-                  <option value='Select' disabled> Select province</option>
-                  <option value='Hanoi'>Ha noi</option>
-                  <option value='Ho Chi Minh'>Ho Chi Minh</option>
+                    <option value={'Select'}>Select location</option>
+                    {
+                      provinces.map((p) => (
+                        <option key={p.id} value={p.value}>{p.label}</option>
+                      ))
+                    }
                 </select>
 
               </div>
@@ -240,6 +247,14 @@ function NewCompany(props) {
   );
 }
 
+function loadNewCompanyData() {
+  return Promise.all([
+    beClient.get(`/company/industries`).then((res) => res.data),
+    beClient.get(`/company/provinces`).then((res) => res.data),
+
+  ])
+}
+
 function validateCompanyName(value) {
 
 }
@@ -262,5 +277,6 @@ function validateAggree(value) {
   }
 }
 
+export {loadNewCompanyData};
 
 export default NewCompany;

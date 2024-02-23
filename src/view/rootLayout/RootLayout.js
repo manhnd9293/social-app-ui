@@ -1,54 +1,77 @@
-import React, {useEffect} from 'react';
+import React, {createContext, useEffect, useState} from 'react';
 import Header from "../../layout/header/Header";
-import {Outlet, useNavigate} from "react-router-dom";
+import {Outlet, useNavigate, useNavigation} from "react-router-dom";
 import Footer from "../../layout/footer/Footer";
-import './rootLayout.css';
 import {useDispatch, useSelector} from "react-redux";
 import {beClient} from "../../config/BeClient";
-import Notification from "../notification/Notification";
+import NotificationModal from "../notification/NotificationModal";
 import {userActions} from "../../store/UserSlice";
+import {createSocket} from "../../config/Socket";
+import Loader from "../../common/loader/Loader";
+import classes from "./rootLayout.module.scss";
 
+const SocketContext = createContext(null);
 
 function RootLayout() {
+  const [socket, setSocket] = useState(null);
 
   const user = useSelector((state) => state.user);
   const notification = useSelector((state) => state.notification)
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const navigation = useNavigation();
+
 
   useEffect(() => {
+
     const accessToken = localStorage.getItem("accessToken");
+
     if (!user._id && !accessToken && window.location.pathname !== '/sign-up') {
       navigate("/login");
-    } else if (accessToken) {
+    } else if (accessToken) { //update always fetch user data and create socket connection when render root layout
       beClient.get("/user/me")
         .then((res) => {
           const userInfo = res.data;
           dispatch(userActions.fetchData(userInfo));
+          setSocket(createSocket(userInfo));
         })
         .catch((e) => {
+          //todo: this code may never be called
           navigate("/login");
         });
     }
 
   }, []);
 
+  useEffect(() => {
+    return () => {
+      if (!socket) return;
+
+      socket.off('connect');
+      socket.off('disconnect');
+      socket.close()
+      console.log(`close socket`);
+    };
+  }, [socket]);
+
+
   return (
-    <div className="App has-background-white-ter ">
-      <Header/>
-      {notification && <Notification/>}
-      <div className='app-body has-background-white mx-auto px-3 px-2-mobile py-2' style={{width: '86%',maxWidth: '1320px'}}>
-        <div className='container'>
-          <Outlet/>
+    <SocketContext.Provider value={socket}>
+      <div className="App has-background-white-ter">
+        <Header/>
+        {notification && <NotificationModal/>}
+        {process.env.REACT_APP_NODE_ENV !== 'development' && <Loader active={navigation.state === 'loading'}/>}
+        <div className={`${classes.appBody} mx-auto px-3 px-2-mobile py-2`}>
+          <div className='container'>
+            <Outlet/>
+          </div>
         </div>
+        <Footer/>
       </div>
-      <Footer/>
-    </div>
-);
+    </SocketContext.Provider>
+  );
 }
 
-function loadUserData() {
-
-}
+export {SocketContext}
 
 export default RootLayout;

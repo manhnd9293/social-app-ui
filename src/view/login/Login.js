@@ -3,11 +3,12 @@ import {beClient} from "../../config/BeClient";
 import {useDispatch} from "react-redux";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import {userActions} from "../../store/UserSlice";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import utils from "../../utils/utils";
+import classes from './login.module.scss';
+import background from './back.jpg';
 
-const loginBackgroundUrl = 'https://marmotamaps.com/de/fx/wallpaper/download/faszinationen/Marmotamaps_Wallpaper_Inntal_Desktop_1920x1080.jpg'
-
+const loginBackgroundUrl = 'https://wallpapers.com/wallpapers/blue-gradient-connect-dots-922uvtyggntr1kxm.html'
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -21,6 +22,12 @@ function Login() {
   const {register, formState: {errors}, handleSubmit, reset}= useForm({mode: "all",
     defaultValues})
 
+  useEffect(() => {
+    document.getElementById('app-body').classList.remove('has-navbar-fixed-top')
+    return () => {
+      document.getElementById('app-body').classList.add('has-navbar-fixed-top')
+    }
+  },[])
 
 
   const onSubmit=(data) => {
@@ -28,7 +35,9 @@ function Login() {
       username: data.username,
       password: data.password
     }).then(res => {
-      dispatch(userActions.login(res.data));
+      const user = res.data;
+      dispatch(userActions.login(user));
+      // createSocket(user);
       navigate('/');
     }).catch(e => {
       setLoginError(e);
@@ -40,11 +49,11 @@ function Login() {
   }
 
   return (
-    <div className='' style={utils.getBackgroundImageStyle(loginBackgroundUrl)}>
-      <div className='is-invisible'>hack</div>
-      <div className='box mx-auto mt-6 mx-6' style={{maxWidth: '30rem'}}>
+    <div className='' style={utils.getBackgroundImageStyle(background)}>
+      {/*<div className='is-invisible'>hack</div>*/}
+      <div className={`box ${classes.loginBox}`} >
         <div className='container has-text-centered mb-4'>
-          <span className='title is-size-4'>Login</span>
+          <span className='title is-size-4'>Sign In</span>
         </div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="field">
@@ -59,7 +68,7 @@ function Login() {
                      )}
               />
             </div>
-            {errors.username && <p className='help is-danger' >{errors.username.message}</p>}
+            <p className={`help is-danger ${!errors.username ? 'is-invisible': ''}`} >{errors.username?.message || 'hack'}</p>
           </div>
           <div className="field">
             <label className="label">Password</label>
@@ -73,20 +82,20 @@ function Login() {
                      )}
               />
             </div>
-            {errors.password && <p className='help is-danger' >{errors.password.message}</p>}
+            <p className={`help is-danger ${!errors.password ? 'is-invisible': ''}`} >{errors.password?.message || 'hack'}</p>
           </div>
-          {loginError && <p className='help is-danger is-size-6'>{utils.getErrorMessage(loginError)}</p>}
+          <p className={`help has-text-centered is-danger is-size-6 ${!loginError ? 'is-invisible': ''}`}>{utils.getErrorMessage(loginError) || 'hack'}</p>
           <div className="field mt-3">
             <div className="control container has-text-centered">
-              <button className="button is-info">
-                Sign In
+              <button className="button is-link is-rounded">
+                <strong>Sign in</strong>
               </button>
             </div>
           </div>
         </form>
-        <div className='container has-text-centered'>
+        <div className='container has-text-centered mt-6'>
 
-          <div className="mt-3">
+          {/*<div className="mt-3">
             <button className="button is-primary is-small" onClick={() => {
               // clearErrors()
               reset({
@@ -101,7 +110,7 @@ function Login() {
             }}>
               Reset
             </button>
-          </div>
+          </div>*/}
           <div className='mt-4'>Don't have an account ? <Link to={'/sign-up'}>Sign up</Link></div>
         </div>
       </div>

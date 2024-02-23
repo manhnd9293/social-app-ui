@@ -1,86 +1,106 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Link, useNavigate} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
-import {userActions} from "../../store/UserSlice";
-import {topLevelClickAction} from "../../store/TopLevelClickEventSlice";
-import defaultAvatar from '../../common/img/defaultAvatar.jpg';
+import {SocketEvent} from "../../utils/Constant";
+import MenuIconLink from "./MenuIconLink";
+import ProfileDropdown from "./ProfileDropdown";
+import {SocketContext} from "../../view/rootLayout/RootLayout";
+import utils from "../../utils/utils";
+
+import logo from '../../assets/connectivity.png'
+import {useSelector} from "react-redux";
+
 function Header() {
-  const user = useSelector((state) => state.user);
-  const [showDropdown, setShowDropdown] = useState(false);
-  const dispatch = useDispatch();
+
+  const [unreadNotification, setUnreadNotification] = useState([]);
+  const [unreadFriendRequest, setUnreadFriendRequest] = useState([]);
+  const [unreadMessage, setUnReadMessage] = useState([]);
+  const socket = useContext(SocketContext);
+  const [searchValue, setSearchValue] = useState(utils.getUrlQueryParam(`key`));
   const navigate = useNavigate();
-
-
-  const logOut = () => {
-    dispatch(userActions.logout());
-    navigate('/login');
-  }
-
-  function toggleDropdown(e) {
-    e.stopPropagation();
-    setShowDropdown(!showDropdown);
-  }
-
-  const hideDropdown = useCallback(() => {
-    setShowDropdown(false);
-  }, []);
-
+  const user = useSelector(state => state.user);
 
   useEffect(() => {
-    dispatch(topLevelClickAction.addHandler(hideDropdown))
+    if(!socket) return;
+    socket.on(SocketEvent.FriendRequest, (request) => {
+      setUnreadFriendRequest((old) => [...old, request]);
+    })
 
     return () => {
-      dispatch(topLevelClickAction.removeHandler(hideDropdown));
+      socket.off(SocketEvent.FriendRequest)
     }
-  }, [])
 
+  }, [socket]);
+
+  function searchGlobal(e) {
+    if (e.key === 'Enter') {
+      navigate(`/search?key=${searchValue}`)
+    }
+  }
 
   return (
-    <nav className="navbar is-large is-info" role="navigation" aria-label="main navigation">
-      <div className="navbar-brand ml-6">
-        <Link className="navbar-item" to="/">
-         <span className='has-text-weight-bold'>H U N I</span>
-        </Link>
-
-        <a role="button" className="navbar-burger" aria-label="menu" aria-expanded="false"
-           data-target="navbarBasicExample">
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-        </a>
-      </div>
-
-      <div id="navbarBasicExample" className="navbar-menu">
-        <div className="navbar-end">
-          <Link className="navbar-item" to='/'>
-            <span className='has-text-weight-bold'>Home</span>
+    <div className='navbar is-fixed-top'>
+      <nav className="navbar is-large mx-auto" role="navigation" aria-label="main navigation"
+           style={{width: '80%', maxWidth: '1215px'}}>
+        <div className="navbar-brand">
+          <Link className="navbar-item" to="/">
+            <img width={30} height={28} src={logo}/>
+            <span className='has-text-link ml-2' style={{fontSize: 20, fontWeight: 'bolder', letterSpacing: 4}}>HUNI</span>
           </Link>
 
-          <Link className="navbar-item" to='/company'>
-            <span className='has-text-weight-bold'>Company</span>
-          </Link>
+          <a role="button" className="navbar-burger" aria-label="menu" aria-expanded="false"
+             data-target="navbarBasicExample">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+        </div>
 
-          <Link className="navbar-item" to='/company'>
-            <span className='has-text-weight-bold'>Jobs</span>
-          </Link>
+        <div className={`navbar-start`}>
+          <div className={`navbar-item`}>
+            <div className={`control has-icons-left`}>
+              <input className={`input is-small`}
+                     type={`text`}
+                     placeholder={`Search`}
+                     value={searchValue}
+                     onChange={e => setSearchValue(e.target.value)}
+                     onKeyDown={searchGlobal}
+                     style={{outline: 'none'}}
+              />
+              <span className={`icon is-left`}>
+                <i className="fa-solid fa-magnifying-glass"></i>
 
-          <div className={`navbar-item has-dropdown ${showDropdown && 'is-active'}`} >
-            <figure  className='navbar-link is-arrowless image is-48x48' onClick={toggleDropdown}>
-              <img className="is-rounded" src={user?.avatar || defaultAvatar}/>
-            </figure>
-            <div className='navbar-dropdown is-right'>
-              <Link to='/profile' className='navbar-item'>Profile</Link>
-              <Link to='/setting' className='navbar-item'>Setting</Link>
-              <div className='navbar-divider'></div>
-              <a className='navbar-item' onClick={logOut}>
-                Sign out
-              </a>
+              </span>
             </div>
           </div>
-
         </div>
-      </div>
-    </nav>
+
+        <div id="navbarBasicExample" className="navbar-menu">
+          <div className="navbar-end">
+
+            <MenuIconLink icon="fa-solid fa-house" name='Home' hasNumber={false} to='/'/>
+
+            <MenuIconLink icon="fa-solid fa-building" name='company' hasNumber={false} to='/company'/>
+
+            <MenuIconLink icon="fa-solid fa-user-group"
+                          name='connection' to={user.unseenInvitations > 0 ? '/friends/invite' : '/friends'}
+                          number={user.unseenInvitations}
+            />
+
+            <MenuIconLink icon="fa-solid fa-message"
+                          name='message'
+                          to='/conversations'
+                          number={user.unreadMessages}
+            />
+
+            <MenuIconLink number={user.unseenNotifications}
+                          to={`notifications`} icon="fa-solid fa-bell" name='notification'/>
+
+            <ProfileDropdown/>
+          </div>
+        </div>
+      </nav>
+    </div>
+
   );
 }
 
