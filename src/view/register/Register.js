@@ -55,7 +55,8 @@ function Register() {
     if(value.indexOf(' ') !== -1) {
       return 'username must not have white space';
     }
-    const {data: {exist}} = await beClient.get(`/user/check-username-exist?username=${value}`).catch(e => setSignUpError(e));
+    const response = await beClient.get(`/user/check-username-exist?username=${value}`).catch(e => setSignUpError(e));
+    const {data: {exist}} = response;
     if (exist) {
       return 'username existed';
     }

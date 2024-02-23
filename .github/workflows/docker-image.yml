@@ -13,9 +13,9 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker build -t bulma-ui .
+      run: docker build -t huni-ui .
     - name:  Tag image
-      run: docker tag bulma-ui manhndtest/huni-ui
+      run: docker tag huni-ui manhndtest/huni-ui
     - name: Login docker
       env:
         PASSWORD: ${{secrets.DOCKER_PWD}}
