@@ -11,14 +11,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Build the Docker image
-      run: docker build -t huni-ui .
-    - name:  Tag image
-      run: docker tag huni-ui manhndtest/huni-ui
+      run: docker build -t manhnd9293/social-fe .
+
     - name: Login docker
       env:
         PASSWORD: ${{secrets.DOCKER_PWD}}
-      run: docker login -u manhndtest -p "$PASSWORD"
+      run: docker login -u manhnd9293 -p "$PASSWORD"
     - name: Push to docker hub
-      run: docker push manhndtest/huni-ui
+      run: docker push manhnd9293/social-fe
