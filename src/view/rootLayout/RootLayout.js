@@ -23,12 +23,17 @@ function RootLayout() {
 
 
   useEffect(() => {
-
-    const accessToken = localStorage.getItem("accessToken");
-
-    if (!user._id && !accessToken && window.location.pathname !== '/sign-up') {
-      navigate("/login");
-    } else if (accessToken) { //update always fetch user data and create socket connection when render root layout
+    async function fetchUserData() {
+      const accessToken = localStorage.getItem("accessToken");
+      if (!user._id && !accessToken && window.location.pathname !== '/sign-up') {
+        await beClient.post('/user/sign-in', {
+          username: 'guess',
+          password: '123123'
+        }).then(res => {
+          const user = res.data;
+          dispatch(userActions.login(user));
+        });
+      }
       beClient.get("/user/me")
         .then((res) => {
           const userInfo = res.data;
@@ -41,6 +46,7 @@ function RootLayout() {
         });
     }
 
+    fetchUserData();
   }, []);
 
   useEffect(() => {
@@ -61,11 +67,16 @@ function RootLayout() {
         <Header/>
         {notification && <NotificationModal/>}
         {process.env.REACT_APP_NODE_ENV !== 'development' && <Loader active={navigation.state === 'loading'}/>}
-        <div className={`${classes.appBody} mx-auto px-3 px-2-mobile py-2`}>
-          <div className='container'>
-            <Outlet/>
-          </div>
-        </div>
+        {
+          user._id &&
+          (
+            <div className={`${classes.appBody} mx-auto px-3 px-2-mobile py-2`}>
+              <div className='container'>
+                <Outlet/>
+              </div>
+            </div>
+          )
+        }
         <Footer/>
       </div>
     </SocketContext.Provider>
