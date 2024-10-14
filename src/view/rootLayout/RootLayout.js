@@ -1,6 +1,6 @@
 import React, {createContext, useEffect, useState} from 'react';
 import Header from "../../layout/header/Header";
-import {Outlet, useNavigate, useNavigation} from "react-router-dom";
+import {Outlet, useLocation, useNavigate, useNavigation} from "react-router-dom";
 import Footer from "../../layout/footer/Footer";
 import {useDispatch, useSelector} from "react-redux";
 import {beClient} from "../../config/BeClient";
@@ -20,12 +20,13 @@ function RootLayout() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const navigation = useNavigation();
+  const location = useLocation();
 
 
   useEffect(() => {
     async function fetchUserData() {
       const accessToken = localStorage.getItem("accessToken");
-      if (!user._id && !accessToken && window.location.pathname !== '/sign-up') {
+      if ( !accessToken && location.pathname !== '/sign-up') {
         await beClient.post('/user/sign-in', {
           username: 'guess',
           password: '123123'

@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Link, useNavigate} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import {SocketEvent} from "../../utils/Constant";
 import MenuIconLink from "./MenuIconLink";
 import ProfileDropdown from "./ProfileDropdown";
@@ -7,7 +7,8 @@ import {SocketContext} from "../../view/rootLayout/RootLayout";
 import utils from "../../utils/utils";
 
 import logo from '../../assets/connectivity.png'
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {userActions} from "../../store/UserSlice";
 
 function Header() {
 
@@ -18,6 +19,8 @@ function Header() {
   const [searchValue, setSearchValue] = useState(utils.getUrlQueryParam(`key`));
   const navigate = useNavigate();
   const user = useSelector(state => state.user);
+  let dispatch = useDispatch();
+  const location = useLocation();
 
   useEffect(() => {
     if(!socket) return;
@@ -25,8 +28,18 @@ function Header() {
       setUnreadFriendRequest((old) => [...old, request]);
     })
 
+    socket.on(SocketEvent.MessageReceived, (request) => {
+      if(/\/conversations\/*/.test(location.pathname)) {
+        return;
+      }
+      console.log('dispatch(userActions.updateUnReadMessage(1))')
+      dispatch(userActions.changeUnReadMessageBy(1))
+
+    });
+
     return () => {
       socket.off(SocketEvent.FriendRequest)
+      socket.off(SocketEvent.MessageReceived)
     }
 
   }, [socket]);
