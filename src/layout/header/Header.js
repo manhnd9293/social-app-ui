@@ -1,48 +1,18 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {Link, useLocation, useNavigate} from "react-router-dom";
-import {SocketEvent} from "../../utils/Constant";
+import React, {useState} from 'react';
+import {Link, useNavigate} from "react-router-dom";
 import MenuIconLink from "./MenuIconLink";
 import ProfileDropdown from "./ProfileDropdown";
-import {SocketContext} from "../../view/rootLayout/RootLayout";
 import utils from "../../utils/utils";
 
 import logo from '../../assets/connectivity.png'
-import {useDispatch, useSelector} from "react-redux";
-import {userActions} from "../../store/UserSlice";
+import {useSelector} from "react-redux";
 
 function Header() {
 
-  const [unreadNotification, setUnreadNotification] = useState([]);
-  const [unreadFriendRequest, setUnreadFriendRequest] = useState([]);
-  const [unreadMessage, setUnReadMessage] = useState([]);
-  const socket = useContext(SocketContext);
   const [searchValue, setSearchValue] = useState(utils.getUrlQueryParam(`key`));
   const navigate = useNavigate();
   const user = useSelector(state => state.user);
-  let dispatch = useDispatch();
-  const location = useLocation();
 
-  useEffect(() => {
-    if(!socket) return;
-    socket.on(SocketEvent.FriendRequest, (request) => {
-      setUnreadFriendRequest((old) => [...old, request]);
-    })
-
-    socket.on(SocketEvent.MessageReceived, (request) => {
-      if(/\/conversations\/*/.test(location.pathname)) {
-        return;
-      }
-      console.log('dispatch(userActions.updateUnReadMessage(1))')
-      dispatch(userActions.changeUnReadMessageBy(1))
-
-    });
-
-    return () => {
-      socket.off(SocketEvent.FriendRequest)
-      socket.off(SocketEvent.MessageReceived)
-    }
-
-  }, [socket]);
 
   function searchGlobal(e) {
     if (e.key === 'Enter') {
@@ -95,7 +65,8 @@ function Header() {
             <MenuIconLink icon="fa-solid fa-building" name='company' hasNumber={false} to='/company'/>
 
             <MenuIconLink icon="fa-solid fa-user-group"
-                          name='connection' to={user.unseenInvitations > 0 ? '/friends/invite' : '/friends'}
+                          name='connection'
+                          to={user.unseenInvitations > 0 ? '/friends/invite' : '/friends'}
                           number={user.unseenInvitations}
             />
 
@@ -105,8 +76,10 @@ function Header() {
                           number={user.unreadMessages}
             />
 
-            <MenuIconLink number={user.unseenNotifications}
-                          to={`notifications`} icon="fa-solid fa-bell" name='notification'/>
+            <MenuIconLink number={user.unreadNotifications}
+                          to={`notifications`}
+                          icon="fa-solid fa-bell"
+                          name='notification'/>
 
             <ProfileDropdown/>
           </div>

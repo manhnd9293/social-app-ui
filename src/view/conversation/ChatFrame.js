@@ -8,6 +8,7 @@ import {SocketContext} from "../rootLayout/RootLayout";
 import {OnlineState, SocketEvent} from "../../utils/Constant";
 import {CurrentConversationCtx} from "./ConversationList";
 import {userActions} from "../../store/UserSlice";
+import {conversationActions} from "../../store/ConversationSlice";
 
 function ChatFrame() {
   const [conversation, initialMessage] = useLoaderData();
@@ -59,8 +60,11 @@ function ChatFrame() {
         conversationId: conversation._id,
         messageIds: unseen.map(m => m._id)
       }).then(res => {
-        console.log('dispatch(userActions.updateUnReadMessage(-unseen.length))',unseen.length)
         dispatch(userActions.updateUnReadMessage(res.data));
+        dispatch(conversationActions.updateUnreadMessageDetail({
+          conversationId: conversation._id,
+          count: res.data.currentUnseen,
+        }))
       })
     }
   }, [initialMessage]);
