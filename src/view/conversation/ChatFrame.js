@@ -2,11 +2,13 @@ import React, {useContext, useEffect, useRef, useState} from 'react';
 import utils from "../../utils/utils";
 import {Link, useLoaderData} from "react-router-dom";
 import {beClient} from "../../config/BeClient";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import classes from './chat.module.scss';
 import {SocketContext} from "../rootLayout/RootLayout";
 import {OnlineState, SocketEvent} from "../../utils/Constant";
 import {CurrentConversationCtx} from "./ConversationList";
+import {userActions} from "../../store/UserSlice";
+import {conversationActions} from "../../store/ConversationSlice";
 
 function ChatFrame() {
   const [conversation, initialMessage] = useLoaderData();
@@ -19,6 +21,7 @@ function ChatFrame() {
   const chatContainer = useRef(null);
   const {moveConversationToTop} = useContext(CurrentConversationCtx);
   const isTypingRef = useRef({});
+  const dispatch = useDispatch();
 
 
   conversation.friend = conversation.participants.find(p => p._id !== user._id);
@@ -57,7 +60,11 @@ function ChatFrame() {
         conversationId: conversation._id,
         messageIds: unseen.map(m => m._id)
       }).then(res => {
-
+        dispatch(userActions.updateUnReadMessage(res.data));
+        dispatch(conversationActions.updateUnreadMessageDetail({
+          conversationId: conversation._id,
+          count: res.data.currentUnseen,
+        }))
       })
     }
   }, [initialMessage]);

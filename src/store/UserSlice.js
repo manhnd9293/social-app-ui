@@ -1,12 +1,19 @@
 import {createSlice} from "@reduxjs/toolkit";
 
-const defaultUser = {_id: null, username: '', unseenNotifications: 0, unseenInvitations: 0};
+const defaultUser = {
+  _id: null,
+  username: '',
+  unseenNotifications: 0,
+  unseenInvitations: 0,
+  unreadMessages: 0,
+  unreadMessagesDetail: {}
+};
 
 const userSlice = createSlice({
   name: 'user',
   initialState: defaultUser,
   reducers: {
-    fetchData(state, action){
+    fetchData(state, action) {
       return action.payload;
     },
     login(state, action) {
@@ -21,11 +28,11 @@ const userSlice = createSlice({
     },
 
     updateAvatar(state, action) {
-      const { avatar } = action.payload;
+      const {avatar} = action.payload;
       return {...state, avatar}
     },
 
-    seenFriendRequest(state, action){
+    seenFriendRequest(state, action) {
       const {unseenInvitations} = action.payload;
       state.unseenInvitations = unseenInvitations;
       return state;
@@ -41,6 +48,30 @@ const userSlice = createSlice({
       state.unseenNotifications = updateUnseen;
       return state;
     },
+
+    changeUnReadMessageBy(state, action) {
+      const changeNumber = action.payload;
+      state.unreadMessages = Math.max(state.unreadMessages + changeNumber, 0);
+      return state;
+    },
+
+    updateUnReadMessage(state, action) {
+      const {totalUnseen} = action.payload;
+      state.unreadMessages = totalUnseen;
+      return state;
+    },
+
+    setUnreadMessageDetail(state, action) {
+      const {unreadMessagesDetail} = action.payload;
+      state.unreadMessagesDetail = unreadMessagesDetail;
+      return state;
+    },
+
+    updateUnreadMessageDetail(state, action) {
+      const {conversationId, count} = action.payload;
+      state.unreadMessagesDetail[conversationId] = count;
+      return state;
+    }
 
   }
 })

@@ -28,6 +28,13 @@ function createSocket(user) {
     socket.on(SocketEvent.Notification, data => {
       store.dispatch(userActions.updateSeenNotifications(data));
     })
+    socket.on(SocketEvent.MessageReceived, (request) => {
+      if(/\/conversations\/*/.test(window.location.pathname)) {
+        return;
+      }
+      store.dispatch(userActions.changeUnReadMessageBy(1))
+
+    });
 
   })
 
