@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {beClient} from "../../config/BeClient";
 import {useInfiniteQuery} from "react-query";
 
@@ -27,6 +27,12 @@ function Test() {
       return lastId;
     }
   });
+
+  const [t, setT] = useState(0);
+
+  useEffect(()=> {
+    console.log({t})
+  }, [t])
 
   useEffect(() => {
     console.log('load new page');
@@ -58,6 +64,8 @@ function Test() {
         </button>
       </div>
       <div>{isFetching && !isFetchingNextPage ? 'Fetching...' : null}</div>
+      <div className={'mt-4'}>{t}</div>
+      <button onClick={() => setT(t => t + 1)}>Change T</button>
     </>)
 }
 

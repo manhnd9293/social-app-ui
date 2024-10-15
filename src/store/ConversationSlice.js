@@ -19,6 +19,13 @@ const conversationSlice = createSlice({
       const {conversationId, count} = action.payload;
       state.unreadMessagesDetail[conversationId] = count;
       return state;
+    },
+
+    changeUnreadMessageDetailBy(state, action) {
+      const {conversationId, number} = action.payload;
+      const currentUnread = state.unreadMessagesDetail[conversationId];
+      state.unreadMessagesDetail[conversationId]  =  currentUnread ?  currentUnread + number : number;
+      return state;
     }
 
   }
