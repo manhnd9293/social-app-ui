@@ -10,7 +10,8 @@ const SocketEvent = {
   EndTyping: 'end-typing',
   UpdateOnlineState: 'update-online-state',
   FriendRequest: 'friend-request',
-  Notification: 'notification'
+  Notification: 'notification',
+  SeenMessage: 'seen-message'
 }
 
 const FriendRequestState = {

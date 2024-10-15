@@ -73,8 +73,18 @@ function ChatFrame() {
     if (!socket) return;
 
     const updateMessage = (newMessage) => {
-      if (newMessage.conversationId !== conversation._id) return;
-
+      if (newMessage.conversationId !== conversation._id) {
+        dispatch(conversationActions.changeUnreadMessageDetailBy({
+          conversationId: newMessage.conversationId,
+          number: 1,
+        }));
+        dispatch(userActions.changeUnReadMessageBy(1));
+        return;
+      };
+      socket.emit(SocketEvent.SeenMessage, {
+        messageId: newMessage._id,
+        conversationId: conversation._id,
+        userId: user.id});
       setMessages((messages) => [...messages, newMessage])
     };
 

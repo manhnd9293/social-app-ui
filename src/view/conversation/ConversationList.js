@@ -7,6 +7,7 @@ import {OnlineState, SocketEvent} from "../../utils/Constant";
 import {useDispatch, useSelector} from "react-redux";
 import classes from './chat.module.scss';
 import {conversationActions} from "../../store/ConversationSlice";
+import store from "../../store";
 
 const CurrentConversationCtx = createContext(null);
 
@@ -22,22 +23,6 @@ function ConversationList() {
     useState(initConversations.find(con => con.conversationId._id === initialConversationId));
   const user = useSelector(state => state.user);
   const conversationStateStore = useSelector(state => state.conversation);
-  console.log({user})
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (!conversations) {
-      return;
-    }
-    const detail = conversations.reduce((result, current) => {
-      result[current.conversationId._id] = current.conversationId.unReadMessages;
-      return result;
-    }, {});
-    dispatch(conversationActions.setUnreadMessageDetail(
-      {unreadMessagesDetail: detail}
-    ))
-  }, [conversations]);
 
   useEffect(() => {
     if (!socket) return;
@@ -172,6 +157,14 @@ function ConversationList() {
 async function conversationsLoader({params}) {
   const {id} = {...params};
   const list = await beClient.get('/conversations').then(res => {
+    const conversations = res.data.friends;
+    const detail = conversations.reduce((result, current) => {
+      result[current.conversationId._id] = current.conversationId.unReadMessages;
+      return result;
+    }, {});
+    store.dispatch(conversationActions.setUnreadMessageDetail(
+      {unreadMessagesDetail: detail}
+    ))
     return res.data;
   });
   const firstConId = list.friends[0]?.conversationId._id;

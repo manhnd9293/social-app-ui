@@ -76,7 +76,7 @@ function Header() {
                           number={user.unreadMessages}
             />
 
-            <MenuIconLink number={user.unreadNotifications}
+            <MenuIconLink number={user.unseenNotifications}
                           to={`notifications`}
                           icon="fa-solid fa-bell"
                           name='notification'/>
